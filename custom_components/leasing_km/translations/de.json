@@ -1,0 +1,57 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Leasing KM-Rechner einrichten",
+        "description": "Gib deine Leasingvertragsdaten ein. Die Kilometerstands-Entität muss bereits in Home Assistant vorhanden sein.",
+        "data": {
+          "start_date":       "Vertragsbeginn",
+          "laufzeit_monate":  "Laufzeit (Monate)",
+          "km_gesamt":        "Gesamtlaufleistung (km)",
+          "km_entity":        "Entität für aktuellen Kilometerstand"
+        },
+        "data_description": {
+          "start_date":       "Erster Tag des Leasingvertrags.",
+          "laufzeit_monate":  "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
+          "km_gesamt":        "Im Vertrag enthaltene Gesamtkilometer.",
+          "km_entity":        "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
+        }
+      },
+      "reconfigure": {
+        "title": "Leasing KM-Rechner neu konfigurieren",
+        "data": {
+          "start_date":       "Vertragsbeginn",
+          "laufzeit_monate":  "Laufzeit (Monate)",
+          "km_gesamt":        "Gesamtlaufleistung (km)",
+          "km_entity":        "Entität für aktuellen Kilometerstand"
+        }
+      }
+    },
+    "error": {
+      "entity_unavailable": "Die gewählte Kilometerstands-Entität ist aktuell nicht verfügbar.",
+      "invalid_value":      "Die Entität liefert keinen gültigen numerischen Wert."
+    },
+    "abort": {
+      "already_configured": "Dieser Leasingvertrag ist bereits konfiguriert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Leasing KM-Rechner konfigurieren",
+        "data": {
+          "start_date":       "Vertragsbeginn",
+          "laufzeit_monate":  "Laufzeit (Monate)",
+          "km_gesamt":        "Gesamtlaufleistung (km)",
+          "km_entity":        "Entität für aktuellen Kilometerstand"
+        },
+        "data_description": {
+          "start_date":       "Erster Tag des Leasingvertrags.",
+          "laufzeit_monate":  "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
+          "km_gesamt":        "Im Vertrag enthaltene Gesamtkilometer.",
+          "km_entity":        "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
+        }
+      }
+    }
+  }
+}

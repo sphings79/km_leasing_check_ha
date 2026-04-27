@@ -1,0 +1,57 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Leasing KM Calculator",
+        "description": "Enter your leasing contract details. The odometer entity must already exist in Home Assistant.",
+        "data": {
+          "start_date":       "Contract start date",
+          "laufzeit_monate":  "Contract duration",
+          "km_gesamt":        "Total allowed kilometres",
+          "km_entity":        "Current odometer entity"
+        },
+        "data_description": {
+          "start_date":       "First day of the leasing contract.",
+          "laufzeit_monate":  "Duration in months (e.g. 24, 36, 48).",
+          "km_gesamt":        "Total kilometres included in the contract.",
+          "km_entity":        "A sensor or input_number that holds the current odometer reading in km."
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Leasing KM Calculator",
+        "data": {
+          "start_date":       "Contract start date",
+          "laufzeit_monate":  "Contract duration",
+          "km_gesamt":        "Total allowed kilometres",
+          "km_entity":        "Current odometer entity"
+        }
+      }
+    },
+    "error": {
+      "entity_unavailable": "The selected odometer entity is currently unavailable.",
+      "invalid_value":      "The odometer entity does not report a valid numeric value."
+    },
+    "abort": {
+      "already_configured": "This leasing contract is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Leasing KM Calculator",
+        "data": {
+          "start_date":       "Contract start date",
+          "laufzeit_monate":  "Contract duration",
+          "km_gesamt":        "Total allowed kilometres",
+          "km_entity":        "Current odometer entity"
+        },
+        "data_description": {
+          "start_date":       "First day of the leasing contract.",
+          "laufzeit_monate":  "Duration in months (e.g. 24, 36, 48).",
+          "km_gesamt":        "Total kilometres included in the contract.",
+          "km_entity":        "A sensor or input_number that holds the current odometer reading in km."
+        }
+      }
+    }
+  }
+}
