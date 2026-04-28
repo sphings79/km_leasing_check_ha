@@ -13,10 +13,21 @@ Sie vergleicht den tatsächlichen Kilometerstand mit dem vertraglich erlaubten S
 - **Soll-Ist-Vergleich** – täglich und zum Monatsende
 - **Restkilometer** – bis Jahresende und bis Laufzeitende (Soll-Basis)
 - **Prognose** – Hochrechnung des Kilometerstands bei aktuellem Fahrtempo
+- **Kostenberechnung** – optionale Berechnung von Mehr- und Minderkilometerkosten inkl. Toleranzgrenze
 - **Binärsensoren** – sofortige Warnung bei drohender Überschreitung
 - **Live-Update** – aktualisiert sich sofort, wenn die Kilometerstands-Entität einen neuen Wert bekommt
 - **Konfigurierbar** – alle Parameter über die UI änderbar (kein YAML nötig)
 - **Vollständig lokale Verarbeitung** – keine externen APIs, keine Cloud
+
+---
+
+## 🖥️ Dashboard Card
+
+Für eine fertige Lovelace-Karte passend zu dieser Integration gibt es ein separates Projekt:
+
+👉 **[Leasing KM Card](https://github.com/sphings79/leasing_km_card)**
+
+Die Karte visualisiert alle Sensoren dieser Integration übersichtlich auf einen Blick und lässt sich ebenfalls über HACS installieren.
 
 ---
 
@@ -68,6 +79,20 @@ Typische Quellen für die Kilometerstands-Entität:
 
 Einstellungen lassen sich jederzeit über das **Zahnrad-Icon** der Integration ändern.
 
+### Optionale Kostenberechnung
+
+Die Kostenberechnung ist standardmäßig deaktiviert. Sie kann im Setup oder nachträglich über das Zahnrad-Icon aktiviert werden:
+
+| Feld | Beschreibung | Beispiel |
+|---|---|---|
+| **Kostenberechnung aktivieren** | Schalter zum Aktivieren der Kostenberechnung | – |
+| **Mehrkilometer** | Preis pro Mehrkilometer in Cent | `9` (= 0,09 €/km) |
+| **Minderkilometer** | Erstattung pro Minderkilometer in Cent, `0` wenn keine Erstattung | `5` (= 0,05 €/km) |
+| **Toleranzgrenze** | Puffer in km, innerhalb dessen keine Kosten anfallen, `0` = deaktiviert | `2500` |
+| **Toleranzrichtung** | Für welche Richtung die Toleranz gilt | Mehr & Minder |
+
+> **Hinweis zum Abrechnungsmodell:** Wird die Toleranzgrenze überschritten, werden **alle** Kilometer berechnet – nicht nur der Anteil über der Grenze. Dies entspricht dem gängigen Vorgehen der meisten Leasingverträge.
+
 ---
 
 ## 📊 Entitäten
@@ -90,8 +115,12 @@ Alle Entitäten erscheinen unter einem gemeinsamen **Gerät** mit dem Namen des 
 | `sensor.…_km_limit_pro_jahr` | Jährliches KM-Kontingent laut Vertrag | km |
 | `sensor.…_prognose_jahresende` | Hochgerechneter KM-Stand am 31.12. | km |
 | `sensor.…_prognose_laufzeitende` | Hochgerechneter KM-Stand am Vertragsende | km |
+| `sensor.…_abweichung_laufzeitende` | Prognostizierte Abweichung am Vertragsende (+ = Mehr, − = Minder) | km |
 | `sensor.…_km_absolviert` | Verbrauchte KM in Prozent des Gesamtlimits | % |
 | `sensor.…_laufzeit_absolviert` | Verstrichene Laufzeit in Prozent | % |
+| `sensor.…_kosten_prognose` | Prognostizierte Kosten (+) oder Erstattung (−) am Laufzeitende ¹ | € |
+
+¹ Nur verfügbar wenn die Kostenberechnung aktiviert ist.
 
 ### Binärsensoren (Ja/Nein)
 
@@ -100,6 +129,9 @@ Alle Entitäten erscheinen unter einem gemeinsamen **Gerät** mit dem Namen des 
 | `binary_sensor.…_ueber_soll` | Aktuell über dem Tages-Soll | Zu viel gefahren |
 | `binary_sensor.…_jahres_km_prognose_ueberschritten` | Jährliches KM-Limit wird bei aktuellem Tempo überschritten | Warnung |
 | `binary_sensor.…_laufzeit_km_prognose_ueberschritten` | Gesamtlimit wird bei aktuellem Tempo überschritten | Warnung |
+| `binary_sensor.…_toleranz_ueberschritten` | Toleranzgrenze wird voraussichtlich überschritten ¹ | Warnung |
+
+¹ Nur aktiv wenn die Kostenberechnung aktiviert ist.
 
 ---
 
@@ -131,6 +163,24 @@ automation:
             (Limit: {{ states('sensor.leasing_km_limit_pro_jahr') | float * (states('sensor.leasing_laufzeit_absolviert') | float / 100 * 4) | round(0) }} km)
 ```
 
+### Automation: Warnung bei überschrittener Toleranzgrenze
+
+```yaml
+automation:
+  - alias: "Leasing Toleranz überschritten"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.leasing_toleranz_ueberschritten
+        to: "on"
+    action:
+      - service: notify.notify
+        data:
+          title: "💶 Leasing Mehrkosten erwartet"
+          message: >
+            Prognose Abweichung: {{ states('sensor.leasing_abweichung_laufzeitende') }} km –
+            Erwartete Kosten: {{ states('sensor.leasing_kosten_prognose') }} €
+```
+
 ### Dashboard-Karte (Entities Card)
 
 ```yaml
@@ -139,10 +189,13 @@ title: Leasing KM-Übersicht
 entities:
   - sensor.leasing_differenz_heute
   - sensor.leasing_prognose_laufzeitende
+  - sensor.leasing_abweichung_laufzeitende
+  - sensor.leasing_kosten_prognose
   - sensor.leasing_noch_erlaubt_gesamt
   - sensor.leasing_km_absolviert
   - binary_sensor.leasing_ueber_soll
   - binary_sensor.leasing_laufzeit_km_prognose_ueberschritten
+  - binary_sensor.leasing_toleranz_ueberschritten
 ```
 
 ### Template-Sensor: Ampelstatus
@@ -187,10 +240,20 @@ Die Integration unterstützt mehrere Instanzen. Für jedes Leasingfahrzeug einfa
 | Differenz | `aktueller_km − Soll-KM heute` |
 | Prognose | `aktueller_km + (Ist-KM/Tag × verbleibende Tage)` |
 | Verbleibend (Soll) | `Soll-KM/Tag × verbleibende Tage` |
+| Abweichung Laufzeitende | `Prognose Laufzeitende − km_gesamt` |
+| Mehrkosten | `Abweichung × Mehrkilometer-Cent ÷ 100` |
+| Mindererstattung | `Abweichung × Minderkilometer-Cent ÷ 100` |
 
 ---
 
 ## 📝 Changelog
+
+### 1.1.0b1
+- Optionale Kostenberechnung für Mehr- und Minderkilometer
+- Konfigurierbare Toleranzgrenze mit wählbarer Richtung (Mehr / Minder / Beides)
+- Neuer Sensor: Prognose Abweichung Laufzeitende (km)
+- Neuer Sensor: Prognose Kosten/Erstattung Laufzeitende (€)
+- Neuer Binärsensor: Toleranzgrenze überschritten
 
 ### 1.0.0
 - Erstveröffentlichung
