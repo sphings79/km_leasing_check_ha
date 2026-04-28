@@ -50,6 +50,14 @@ BINARY_SENSORS: tuple[LeasingKmBinaryDescription, ...] = (
         icon="mdi:shield-car",
         value_fn=lambda d: d.ende_over,
     ),
+    LeasingKmBinaryDescription(
+        key="toleranz_ueberschritten",
+        name="Toleranzgrenze überschritten",
+        icon="mdi:alert-circle-outline",
+        # Nur True wenn Kostenberechnung aktiv UND außerhalb Toleranz.
+        # Wenn Kostenberechnung deaktiviert, bleibt der Sensor immer False.
+        value_fn=lambda d: d.kosten_aktiv and d.toleranz_ueberschritten,
+    ),
 )
 
 
