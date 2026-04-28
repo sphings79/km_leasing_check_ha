@@ -5,25 +5,40 @@
         "title": "Set up Leasing KM Calculator",
         "description": "Enter your leasing contract details. The odometer entity must already exist in Home Assistant.",
         "data": {
-          "start_date":       "Contract start date",
-          "laufzeit_monate":  "Contract duration",
-          "km_gesamt":        "Total allowed kilometres",
-          "km_entity":        "Current odometer entity"
+          "start_date":           "Contract start date",
+          "laufzeit_monate":      "Contract duration",
+          "km_gesamt":            "Total allowed kilometres",
+          "km_entity":            "Current odometer entity",
+          "kosten_aktiv":         "Enable cost calculation",
+          "mehrkilometer_cent":   "Extra-kilometre charge",
+          "minderkilometer_cent": "Under-kilometre refund",
+          "toleranz_km":          "Tolerance band",
+          "toleranz_richtung":    "Tolerance applies to"
         },
         "data_description": {
-          "start_date":       "First day of the leasing contract.",
-          "laufzeit_monate":  "Duration in months (e.g. 24, 36, 48).",
-          "km_gesamt":        "Total kilometres included in the contract.",
-          "km_entity":        "A sensor or input_number that holds the current odometer reading in km."
+          "start_date":           "First day of the leasing contract.",
+          "laufzeit_monate":      "Duration in months (e.g. 24, 36, 48).",
+          "km_gesamt":            "Total kilometres included in the contract.",
+          "km_entity":            "A sensor or input_number that holds the current odometer reading in km.",
+          "kosten_aktiv":         "When enabled, projected costs and refunds are calculated at contract end.",
+          "mehrkilometer_cent":   "Cost per extra kilometre in cent (e.g. 9 = 0.09 €/km). Only used when cost calculation is enabled.",
+          "minderkilometer_cent": "Refund per under-kilometre in cent (e.g. 5 = 0.05 €/km). Set to 0 if your contract offers no refund. Only used when cost calculation is enabled.",
+          "toleranz_km":          "Number of kilometres within which no charge or refund applies. Set to 0 to disable the tolerance band.",
+          "toleranz_richtung":    "Defines which direction(s) the tolerance band protects."
         }
       },
       "reconfigure": {
         "title": "Reconfigure Leasing KM Calculator",
         "data": {
-          "start_date":       "Contract start date",
-          "laufzeit_monate":  "Contract duration",
-          "km_gesamt":        "Total allowed kilometres",
-          "km_entity":        "Current odometer entity"
+          "start_date":           "Contract start date",
+          "laufzeit_monate":      "Contract duration",
+          "km_gesamt":            "Total allowed kilometres",
+          "km_entity":            "Current odometer entity",
+          "kosten_aktiv":         "Enable cost calculation",
+          "mehrkilometer_cent":   "Extra-kilometre charge",
+          "minderkilometer_cent": "Under-kilometre refund",
+          "toleranz_km":          "Tolerance band",
+          "toleranz_richtung":    "Tolerance applies to"
         }
       }
     },
@@ -40,16 +55,26 @@
       "init": {
         "title": "Configure Leasing KM Calculator",
         "data": {
-          "start_date":       "Contract start date",
-          "laufzeit_monate":  "Contract duration",
-          "km_gesamt":        "Total allowed kilometres",
-          "km_entity":        "Current odometer entity"
+          "start_date":           "Contract start date",
+          "laufzeit_monate":      "Contract duration",
+          "km_gesamt":            "Total allowed kilometres",
+          "km_entity":            "Current odometer entity",
+          "kosten_aktiv":         "Enable cost calculation",
+          "mehrkilometer_cent":   "Extra-kilometre charge",
+          "minderkilometer_cent": "Under-kilometre refund",
+          "toleranz_km":          "Tolerance band",
+          "toleranz_richtung":    "Tolerance applies to"
         },
         "data_description": {
-          "start_date":       "First day of the leasing contract.",
-          "laufzeit_monate":  "Duration in months (e.g. 24, 36, 48).",
-          "km_gesamt":        "Total kilometres included in the contract.",
-          "km_entity":        "A sensor or input_number that holds the current odometer reading in km."
+          "start_date":           "First day of the leasing contract.",
+          "laufzeit_monate":      "Duration in months (e.g. 24, 36, 48).",
+          "km_gesamt":            "Total kilometres included in the contract.",
+          "km_entity":            "A sensor or input_number that holds the current odometer reading in km.",
+          "kosten_aktiv":         "When enabled, projected costs and refunds are calculated at contract end.",
+          "mehrkilometer_cent":   "Cost per extra kilometre in cent (e.g. 9 = 0.09 €/km). Only used when cost calculation is enabled.",
+          "minderkilometer_cent": "Refund per under-kilometre in cent (e.g. 5 = 0.05 €/km). Set to 0 if your contract offers no refund. Only used when cost calculation is enabled.",
+          "toleranz_km":          "Number of kilometres within which no charge or refund applies. Set to 0 to disable the tolerance band.",
+          "toleranz_richtung":    "Defines which direction(s) the tolerance band protects."
         }
       }
     }
