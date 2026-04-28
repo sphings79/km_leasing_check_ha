@@ -8,9 +8,17 @@ from homeassistant.helpers import selector
 from .const import (
     CONF_KM_ENTITY,
     CONF_KM_GESAMT,
+    CONF_KOSTEN_AKTIV,
     CONF_LAUFZEIT,
+    CONF_MEHR_CENT,
+    CONF_MINDER_CENT,
     CONF_START_DATE,
+    CONF_TOLERANZ_KM,
+    CONF_TOLERANZ_RICHTUNG,
     DOMAIN,
+    TOLERANZ_BEIDES,
+    TOLERANZ_MEHR,
+    TOLERANZ_MINDER,
 )
 
 # ---------------------------------------------------------------------------
@@ -20,6 +28,7 @@ from .const import (
 def _build_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(
         {
+            # ── Vertragsdaten ────────────────────────────────────────────────
             vol.Required(
                 CONF_START_DATE,
                 default=defaults.get(CONF_START_DATE, ""),
@@ -65,6 +74,72 @@ def _build_schema(defaults: dict) -> vol.Schema:
                     }
                 }
             ),
+
+            # ── Optionale Kostenberechnung ───────────────────────────────────
+            vol.Optional(
+                CONF_KOSTEN_AKTIV,
+                default=defaults.get(CONF_KOSTEN_AKTIV, False),
+            ): selector.selector({"boolean": {}}),
+
+            vol.Optional(
+                CONF_MEHR_CENT,
+                default=defaults.get(CONF_MEHR_CENT, 10),
+            ): selector.selector(
+                {
+                    "number": {
+                        "min": 0,
+                        "max": 200,
+                        "step": 0.1,
+                        "mode": "box",
+                        "unit_of_measurement": "ct/km",
+                    }
+                }
+            ),
+
+            vol.Optional(
+                CONF_MINDER_CENT,
+                default=defaults.get(CONF_MINDER_CENT, 0),
+            ): selector.selector(
+                {
+                    "number": {
+                        "min": 0,
+                        "max": 200,
+                        "step": 0.1,
+                        "mode": "box",
+                        "unit_of_measurement": "ct/km",
+                    }
+                }
+            ),
+
+            vol.Optional(
+                CONF_TOLERANZ_KM,
+                default=defaults.get(CONF_TOLERANZ_KM, 0),
+            ): selector.selector(
+                {
+                    "number": {
+                        "min": 0,
+                        "max": 10000,
+                        "step": 100,
+                        "mode": "box",
+                        "unit_of_measurement": "km",
+                    }
+                }
+            ),
+
+            vol.Optional(
+                CONF_TOLERANZ_RICHTUNG,
+                default=defaults.get(CONF_TOLERANZ_RICHTUNG, TOLERANZ_BEIDES),
+            ): selector.selector(
+                {
+                    "select": {
+                        "options": [
+                            {"label": "Nur Mehrkilometer",   "value": TOLERANZ_MEHR},
+                            {"label": "Nur Minderkilometer", "value": TOLERANZ_MINDER},
+                            {"label": "Mehr & Minder",       "value": TOLERANZ_BEIDES},
+                        ]
+                    }
+                }
+            ),
         }
     )
 
@@ -84,7 +159,6 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            # Build a human-readable title
             km = int(user_input[CONF_KM_GESAMT])
             lz = int(user_input[CONF_LAUFZEIT])
             title = f"Leasing · {km:,} km / {lz} Monate".replace(",", ".")
@@ -98,7 +172,7 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     # ------------------------------------------------------------------
-    # Reconfigure (HA 2024.6+) – lets the user edit all fields in place
+    # Reconfigure (HA 2024.6+)
     # ------------------------------------------------------------------
 
     async def async_step_reconfigure(
@@ -120,7 +194,7 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     # ------------------------------------------------------------------
-    # Options flow (gear icon in integrations list)
+    # Options flow (gear icon)
     # ------------------------------------------------------------------
 
     @staticmethod
