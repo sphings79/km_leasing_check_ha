@@ -20,21 +20,13 @@ from .const import DOMAIN
 from .coordinator import LeasingKmCoordinator, LeasingKmData
 
 
-# ---------------------------------------------------------------------------
-# Entity description with typed value accessor
-# ---------------------------------------------------------------------------
-
 @dataclass(frozen=True, kw_only=True)
 class LeasingKmSensorDescription(SensorEntityDescription):
     value_fn: Callable[[LeasingKmData], float | None] = lambda _: None
 
 
-# ---------------------------------------------------------------------------
-# Sensor definitions
-# ---------------------------------------------------------------------------
-
 SENSORS: tuple[LeasingKmSensorDescription, ...] = (
-    # ── Tagesbasis ──────────────────────────────────────────────────────────
+    # ── Tagesbasis ───────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="tagesleistung_ist",
         name="Tagesleistung Ist",
@@ -52,7 +44,7 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         suggested_display_precision=1,
         value_fn=lambda d: d.soll_day,
     ),
-    # ── Soll-Ist-Vergleich ───────────────────────────────────────────────────
+    # ── Soll-Ist-Vergleich ────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="soll_km_heute",
         name="Soll-KM heute",
@@ -86,7 +78,7 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         suggested_display_precision=0,
         value_fn=lambda d: d.diff_monatsende,
     ),
-    # ── Restkilometer ────────────────────────────────────────────────────────
+    # ── Restkilometer ─────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="verbleibend_jahresende",
         name="Verbleibend bis Jahresende",
@@ -163,7 +155,7 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         suggested_display_precision=1,
         value_fn=lambda d: d.lauf_pct,
     ),
-    # ── Kosten (optional – unavailable wenn Kostenberechnung deaktiviert) ─────
+    # ── Kosten ───────────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="kosten_prognose",
         name="Prognose Kosten/Erstattung Laufzeitende",
@@ -171,35 +163,23 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         native_unit_of_measurement="€",
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
-        # None → sensor zeigt "unavailable" wenn Kostenberechnung aus
         value_fn=lambda d: d.kosten_prognose,
     ),
 )
 
-
-# ---------------------------------------------------------------------------
-# Platform setup
-# ---------------------------------------------------------------------------
 
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up sensor entities from a config entry."""
     coordinator: LeasingKmCoordinator = entry.runtime_data
     async_add_entities(
         LeasingKmSensor(coordinator, entry, desc) for desc in SENSORS
     )
 
 
-# ---------------------------------------------------------------------------
-# Entity class
-# ---------------------------------------------------------------------------
-
 class LeasingKmSensor(CoordinatorEntity[LeasingKmCoordinator], SensorEntity):
-    """A single numeric sensor derived from the leasing KM coordinator."""
-
     _attr_has_entity_name = True
 
     def __init__(
@@ -230,12 +210,23 @@ class LeasingKmSensor(CoordinatorEntity[LeasingKmCoordinator], SensorEntity):
         if data is None:
             return {}
         attrs: dict[str, Any] = {
-            "vertragsende":  data.vertragsende,
-            "elapsed_days":  data.elapsed_days,
-            "total_days":    data.total_days,
-            "ueber_soll":    data.is_over_soll,
+            "vertragsende": data.vertragsende,
+            "elapsed_days": data.elapsed_days,
+            "total_days":   data.total_days,
+            "ueber_soll":   data.is_over_soll,
         }
-        # Kosten-Attribute nur wenn Kostenberechnung aktiv
         if data.kosten_aktiv:
-            attrs["toleranz_ueberschritten"] = data.toleranz_ueberschritten
+            attrs["kosten_aktiv"]          = True
+            attrs["toleranz_ueberschritten"]= data.toleranz_ueberschritten
+            # Expose cost config so the Lovelace card can read them
+            if data.mehr_cent_cfg is not None:
+                attrs["mehr_cent"]          = data.mehr_cent_cfg
+            if data.minder_cent_cfg is not None:
+                attrs["minder_cent"]        = data.minder_cent_cfg
+            if data.toleranz_mehr_km_cfg is not None:
+                attrs["toleranz_mehr_km"]   = data.toleranz_mehr_km_cfg
+            if data.toleranz_minder_km_cfg is not None:
+                attrs["toleranz_minder_km"] = data.toleranz_minder_km_cfg
+            if data.minder_grenze_km_cfg is not None:
+                attrs["minder_grenze_km"]   = data.minder_grenze_km_cfg
         return attrs
