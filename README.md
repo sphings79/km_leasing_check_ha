@@ -13,7 +13,7 @@ Sie vergleicht den tatsächlichen Kilometerstand mit dem vertraglich erlaubten S
 - **Soll-Ist-Vergleich** – täglich und zum Monatsende
 - **Restkilometer** – bis Jahresende und bis Laufzeitende (Soll-Basis)
 - **Prognose** – Hochrechnung des Kilometerstands bei aktuellem Fahrtempo
-- **Kostenberechnung** – optionale Berechnung von Mehr- und Minderkilometerkosten inkl. Toleranzgrenze
+- **Kostenberechnung** – optionale Berechnung von Mehr- und Minderkilometerkosten inkl. Toleranzgrenze und Erstattungsgrenze
 - **Binärsensoren** – sofortige Warnung bei drohender Überschreitung
 - **Live-Update** – aktualisiert sich sofort, wenn die Kilometerstands-Entität einen neuen Wert bekommt
 - **Konfigurierbar** – alle Parameter über die UI änderbar (kein YAML nötig)
@@ -86,12 +86,23 @@ Die Kostenberechnung ist standardmäßig deaktiviert. Sie kann im Setup oder nac
 | Feld | Beschreibung | Beispiel |
 |---|---|---|
 | **Kostenberechnung aktivieren** | Schalter zum Aktivieren der Kostenberechnung | – |
-| **Mehrkilometer** | Preis pro Mehrkilometer in Cent | `9` (= 0,09 €/km) |
-| **Minderkilometer** | Erstattung pro Minderkilometer in Cent, `0` wenn keine Erstattung | `5` (= 0,05 €/km) |
-| **Toleranzgrenze** | Puffer in km, innerhalb dessen keine Kosten anfallen, `0` = deaktiviert | `2500` |
-| **Toleranzrichtung** | Für welche Richtung die Toleranz gilt | Mehr & Minder |
+| **Nachbelastungssatz Mehr-km Service** | Preis pro Mehrkilometer in ct/km inkl. aller Aufschläge | `9` (= 0,09 €/km) |
+| **Erstattungssatz Minder-km Service** | Erstattung pro Minderkilometer in ct/km, `0` wenn keine Erstattung | `5` (= 0,05 €/km) |
+| **Toleranzgrenze Mehr-KM** | Puffer in km für Mehrkilometer – innerhalb keine Nachbelastung, `0` = deaktiviert | `2500` |
+| **Toleranzgrenze Minder-KM** | Puffer in km für Minderkilometer – innerhalb keine Erstattung, `0` = deaktiviert | `2500` |
+| **Max. erstattbare Minder-KM** | Obergrenze der erstattbaren Minderkilometer (ohne Toleranz), `0` = unbegrenzt | `10000` |
 
-> **Hinweis zum Abrechnungsmodell:** Wird die Toleranzgrenze überschritten, werden **alle** Kilometer berechnet – nicht nur der Anteil über der Grenze. Dies entspricht dem gängigen Vorgehen der meisten Leasingverträge.
+#### Berechnungsbeispiel Minder-KM
+
+Bei einer Toleranz von 2.500 km und einer Erstattungsgrenze von 10.000 km gilt:
+
+| Minder-KM | Erstattungsfähige KM | Ergebnis |
+|---|---|---|
+| 0 – 2.500 | 0 | Innerhalb Toleranz – keine Erstattung |
+| 2.501 – 12.500 | Minder-KM minus 2.500 | Erstattung für den Überschuss über die Toleranz |
+| > 12.500 | 10.000 (gedeckelt) | Nur die maximale Erstattungsgrenze wird vergütet |
+
+> **Hinweis Mehr-KM:** Wird die Toleranzgrenze überschritten, werden **alle** Mehrkilometer berechnet – nicht nur der Anteil über der Grenze. Es gibt keine Obergrenze.
 
 ---
 
@@ -118,7 +129,7 @@ Alle Entitäten erscheinen unter einem gemeinsamen **Gerät** mit dem Namen des 
 | `sensor.…_abweichung_laufzeitende` | Prognostizierte Abweichung am Vertragsende (+ = Mehr, − = Minder) | km |
 | `sensor.…_km_absolviert` | Verbrauchte KM in Prozent des Gesamtlimits | % |
 | `sensor.…_laufzeit_absolviert` | Verstrichene Laufzeit in Prozent | % |
-| `sensor.…_kosten_prognose` | Prognostizierte Kosten (+) oder Erstattung (−) am Laufzeitende ¹ | € |
+| `sensor.…_kosten_prognose` | Prognostizierte Nachzahlung (+) oder Erstattung (−) am Laufzeitende ¹ | € |
 
 ¹ Nur verfügbar wenn die Kostenberechnung aktiviert ist.
 
@@ -178,7 +189,7 @@ automation:
           title: "💶 Leasing Mehrkosten erwartet"
           message: >
             Prognose Abweichung: {{ states('sensor.leasing_abweichung_laufzeitende') }} km –
-            Erwartete Kosten: {{ states('sensor.leasing_kosten_prognose') }} €
+            Erwartete Kosten/Erstattung: {{ states('sensor.leasing_kosten_prognose') }} €
 ```
 
 ### Dashboard-Karte (Entities Card)
@@ -241,8 +252,8 @@ Die Integration unterstützt mehrere Instanzen. Für jedes Leasingfahrzeug einfa
 | Prognose | `aktueller_km + (Ist-KM/Tag × verbleibende Tage)` |
 | Verbleibend (Soll) | `Soll-KM/Tag × verbleibende Tage` |
 | Abweichung Laufzeitende | `Prognose Laufzeitende − km_gesamt` |
-| Mehrkosten | `Abweichung × Mehrkilometer-Cent ÷ 100` |
-| Mindererstattung | `Abweichung × Minderkilometer-Cent ÷ 100` |
+| Mehr-KM Kosten | `Abweichung × Nachbelastungssatz ÷ 100` (alle km, sobald Toleranz überschritten) |
+| Minder-KM Erstattung | `min(Abweichung − Toleranz, Erstattungsgrenze) × Erstattungssatz ÷ 100` |
 
 ---
 
@@ -250,7 +261,8 @@ Die Integration unterstützt mehrere Instanzen. Für jedes Leasingfahrzeug einfa
 
 ### 1.1.0b1
 - Optionale Kostenberechnung für Mehr- und Minderkilometer
-- Konfigurierbare Toleranzgrenze mit wählbarer Richtung (Mehr / Minder / Beides)
+- Separate Toleranzgrenzen für Mehr- und Minderkilometer konfigurierbar
+- Erstattungsgrenze (max. erstattbare Minder-KM) konfigurierbar
 - Neuer Sensor: Prognose Abweichung Laufzeitende (km)
 - Neuer Sensor: Prognose Kosten/Erstattung Laufzeitende (€)
 - Neuer Binärsensor: Toleranzgrenze überschritten
