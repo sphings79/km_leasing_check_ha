@@ -17,13 +17,11 @@ from .const import (
     CONF_LAUFZEIT,
     CONF_MEHR_CENT,
     CONF_MINDER_CENT,
+    CONF_MINDER_GRENZE_KM,
     CONF_START_DATE,
-    CONF_TOLERANZ_KM,
-    CONF_TOLERANZ_RICHTUNG,
+    CONF_TOLERANZ_MEHR_KM,
+    CONF_TOLERANZ_MINDER_KM,
     DOMAIN,
-    TOLERANZ_BEIDES,
-    TOLERANZ_MEHR,
-    TOLERANZ_MINDER,
     UPDATE_INTERVAL_MINUTES,
 )
 
@@ -36,48 +34,37 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class LeasingKmData:
-    """All calculated leasing values."""
-
     # ── Stammdaten ───────────────────────────────────────────────────────────
     km_aktuell: float
     km_gesamt: float
-
     # ── Tagesbasis ───────────────────────────────────────────────────────────
     ist_day: float
     soll_day: float
-
     # ── Soll-Ist-Vergleich ────────────────────────────────────────────────────
     soll_heute: float
     diff_heute: float
     soll_monatsende: float
     diff_monatsende: float
-
     # ── Restkilometer ─────────────────────────────────────────────────────────
     verbl_jahresende: float
     verbl_laufzeitende: float
     noch_erlaubt: float
-
     # ── Prognose ─────────────────────────────────────────────────────────────
     prog_jahresende: float
     prog_laufzeitende: float
     abweichung_laufzeitende: float   # prog_end − km_gesamt  (+= Mehr, −= Minder)
-
     # ── Prozent ──────────────────────────────────────────────────────────────
     km_pct: float
     lauf_pct: float
     jahres_soll: float
-
     # ── Flags ────────────────────────────────────────────────────────────────
     jahres_over: bool
     ende_over: bool
     is_over_soll: bool
-
     # ── Kostenberechnung (optional) ───────────────────────────────────────────
     kosten_aktiv: bool
-    # Positiv = Nachzahlung (€), Negativ = Erstattung (€), None = deaktiviert
-    kosten_prognose: float | None
-    toleranz_ueberschritten: bool    # True = außerhalb der Toleranz
-
+    kosten_prognose: float | None    # > 0 = Nachzahlung, < 0 = Erstattung, None = deaktiviert
+    toleranz_ueberschritten: bool    # True = außerhalb der Toleranzgrenze
     # ── Meta ─────────────────────────────────────────────────────────────────
     vertragsende: str
     elapsed_days: int
@@ -89,7 +76,6 @@ class LeasingKmData:
 # ---------------------------------------------------------------------------
 
 def _add_months(d: date, months: int) -> date:
-    """Add months to a date, clamping to the last day of the target month."""
     month = d.month - 1 + months
     year  = d.year + month // 12
     month = month % 12 + 1
@@ -98,7 +84,6 @@ def _add_months(d: date, months: int) -> date:
 
 
 def _get_cfg(entry: ConfigEntry) -> dict:
-    """Merge entry.data with entry.options (options override data)."""
     return {**entry.data, **entry.options}
 
 
@@ -106,51 +91,50 @@ def _calc_kosten(
     abweichung: float,
     mehr_cent: float,
     minder_cent: float,
-    toleranz_km: float,
-    toleranz_richtung: str,
+    toleranz_mehr_km: float,
+    toleranz_minder_km: float,
+    minder_grenze_km: float,
 ) -> tuple[float, bool]:
     """
-    Calculate projected cost/refund and whether tolerance is exceeded.
+    Berechnet prognostizierte Kosten/Erstattung und ob die Toleranz überschritten ist.
 
-    Returns:
-        (kosten_eur, toleranz_ueberschritten)
-        kosten_eur > 0  → Nachzahlung (Mehrkilometer)
-        kosten_eur < 0  → Erstattung  (Minderkilometer)
-        kosten_eur = 0  → innerhalb Toleranz oder keine Abweichung
+    Rückgabe: (kosten_eur, toleranz_ueberschritten)
+      kosten_eur > 0  → Nachzahlung (Mehr-KM)
+      kosten_eur < 0  → Erstattung  (Minder-KM)
+      kosten_eur = 0  → innerhalb Toleranz oder keine Abweichung
 
-    Charging model: wenn Toleranz greift und Abweichung ÜBERSCHREITET die
-    Toleranz, werden ALLE Kilometer berechnet (nicht nur der Anteil darüber).
+    Mehr-KM:   Alle km werden berechnet sobald die Toleranz überschritten ist (kein Cap).
+    Minder-KM: Nur km IM Band werden erstattet:
+               Band = (toleranz_minder_km, toleranz_minder_km + minder_grenze_km]
+               Erstattete km = min(minder_km − toleranz, minder_grenze)
+               (minder_grenze_km = 0 → unbegrenzt)
     """
-    hat_toleranz = toleranz_km > 0
-
     if abweichung > 0:
-        # Mehrkilometer
-        tol_greift = hat_toleranz and toleranz_richtung in (TOLERANZ_MEHR, TOLERANZ_BEIDES)
-        if tol_greift:
-            if abweichung <= toleranz_km:
-                return 0.0, False          # innerhalb Toleranz → keine Kosten
-            else:
-                kosten = round(abweichung * mehr_cent / 100, 2)
-                return kosten, True        # außerhalb Toleranz → alle km berechnet
-
-        kosten = round(abweichung * mehr_cent / 100, 2)
-        return kosten, False               # keine Toleranz für diese Richtung
+        # ── Mehrkilometer ────────────────────────────────────────────────────
+        hat_toleranz = toleranz_mehr_km > 0
+        if hat_toleranz and abweichung <= toleranz_mehr_km:
+            return 0.0, False                                  # innerhalb Toleranz
+        kosten = round(abweichung * mehr_cent / 100, 2)        # alle km berechnet
+        return kosten, hat_toleranz                            # toleranz_ueberschritten nur wenn Toleranz gesetzt
 
     if abweichung < 0:
-        # Minderkilometer
+        # ── Minderkilometer ──────────────────────────────────────────────────
         minder_km = abs(abweichung)
-        tol_greift = hat_toleranz and toleranz_richtung in (TOLERANZ_MINDER, TOLERANZ_BEIDES)
-        if tol_greift:
-            if minder_km <= toleranz_km:
-                return 0.0, False          # innerhalb Toleranz → keine Erstattung
-            else:
-                erstattung = round(-(minder_km * minder_cent / 100), 2)
-                return erstattung, True    # außerhalb Toleranz → alle km erstattet
+        hat_toleranz = toleranz_minder_km > 0
 
-        erstattung = round(-(minder_km * minder_cent / 100), 2)
-        return erstattung, False           # keine Toleranz für diese Richtung
+        if hat_toleranz and minder_km <= toleranz_minder_km:
+            return 0.0, False                                  # innerhalb Toleranz
 
-    # Abweichung == 0
+        # Erstattungsfähige km = Überschuss über Toleranz, gedeckelt durch Grenze
+        excess = minder_km - toleranz_minder_km if hat_toleranz else minder_km
+        if minder_grenze_km > 0:
+            erstattbar = min(excess, minder_grenze_km)
+        else:
+            erstattbar = excess                                # unbegrenzt
+
+        erstattung = round(-(erstattbar * minder_cent / 100), 2)
+        return erstattung, hat_toleranz
+
     return 0.0, False
 
 
@@ -159,13 +143,10 @@ def _calc_kosten(
 # ---------------------------------------------------------------------------
 
 class LeasingKmCoordinator(DataUpdateCoordinator[LeasingKmData]):
-    """Coordinator that reads the odometer entity and computes all KM metrics."""
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         super().__init__(
-            hass,
-            _LOGGER,
-            name=DOMAIN,
+            hass, _LOGGER, name=DOMAIN,
             update_interval=timedelta(minutes=UPDATE_INTERVAL_MINUTES),
         )
         self.entry = entry
@@ -178,7 +159,6 @@ class LeasingKmCoordinator(DataUpdateCoordinator[LeasingKmData]):
         km_gesamt = float(cfg[CONF_KM_GESAMT])
         km_entity = cfg[CONF_KM_ENTITY]
 
-        # --- Read current odometer from entity ---
         state = self.hass.states.get(km_entity)
         if state is None or state.state in ("unknown", "unavailable", ""):
             raise UpdateFailed(
@@ -191,7 +171,6 @@ class LeasingKmCoordinator(DataUpdateCoordinator[LeasingKmData]):
                 f"Ungültiger Wert der KM-Entität '{km_entity}': {state.state}"
             ) from exc
 
-        # --- Base date arithmetic ---
         today      = date.today()
         vertr_end  = _add_months(start, laufzeit)
         total_days = (vertr_end - start).days
@@ -202,54 +181,44 @@ class LeasingKmCoordinator(DataUpdateCoordinator[LeasingKmData]):
         if total_days <= 0:
             raise UpdateFailed("Laufzeit ergibt 0 Tage – bitte Startdatum und Laufzeit prüfen.")
 
-        # --- Core rates ---
         soll_day = km_gesamt / total_days
         ist_day  = km_aktuell / elapsed
 
-        # --- Today ---
         soll_heute = soll_day * elapsed
         diff_heute = km_aktuell - soll_heute
 
-        # --- End of current month ---
         mon_end  = date(today.year, today.month,
                         calendar.monthrange(today.year, today.month)[1])
         soll_mon = soll_day * (mon_end - start).days
         diff_mon = km_aktuell - soll_mon
 
-        # --- End of current year ---
         year_end   = date(today.year, 12, 31)
         d_to_year  = (year_end - today).days
         verbl_jahr = soll_day * d_to_year
         prog_jahr  = km_aktuell + ist_day * d_to_year
 
-        # --- End of contract ---
         d_to_end  = max(0, (vertr_end - today).days)
         verbl_end = soll_day * d_to_end
         prog_end  = km_aktuell + ist_day * d_to_end
 
-        # --- Annual check ---
-        jahres_soll  = km_gesamt / (laufzeit / 12)
-        jahres_over  = (ist_day * 365) > jahres_soll
-        ende_over    = prog_end > km_gesamt
+        jahres_soll = km_gesamt / (laufzeit / 12)
+        jahres_over = (ist_day * 365) > jahres_soll
+        ende_over   = prog_end > km_gesamt
 
-        # --- Cost calculation (optional) ---
+        # --- Kostenberechnung (optional) ------------------------------------
         abweichung_end = round(prog_end - km_gesamt, 1)
         kosten_aktiv   = bool(cfg.get(CONF_KOSTEN_AKTIV, False))
         kosten_prognose: float | None = None
         toleranz_ueberschritten = False
 
         if kosten_aktiv:
-            mehr_cent        = float(cfg.get(CONF_MEHR_CENT, 0))
-            minder_cent      = float(cfg.get(CONF_MINDER_CENT, 0))
-            toleranz_km      = float(cfg.get(CONF_TOLERANZ_KM, 0))
-            toleranz_richtung = str(cfg.get(CONF_TOLERANZ_RICHTUNG, TOLERANZ_BEIDES))
-
             kosten_prognose, toleranz_ueberschritten = _calc_kosten(
-                abweichung=abweichung_end,
-                mehr_cent=mehr_cent,
-                minder_cent=minder_cent,
-                toleranz_km=toleranz_km,
-                toleranz_richtung=toleranz_richtung,
+                abweichung        = abweichung_end,
+                mehr_cent         = float(cfg.get(CONF_MEHR_CENT, 0)),
+                minder_cent       = float(cfg.get(CONF_MINDER_CENT, 0)),
+                toleranz_mehr_km  = float(cfg.get(CONF_TOLERANZ_MEHR_KM, 0)),
+                toleranz_minder_km= float(cfg.get(CONF_TOLERANZ_MINDER_KM, 0)),
+                minder_grenze_km  = float(cfg.get(CONF_MINDER_GRENZE_KM, 0)),
             )
 
         return LeasingKmData(
