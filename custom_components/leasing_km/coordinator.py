@@ -13,9 +13,17 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from .const import (
     CONF_KM_ENTITY,
     CONF_KM_GESAMT,
+    CONF_KOSTEN_AKTIV,
     CONF_LAUFZEIT,
+    CONF_MEHR_CENT,
+    CONF_MINDER_CENT,
     CONF_START_DATE,
+    CONF_TOLERANZ_KM,
+    CONF_TOLERANZ_RICHTUNG,
     DOMAIN,
+    TOLERANZ_BEIDES,
+    TOLERANZ_MEHR,
+    TOLERANZ_MINDER,
     UPDATE_INTERVAL_MINUTES,
 )
 
@@ -30,25 +38,47 @@ _LOGGER = logging.getLogger(__name__)
 class LeasingKmData:
     """All calculated leasing values."""
 
+    # ── Stammdaten ───────────────────────────────────────────────────────────
     km_aktuell: float
     km_gesamt: float
+
+    # ── Tagesbasis ───────────────────────────────────────────────────────────
     ist_day: float
     soll_day: float
+
+    # ── Soll-Ist-Vergleich ────────────────────────────────────────────────────
     soll_heute: float
     diff_heute: float
     soll_monatsende: float
     diff_monatsende: float
+
+    # ── Restkilometer ─────────────────────────────────────────────────────────
     verbl_jahresende: float
     verbl_laufzeitende: float
     noch_erlaubt: float
+
+    # ── Prognose ─────────────────────────────────────────────────────────────
     prog_jahresende: float
     prog_laufzeitende: float
+    abweichung_laufzeitende: float   # prog_end − km_gesamt  (+= Mehr, −= Minder)
+
+    # ── Prozent ──────────────────────────────────────────────────────────────
     km_pct: float
     lauf_pct: float
     jahres_soll: float
+
+    # ── Flags ────────────────────────────────────────────────────────────────
     jahres_over: bool
     ende_over: bool
     is_over_soll: bool
+
+    # ── Kostenberechnung (optional) ───────────────────────────────────────────
+    kosten_aktiv: bool
+    # Positiv = Nachzahlung (€), Negativ = Erstattung (€), None = deaktiviert
+    kosten_prognose: float | None
+    toleranz_ueberschritten: bool    # True = außerhalb der Toleranz
+
+    # ── Meta ─────────────────────────────────────────────────────────────────
     vertragsende: str
     elapsed_days: int
     total_days: int
@@ -70,6 +100,58 @@ def _add_months(d: date, months: int) -> date:
 def _get_cfg(entry: ConfigEntry) -> dict:
     """Merge entry.data with entry.options (options override data)."""
     return {**entry.data, **entry.options}
+
+
+def _calc_kosten(
+    abweichung: float,
+    mehr_cent: float,
+    minder_cent: float,
+    toleranz_km: float,
+    toleranz_richtung: str,
+) -> tuple[float, bool]:
+    """
+    Calculate projected cost/refund and whether tolerance is exceeded.
+
+    Returns:
+        (kosten_eur, toleranz_ueberschritten)
+        kosten_eur > 0  → Nachzahlung (Mehrkilometer)
+        kosten_eur < 0  → Erstattung  (Minderkilometer)
+        kosten_eur = 0  → innerhalb Toleranz oder keine Abweichung
+
+    Charging model: wenn Toleranz greift und Abweichung ÜBERSCHREITET die
+    Toleranz, werden ALLE Kilometer berechnet (nicht nur der Anteil darüber).
+    """
+    hat_toleranz = toleranz_km > 0
+
+    if abweichung > 0:
+        # Mehrkilometer
+        tol_greift = hat_toleranz and toleranz_richtung in (TOLERANZ_MEHR, TOLERANZ_BEIDES)
+        if tol_greift:
+            if abweichung <= toleranz_km:
+                return 0.0, False          # innerhalb Toleranz → keine Kosten
+            else:
+                kosten = round(abweichung * mehr_cent / 100, 2)
+                return kosten, True        # außerhalb Toleranz → alle km berechnet
+
+        kosten = round(abweichung * mehr_cent / 100, 2)
+        return kosten, False               # keine Toleranz für diese Richtung
+
+    if abweichung < 0:
+        # Minderkilometer
+        minder_km = abs(abweichung)
+        tol_greift = hat_toleranz and toleranz_richtung in (TOLERANZ_MINDER, TOLERANZ_BEIDES)
+        if tol_greift:
+            if minder_km <= toleranz_km:
+                return 0.0, False          # innerhalb Toleranz → keine Erstattung
+            else:
+                erstattung = round(-(minder_km * minder_cent / 100), 2)
+                return erstattung, True    # außerhalb Toleranz → alle km erstattet
+
+        erstattung = round(-(minder_km * minder_cent / 100), 2)
+        return erstattung, False           # keine Toleranz für diese Richtung
+
+    # Abweichung == 0
+    return 0.0, False
 
 
 # ---------------------------------------------------------------------------
@@ -150,27 +232,51 @@ class LeasingKmCoordinator(DataUpdateCoordinator[LeasingKmData]):
         jahres_over  = (ist_day * 365) > jahres_soll
         ende_over    = prog_end > km_gesamt
 
+        # --- Cost calculation (optional) ---
+        abweichung_end = round(prog_end - km_gesamt, 1)
+        kosten_aktiv   = bool(cfg.get(CONF_KOSTEN_AKTIV, False))
+        kosten_prognose: float | None = None
+        toleranz_ueberschritten = False
+
+        if kosten_aktiv:
+            mehr_cent        = float(cfg.get(CONF_MEHR_CENT, 0))
+            minder_cent      = float(cfg.get(CONF_MINDER_CENT, 0))
+            toleranz_km      = float(cfg.get(CONF_TOLERANZ_KM, 0))
+            toleranz_richtung = str(cfg.get(CONF_TOLERANZ_RICHTUNG, TOLERANZ_BEIDES))
+
+            kosten_prognose, toleranz_ueberschritten = _calc_kosten(
+                abweichung=abweichung_end,
+                mehr_cent=mehr_cent,
+                minder_cent=minder_cent,
+                toleranz_km=toleranz_km,
+                toleranz_richtung=toleranz_richtung,
+            )
+
         return LeasingKmData(
-            km_aktuell          = round(km_aktuell, 1),
-            km_gesamt           = round(km_gesamt, 1),
-            ist_day             = round(ist_day, 2),
-            soll_day            = round(soll_day, 2),
-            soll_heute          = round(soll_heute, 1),
-            diff_heute          = round(diff_heute, 1),
-            soll_monatsende     = round(soll_mon, 1),
-            diff_monatsende     = round(diff_mon, 1),
-            verbl_jahresende    = round(verbl_jahr, 1),
-            verbl_laufzeitende  = round(verbl_end, 1),
-            noch_erlaubt        = round(max(0.0, km_gesamt - km_aktuell), 1),
-            prog_jahresende     = round(prog_jahr, 1),
-            prog_laufzeitende   = round(prog_end, 1),
-            km_pct              = round(min((km_aktuell / km_gesamt) * 100, 100.0), 1),
-            lauf_pct            = round(min((elapsed / total_days) * 100, 100.0), 1),
-            jahres_soll         = round(jahres_soll, 1),
-            jahres_over         = jahres_over,
-            ende_over           = ende_over,
-            is_over_soll        = diff_heute > 0,
-            vertragsende        = vertr_end.isoformat(),
-            elapsed_days        = elapsed,
-            total_days          = total_days,
+            km_aktuell              = round(km_aktuell, 1),
+            km_gesamt               = round(km_gesamt, 1),
+            ist_day                 = round(ist_day, 2),
+            soll_day                = round(soll_day, 2),
+            soll_heute              = round(soll_heute, 1),
+            diff_heute              = round(diff_heute, 1),
+            soll_monatsende         = round(soll_mon, 1),
+            diff_monatsende         = round(diff_mon, 1),
+            verbl_jahresende        = round(verbl_jahr, 1),
+            verbl_laufzeitende      = round(verbl_end, 1),
+            noch_erlaubt            = round(max(0.0, km_gesamt - km_aktuell), 1),
+            prog_jahresende         = round(prog_jahr, 1),
+            prog_laufzeitende       = round(prog_end, 1),
+            abweichung_laufzeitende = abweichung_end,
+            km_pct                  = round(min((km_aktuell / km_gesamt) * 100, 100.0), 1),
+            lauf_pct                = round(min((elapsed / total_days) * 100, 100.0), 1),
+            jahres_soll             = round(jahres_soll, 1),
+            jahres_over             = jahres_over,
+            ende_over               = ende_over,
+            is_over_soll            = diff_heute > 0,
+            kosten_aktiv            = kosten_aktiv,
+            kosten_prognose         = kosten_prognose,
+            toleranz_ueberschritten = toleranz_ueberschritten,
+            vertragsende            = vertr_end.isoformat(),
+            elapsed_days            = elapsed,
+            total_days              = total_days,
         )
