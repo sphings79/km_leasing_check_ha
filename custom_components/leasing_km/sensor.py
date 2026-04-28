@@ -136,6 +136,15 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         suggested_display_precision=0,
         value_fn=lambda d: d.prog_laufzeitende,
     ),
+    LeasingKmSensorDescription(
+        key="abweichung_laufzeitende",
+        name="Prognose Abweichung Laufzeitende",
+        icon="mdi:delta",
+        native_unit_of_measurement="km",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        value_fn=lambda d: d.abweichung_laufzeitende,
+    ),
     # ── Prozent ──────────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="km_absolviert",
@@ -153,6 +162,17 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         native_unit_of_measurement="%",
         suggested_display_precision=1,
         value_fn=lambda d: d.lauf_pct,
+    ),
+    # ── Kosten (optional – unavailable wenn Kostenberechnung deaktiviert) ─────
+    LeasingKmSensorDescription(
+        key="kosten_prognose",
+        name="Prognose Kosten/Erstattung Laufzeitende",
+        icon="mdi:currency-eur",
+        native_unit_of_measurement="€",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=2,
+        # None → sensor zeigt "unavailable" wenn Kostenberechnung aus
+        value_fn=lambda d: d.kosten_prognose,
     ),
 )
 
@@ -209,9 +229,13 @@ class LeasingKmSensor(CoordinatorEntity[LeasingKmCoordinator], SensorEntity):
         data = self.coordinator.data
         if data is None:
             return {}
-        return {
+        attrs: dict[str, Any] = {
             "vertragsende":  data.vertragsende,
             "elapsed_days":  data.elapsed_days,
             "total_days":    data.total_days,
             "ueber_soll":    data.is_over_soll,
         }
+        # Kosten-Attribute nur wenn Kostenberechnung aktiv
+        if data.kosten_aktiv:
+            attrs["toleranz_ueberschritten"] = data.toleranz_ueberschritten
+        return attrs
