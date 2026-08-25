@@ -7,7 +7,7 @@
 **Know months in advance whether your leased car will run over its contracted mileage — and by how much.**
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=flat-square)](https://hacs.xyz)
-![License: MIT](https://img.shields.io/badge/license-MIT-3DDC97.svg?style=flat-square)
+[![License: MIT](https://img.shields.io/badge/license-MIT-3DDC97.svg?style=flat-square)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.4%2B-41BDF5.svg?style=flat-square)](https://www.home-assistant.io)
 [![Local polling](https://img.shields.io/badge/local-no%20cloud-3DDC97.svg?style=flat-square)](#privacy)
 
@@ -115,15 +115,19 @@ The odometer entity is the only thing this integration cannot produce for you. C
 All four values can be changed later through the **gear icon** on the integration; the entities
 keep their IDs and history.
 
-> **A note on language.** The setup dialog is translated into English and German. The **entity
-> names are German** (`Differenz heute`, `Prognose Laufzeitende`, …) regardless of your Home
-> Assistant language, because they are defined as fixed names rather than translation keys. You
-> can rename any entity in Home Assistant, and the tables below give the English meaning of each
-> one.
+> **A note on language.** Both the setup dialog and the **entity names** follow your Home Assistant
+> language, in English and German. Entity **IDs** are deliberately fixed and do not change with the
+> language — they stay the German-derived ids listed below, so dashboards, automations and the
+> [companion card](https://github.com/sphings79/leasing_km_card) keep working when you switch
+> languages.
 
 ---
 
 ## Entities
+
+The names below are the English ones. In a German instance the same entities are called
+*Tagesleistung Ist*, *Differenz heute* and so on — only the display name changes, never the
+entity ID.
 
 All entities live on one device named after the contract. The `…` in the entity IDs below is the
 slug of that device name — with a device called *Leasing VW Golf*, `sensor.…_differenz_heute`
@@ -308,16 +312,21 @@ Enter the total for the contract — for a 3-year contract at 20,000 km/year, en
 
 ## Changelog
 
+### 1.1.0
+- **Entity names are now translated** into English and German, following the Home Assistant language
+- Entity IDs are pinned and no longer depend on the UI language, so existing dashboards and
+  automations are unaffected
+
 ### 1.0.0
 - First release
 - 14 sensors and 3 binary sensors
 - Config flow with date, number and entity pickers
 - Options flow and reconfigure support
 - Immediate update when the odometer entity changes state
-- German and English UI translation for the setup dialog
+- German and English translation of the setup dialog
 
 ---
 
 ## License
 
-MIT.
+MIT — see [LICENSE](LICENSE).

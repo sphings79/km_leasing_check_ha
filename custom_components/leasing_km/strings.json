@@ -5,31 +5,31 @@
         "title": "Set up Leasing KM Calculator",
         "description": "Enter your leasing contract details. The odometer entity must already exist in Home Assistant.",
         "data": {
-          "start_date":       "Contract start date",
-          "laufzeit_monate":  "Contract duration",
-          "km_gesamt":        "Total allowed kilometres",
-          "km_entity":        "Current odometer entity"
+          "start_date": "Contract start date",
+          "laufzeit_monate": "Contract duration",
+          "km_gesamt": "Total allowed kilometres",
+          "km_entity": "Current odometer entity"
         },
         "data_description": {
-          "start_date":       "First day of the leasing contract.",
-          "laufzeit_monate":  "Duration in months (e.g. 24, 36, 48).",
-          "km_gesamt":        "Total kilometres included in the contract.",
-          "km_entity":        "A sensor or input_number that holds the current odometer reading in km."
+          "start_date": "First day of the leasing contract.",
+          "laufzeit_monate": "Duration in months (e.g. 24, 36, 48).",
+          "km_gesamt": "Total kilometres included in the contract.",
+          "km_entity": "A sensor or input_number that holds the current odometer reading in km."
         }
       },
       "reconfigure": {
         "title": "Reconfigure Leasing KM Calculator",
         "data": {
-          "start_date":       "Contract start date",
-          "laufzeit_monate":  "Contract duration",
-          "km_gesamt":        "Total allowed kilometres",
-          "km_entity":        "Current odometer entity"
+          "start_date": "Contract start date",
+          "laufzeit_monate": "Contract duration",
+          "km_gesamt": "Total allowed kilometres",
+          "km_entity": "Current odometer entity"
         }
       }
     },
     "error": {
       "entity_unavailable": "The selected odometer entity is currently unavailable.",
-      "invalid_value":      "The odometer entity does not report a valid numeric value."
+      "invalid_value": "The odometer entity does not report a valid numeric value."
     },
     "abort": {
       "already_configured": "This leasing contract is already configured."
@@ -40,17 +40,74 @@
       "init": {
         "title": "Configure Leasing KM Calculator",
         "data": {
-          "start_date":       "Contract start date",
-          "laufzeit_monate":  "Contract duration",
-          "km_gesamt":        "Total allowed kilometres",
-          "km_entity":        "Current odometer entity"
+          "start_date": "Contract start date",
+          "laufzeit_monate": "Contract duration",
+          "km_gesamt": "Total allowed kilometres",
+          "km_entity": "Current odometer entity"
         },
         "data_description": {
-          "start_date":       "First day of the leasing contract.",
-          "laufzeit_monate":  "Duration in months (e.g. 24, 36, 48).",
-          "km_gesamt":        "Total kilometres included in the contract.",
-          "km_entity":        "A sensor or input_number that holds the current odometer reading in km."
+          "start_date": "First day of the leasing contract.",
+          "laufzeit_monate": "Duration in months (e.g. 24, 36, 48).",
+          "km_gesamt": "Total kilometres included in the contract.",
+          "km_entity": "A sensor or input_number that holds the current odometer reading in km."
         }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "tagesleistung_ist": {
+        "name": "Actual km per day"
+      },
+      "tagesleistung_soll": {
+        "name": "Target km per day"
+      },
+      "soll_km_heute": {
+        "name": "Target mileage today"
+      },
+      "differenz_heute": {
+        "name": "Deviation today"
+      },
+      "soll_km_monatsende": {
+        "name": "Target mileage at month end"
+      },
+      "differenz_monatsende": {
+        "name": "Deviation at month end"
+      },
+      "verbleibend_jahresende": {
+        "name": "Remaining until year end"
+      },
+      "verbleibend_laufzeitende": {
+        "name": "Remaining until contract end"
+      },
+      "noch_erlaubt": {
+        "name": "Total kilometres left"
+      },
+      "jahres_soll": {
+        "name": "Annual mileage allowance"
+      },
+      "prognose_jahresende": {
+        "name": "Forecast at year end"
+      },
+      "prognose_laufzeitende": {
+        "name": "Forecast at contract end"
+      },
+      "km_absolviert": {
+        "name": "Mileage used"
+      },
+      "laufzeit_absolviert": {
+        "name": "Contract elapsed"
+      }
+    },
+    "binary_sensor": {
+      "ueber_soll": {
+        "name": "Above target"
+      },
+      "jahres_km_ueberschritten": {
+        "name": "Annual allowance forecast exceeded"
+      },
+      "laufzeit_km_ueberschritten": {
+        "name": "Contract allowance forecast exceeded"
       }
     }
   }

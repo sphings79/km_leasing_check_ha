@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from homeassistant.components.sensor import (
+    ENTITY_ID_FORMAT,
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
@@ -13,6 +14,7 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -27,6 +29,9 @@ from .coordinator import LeasingKmCoordinator, LeasingKmData
 @dataclass(frozen=True, kw_only=True)
 class LeasingKmSensorDescription(SensorEntityDescription):
     value_fn: Callable[[LeasingKmData], float | None] = lambda _: None
+    # Fixed object id, so the entity_id never depends on the UI language.
+    # The visible name comes from translation_key; only the name is translated.
+    object_id: str = ""
 
 
 # ---------------------------------------------------------------------------
@@ -37,7 +42,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     # ── Tagesbasis ──────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="tagesleistung_ist",
-        name="Tagesleistung Ist",
+        translation_key="tagesleistung_ist",
+        object_id="tagesleistung_ist",
         icon="mdi:speedometer",
         native_unit_of_measurement="km",
         state_class=SensorStateClass.MEASUREMENT,
@@ -46,7 +52,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="tagesleistung_soll",
-        name="Tagesleistung Soll",
+        translation_key="tagesleistung_soll",
+        object_id="tagesleistung_soll",
         icon="mdi:speedometer-slow",
         native_unit_of_measurement="km",
         suggested_display_precision=1,
@@ -55,7 +62,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     # ── Soll-Ist-Vergleich ───────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="soll_km_heute",
-        name="Soll-KM heute",
+        translation_key="soll_km_heute",
+        object_id="soll_km_heute",
         icon="mdi:map-marker-check",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -63,7 +71,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="differenz_heute",
-        name="Differenz heute",
+        translation_key="differenz_heute",
+        object_id="differenz_heute",
         icon="mdi:delta",
         native_unit_of_measurement="km",
         state_class=SensorStateClass.MEASUREMENT,
@@ -72,7 +81,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="soll_km_monatsende",
-        name="Soll-KM Monatsende",
+        translation_key="soll_km_monatsende",
+        object_id="soll_km_monatsende",
         icon="mdi:calendar-end",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -80,7 +90,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="differenz_monatsende",
-        name="Differenz Monatsende",
+        translation_key="differenz_monatsende",
+        object_id="differenz_monatsende",
         icon="mdi:delta",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -89,7 +100,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     # ── Restkilometer ────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="verbleibend_jahresende",
-        name="Verbleibend bis Jahresende",
+        translation_key="verbleibend_jahresende",
+        object_id="verbleibend_bis_jahresende",
         icon="mdi:calendar-today",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -97,7 +109,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="verbleibend_laufzeitende",
-        name="Verbleibend bis Laufzeitende",
+        translation_key="verbleibend_laufzeitende",
+        object_id="verbleibend_bis_laufzeitende",
         icon="mdi:calendar-check",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -105,7 +118,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="noch_erlaubt",
-        name="Noch erlaubt gesamt",
+        translation_key="noch_erlaubt",
+        object_id="noch_erlaubt_gesamt",
         icon="mdi:road-variant",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -113,7 +127,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="jahres_soll",
-        name="KM-Limit pro Jahr",
+        translation_key="jahres_soll",
+        object_id="km_limit_pro_jahr",
         icon="mdi:car-speed-limiter",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -122,7 +137,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     # ── Prognose ─────────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="prognose_jahresende",
-        name="Prognose Jahresende",
+        translation_key="prognose_jahresende",
+        object_id="prognose_jahresende",
         icon="mdi:chart-timeline-variant",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -130,7 +146,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="prognose_laufzeitende",
-        name="Prognose Laufzeitende",
+        translation_key="prognose_laufzeitende",
+        object_id="prognose_laufzeitende",
         icon="mdi:chart-bell-curve-cumulative",
         native_unit_of_measurement="km",
         suggested_display_precision=0,
@@ -139,7 +156,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     # ── Prozent ──────────────────────────────────────────────────────────────
     LeasingKmSensorDescription(
         key="km_absolviert",
-        name="KM absolviert",
+        translation_key="km_absolviert",
+        object_id="km_absolviert",
         icon="mdi:percent",
         native_unit_of_measurement="%",
         state_class=SensorStateClass.MEASUREMENT,
@@ -148,7 +166,8 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
     ),
     LeasingKmSensorDescription(
         key="laufzeit_absolviert",
-        name="Laufzeit absolviert",
+        translation_key="laufzeit_absolviert",
+        object_id="laufzeit_absolviert",
         icon="mdi:percent-circle",
         native_unit_of_measurement="%",
         suggested_display_precision=1,
@@ -191,6 +210,14 @@ class LeasingKmSensor(CoordinatorEntity[LeasingKmCoordinator], SensorEntity):
         super().__init__(coordinator)
         self.entity_description = description
         self._attr_unique_id = f"{entry.entry_id}_{description.key}"
+        # Pin the entity_id to the object id above. Existing entities keep the
+        # id already stored in the entity registry; this only governs new ones,
+        # so a German and an English instance end up with identical ids.
+        self.entity_id = async_generate_entity_id(
+            ENTITY_ID_FORMAT,
+            f"{entry.title} {description.object_id}",
+            hass=coordinator.hass,
+        )
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.title,

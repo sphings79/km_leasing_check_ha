@@ -5,31 +5,31 @@
         "title": "Leasing KM-Rechner einrichten",
         "description": "Gib deine Leasingvertragsdaten ein. Die Kilometerstands-Entität muss bereits in Home Assistant vorhanden sein.",
         "data": {
-          "start_date":       "Vertragsbeginn",
-          "laufzeit_monate":  "Laufzeit (Monate)",
-          "km_gesamt":        "Gesamtlaufleistung (km)",
-          "km_entity":        "Entität für aktuellen Kilometerstand"
+          "start_date": "Vertragsbeginn",
+          "laufzeit_monate": "Laufzeit (Monate)",
+          "km_gesamt": "Gesamtlaufleistung (km)",
+          "km_entity": "Entität für aktuellen Kilometerstand"
         },
         "data_description": {
-          "start_date":       "Erster Tag des Leasingvertrags.",
-          "laufzeit_monate":  "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
-          "km_gesamt":        "Im Vertrag enthaltene Gesamtkilometer.",
-          "km_entity":        "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
+          "start_date": "Erster Tag des Leasingvertrags.",
+          "laufzeit_monate": "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
+          "km_gesamt": "Im Vertrag enthaltene Gesamtkilometer.",
+          "km_entity": "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
         }
       },
       "reconfigure": {
         "title": "Leasing KM-Rechner neu konfigurieren",
         "data": {
-          "start_date":       "Vertragsbeginn",
-          "laufzeit_monate":  "Laufzeit (Monate)",
-          "km_gesamt":        "Gesamtlaufleistung (km)",
-          "km_entity":        "Entität für aktuellen Kilometerstand"
+          "start_date": "Vertragsbeginn",
+          "laufzeit_monate": "Laufzeit (Monate)",
+          "km_gesamt": "Gesamtlaufleistung (km)",
+          "km_entity": "Entität für aktuellen Kilometerstand"
         }
       }
     },
     "error": {
       "entity_unavailable": "Die gewählte Kilometerstands-Entität ist aktuell nicht verfügbar.",
-      "invalid_value":      "Die Entität liefert keinen gültigen numerischen Wert."
+      "invalid_value": "Die Entität liefert keinen gültigen numerischen Wert."
     },
     "abort": {
       "already_configured": "Dieser Leasingvertrag ist bereits konfiguriert."
@@ -40,17 +40,74 @@
       "init": {
         "title": "Leasing KM-Rechner konfigurieren",
         "data": {
-          "start_date":       "Vertragsbeginn",
-          "laufzeit_monate":  "Laufzeit (Monate)",
-          "km_gesamt":        "Gesamtlaufleistung (km)",
-          "km_entity":        "Entität für aktuellen Kilometerstand"
+          "start_date": "Vertragsbeginn",
+          "laufzeit_monate": "Laufzeit (Monate)",
+          "km_gesamt": "Gesamtlaufleistung (km)",
+          "km_entity": "Entität für aktuellen Kilometerstand"
         },
         "data_description": {
-          "start_date":       "Erster Tag des Leasingvertrags.",
-          "laufzeit_monate":  "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
-          "km_gesamt":        "Im Vertrag enthaltene Gesamtkilometer.",
-          "km_entity":        "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
+          "start_date": "Erster Tag des Leasingvertrags.",
+          "laufzeit_monate": "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
+          "km_gesamt": "Im Vertrag enthaltene Gesamtkilometer.",
+          "km_entity": "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
         }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "tagesleistung_ist": {
+        "name": "Tagesleistung Ist"
+      },
+      "tagesleistung_soll": {
+        "name": "Tagesleistung Soll"
+      },
+      "soll_km_heute": {
+        "name": "Soll-KM heute"
+      },
+      "differenz_heute": {
+        "name": "Differenz heute"
+      },
+      "soll_km_monatsende": {
+        "name": "Soll-KM Monatsende"
+      },
+      "differenz_monatsende": {
+        "name": "Differenz Monatsende"
+      },
+      "verbleibend_jahresende": {
+        "name": "Verbleibend bis Jahresende"
+      },
+      "verbleibend_laufzeitende": {
+        "name": "Verbleibend bis Laufzeitende"
+      },
+      "noch_erlaubt": {
+        "name": "Noch erlaubt gesamt"
+      },
+      "jahres_soll": {
+        "name": "KM-Limit pro Jahr"
+      },
+      "prognose_jahresende": {
+        "name": "Prognose Jahresende"
+      },
+      "prognose_laufzeitende": {
+        "name": "Prognose Laufzeitende"
+      },
+      "km_absolviert": {
+        "name": "KM absolviert"
+      },
+      "laufzeit_absolviert": {
+        "name": "Laufzeit absolviert"
+      }
+    },
+    "binary_sensor": {
+      "ueber_soll": {
+        "name": "Über Soll"
+      },
+      "jahres_km_ueberschritten": {
+        "name": "Jahres-KM Prognose überschritten"
+      },
+      "laufzeit_km_ueberschritten": {
+        "name": "Laufzeit-KM Prognose überschritten"
       }
     }
   }

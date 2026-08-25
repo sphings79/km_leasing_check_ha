@@ -7,7 +7,7 @@
 **Monate im Voraus wissen, ob das Leasingfahrzeug über die vereinbarte Laufleistung fährt — und um wie viel.**
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=flat-square)](https://hacs.xyz)
-![License: MIT](https://img.shields.io/badge/license-MIT-3DDC97.svg?style=flat-square)
+[![License: MIT](https://img.shields.io/badge/license-MIT-3DDC97.svg?style=flat-square)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.4%2B-41BDF5.svg?style=flat-square)](https://www.home-assistant.io)
 [![Lokal](https://img.shields.io/badge/lokal-ohne%20Cloud-3DDC97.svg?style=flat-square)](#datenschutz)
 
@@ -115,6 +115,12 @@ Die Kilometerstands-Entität ist das Einzige, was die Integration nicht selbst e
 
 Alle vier Werte lassen sich später über das **Zahnrad-Symbol** der Integration ändern; die
 Entitäten behalten ihre IDs und ihre Historie.
+
+> **Hinweis zur Sprache.** Sowohl der Einrichtungsdialog als auch die **Entitätsnamen** folgen der
+> Sprache von Home Assistant, auf Deutsch und Englisch. Die Entitäts-**IDs** sind bewusst fest und
+> ändern sich mit der Sprache nicht — sie bleiben die unten aufgeführten deutschen IDs. Dashboards,
+> Automationen und die [passende Karte](https://github.com/sphings79/leasing_km_card) laufen also
+> beim Sprachwechsel unverändert weiter.
 
 ---
 
@@ -305,6 +311,12 @@ Sensor `sensor.…_km_limit_pro_jahr` meldet den Jahreswert dann zurück.
 
 ## Changelog
 
+### 1.1.0
+- **Entitätsnamen werden jetzt übersetzt**, auf Deutsch und Englisch, passend zur
+  Home-Assistant-Sprache
+- Entitäts-IDs sind fest verankert und hängen nicht mehr von der Oberflächensprache ab; bestehende
+  Dashboards und Automationen bleiben unberührt
+
 ### 1.0.0
 - Erstveröffentlichung
 - 14 Sensoren und 3 Binärsensoren
@@ -317,4 +329,4 @@ Sensor `sensor.…_km_limit_pro_jahr` meldet den Jahreswert dann zurück.
 
 ## Lizenz
 
-MIT.
+MIT — siehe [LICENSE](LICENSE).
