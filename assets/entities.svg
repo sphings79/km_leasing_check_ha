@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 788" width="640" height="788" role="img" aria-label="Entities created by the Leasing KM Calculator integration">
+  <rect width="640" height="788" rx="16" fill="#111111"/>
+  <text x="30" y="34" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#6E6E6E">Illustration · device page in Home Assistant</text>
+  <rect x="30" y="52" width="580" height="704" rx="12" fill="#1C1C1C" stroke="#2E2E2E" stroke-width="1"/>
+  <text x="58" y="92" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#E1E1E1">Leasing VW Golf</text>
+  <text x="58" y="112" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="400" fill="#7A7A7A">14 sensors · 3 binary sensors · updated 2 min ago</text>
+  <rect x="58" y="128" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,140.0)" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a8 8 0 1 1 14 0"/><path d="M10 15l4-5"/></g>
+  <text x="104" y="155.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Differenz heute</text>
+  <text x="566" y="155.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#4ade80" text-anchor="end">−4.110 km</text>
+  <rect x="58" y="178" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,190.0)" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a8 8 0 1 1 14 0"/><path d="M10 15l4-5"/></g>
+  <text x="104" y="205.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Differenz Monatsende</text>
+  <text x="566" y="205.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#4ade80" text-anchor="end">−4.439 km</text>
+  <rect x="58" y="228" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,240.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h16M4 12l1.6-4.2A2 2 0 0 1 7.5 6.5h5a2 2 0 0 1 1.9 1.3L16 12v4H4z"/><circle cx="6.5" cy="16" r="1.2"/><circle cx="13.5" cy="16" r="1.2"/></g>
+  <text x="104" y="255.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Tagesleistung Ist</text>
+  <text x="566" y="255.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">50,8 km</text>
+  <rect x="58" y="278" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,290.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h16M4 12l1.6-4.2A2 2 0 0 1 7.5 6.5h5a2 2 0 0 1 1.9 1.3L16 12v4H4z"/><circle cx="6.5" cy="16" r="1.2"/><circle cx="13.5" cy="16" r="1.2"/></g>
+  <text x="104" y="305.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Tagesleistung Soll</text>
+  <text x="566" y="305.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">54,8 km</text>
+  <rect x="58" y="328" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,340.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14l5-5 3 3 6-7"/><path d="M13 5h4v4"/></g>
+  <text x="104" y="355.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Prognose Jahresende</text>
+  <text x="566" y="355.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">58.677 km</text>
+  <rect x="58" y="378" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,390.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14l5-5 3 3 6-7"/><path d="M13 5h4v4"/></g>
+  <text x="104" y="405.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Prognose Laufzeitende</text>
+  <text x="566" y="405.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">74.159 km</text>
+  <rect x="58" y="428" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,440.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="16" height="10" rx="2"/><path d="M6 5v10M10 5v10M14 5v10"/></g>
+  <text x="104" y="455.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Noch erlaubt gesamt</text>
+  <text x="566" y="455.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">27.820 km</text>
+  <rect x="58" y="478" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,490.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.2"/><circle cx="13.5" cy="13.5" r="2.2"/><path d="M15 5L5 15"/></g>
+  <text x="104" y="505.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">KM absolviert</text>
+  <text x="566" y="505.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">65,2 %</text>
+  <rect x="58" y="528" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,540.0)" fill="none" stroke="#03A9F4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.2"/><circle cx="13.5" cy="13.5" r="2.2"/><path d="M15 5L5 15"/></g>
+  <text x="104" y="555.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Laufzeit absolviert</text>
+  <text x="566" y="555.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#9B9B9B" text-anchor="end">70,4 %</text>
+  <rect x="58" y="578" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,590.0)" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.2l2.4 2.4 4.6-4.9"/></g>
+  <text x="104" y="605.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Über Soll</text>
+  <text x="566" y="605.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#4ade80" text-anchor="end">Aus</text>
+  <rect x="58" y="628" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,640.0)" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.2l2.4 2.4 4.6-4.9"/></g>
+  <text x="104" y="655.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Jahres-KM-Prognose überschritten</text>
+  <text x="566" y="655.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#4ade80" text-anchor="end">Aus</text>
+  <rect x="58" y="678" width="524" height="44" rx="8" fill="#252525" fill-opacity="0.55"/>
+  <g transform="translate(72,690.0)" fill="none" stroke="#4ade80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.2l2.4 2.4 4.6-4.9"/></g>
+  <text x="104" y="705.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#E1E1E1">Laufzeit-KM-Prognose überschritten</text>
+  <text x="566" y="705.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#4ade80" text-anchor="end">Aus</text>
+</svg>
