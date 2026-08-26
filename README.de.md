@@ -329,7 +329,7 @@ Sensor `sensor.…_km_limit_pro_jahr` meldet den Jahreswert dann zurück.
 
 ---
 
-## ☕ Unterstützen
+## Sponsor this project
 
 Diese Tools entstehen in meiner Freizeit und bleiben kostenlos, quelloffen und cloudfrei.
 Wenn dir eines davon einen Nachmittag gespart hat, kannst du mir [einen Kaffee ausgeben](https://buymeacoffee.com/sphings).
