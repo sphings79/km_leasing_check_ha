@@ -948,7 +948,7 @@ var hs = Object.defineProperty, Ct = (n, t, e, s) => {
     (o = n[r]) && (i = o(t, e, i) || i);
   return i && hs(t, e, i), i;
 };
-const us = "2.1.0", M = 180, ut = 180, _t = ["unknown", "unavailable", ""];
+const us = "2.1.1", M = 180, ut = 180, _t = ["unknown", "unavailable", ""];
 function pt(n, t, e, s, i) {
   const r = (o) => {
     const l = o * Math.PI / 180;

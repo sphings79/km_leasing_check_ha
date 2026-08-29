@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-08-29
+
+Documentation only. The integration itself is unchanged from 2.1.0.
+
+### Fixed
+
+- The illustrations showed the state before the cost calculation: the card preview had no
+  settlement section, the setup dialog was missing the switch that opens it, and the entity
+  overview stopped before the four entities it adds.
+- The footnote under the entity overview ran off the canvas in German.
+
 ## [2.1.0] - 2026-08-29
 
 ### Added
@@ -95,6 +106,7 @@ part of 2.0.0.
 First release: fourteen sensors and three binary sensors for target versus actual, remaining
 mileage and a forecast to the end of the contract.
 
+[2.1.1]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.1.1
 [2.1.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.1.0
 [2.0.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.0.0
 [1.0.1]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v1.0.1
