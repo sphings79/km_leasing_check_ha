@@ -6,6 +6,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date
 from enum import Enum
+from typing import Any
 
 from homeassistant.components.sensor import (
     ENTITY_ID_FORMAT,
@@ -40,6 +41,20 @@ class LeasingKmSensorDescription(SensorEntityDescription):
 
     value_fn: Callable[[Result], float | date | None]
     unit: Unit = Unit.DISTANCE
+    attributes_fn: Callable[[Result], dict[str, Any]] | None = None
+
+
+def _contract_attributes(data: Result) -> dict[str, Any]:
+    """Contract metadata the card needs without enabling extra entities."""
+    return {
+        "contract_end": data.contract_end_date.isoformat(),
+        "elapsed_days": data.elapsed_days,
+        "total_days": data.total_days,
+        "days_remaining": data.days_remaining,
+        "contract_year": data.contract_year,
+        "contract_year_start": data.contract_year_start.isoformat(),
+        "contract_year_end": data.contract_year_end.isoformat(),
+    }
 
 
 SENSORS: tuple[LeasingKmSensorDescription, ...] = (
@@ -207,6 +222,7 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         unit=Unit.PERCENT,
         suggested_display_precision=1,
         value_fn=lambda d: d.contract_elapsed_pct,
+        attributes_fn=_contract_attributes,
     ),
     # --- Contract timeline ------------------------------------------------
     LeasingKmSensorDescription(
@@ -274,3 +290,13 @@ class LeasingKmSensor(LeasingKmEntity, SensorEntity):
         if self.coordinator.data is None:
             return None
         return self.entity_description.value_fn(self.coordinator.data)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return contract metadata for the sensors that carry it."""
+        if (
+            self.coordinator.data is None
+            or self.entity_description.attributes_fn is None
+        ):
+            return None
+        return self.entity_description.attributes_fn(self.coordinator.data)

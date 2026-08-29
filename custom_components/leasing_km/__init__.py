@@ -26,6 +26,7 @@ from .const import (
     PLATFORMS,
 )
 from .coordinator import LeasingKmCoordinator
+from .frontend import async_register_card
 from .migration import async_migrate_entities
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,6 +36,8 @@ type LeasingKmConfigEntry = ConfigEntry[LeasingKmCoordinator]
 
 async def async_setup_entry(hass: HomeAssistant, entry: LeasingKmConfigEntry) -> bool:
     """Set up one leasing contract from a config entry."""
+    await async_register_card(hass)
+
     coordinator = LeasingKmCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
