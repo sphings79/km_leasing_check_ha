@@ -44,5 +44,15 @@
   "editorTitle": "Titel",
   "editorClamp": "Percentage op 100 % begrenzen",
   "editorContractYear": "Contractjaar tonen",
-  "editorForecast": "Prognose tonen"
+  "editorForecast": "Prognose tonen",
+  "sectionCosts": "Afrekening",
+  "mCostForecast": "Prognose einde contract",
+  "mCostAtTarget": "Bij normtempo",
+  "mKmToTolerance": "Tot de tolerantie",
+  "costPay": "bijbetaling verwacht",
+  "costRefund": "vergoeding verwacht",
+  "costNone": "niets af te rekenen",
+  "pillToleranceOk": "tolerantie aangehouden",
+  "pillToleranceExceeded": "tolerantie overschreden",
+  "editorCosts": "Afrekening tonen"
 }

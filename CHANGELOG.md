@@ -5,6 +5,23 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-08-29
+
+### Added
+
+- **Cost calculation.** Switching it on opens a second setup step for the settlement terms of the
+  contract: the charge for extra kilometres, the refund for unused ones, a tolerance for each and
+  an upper limit on the refund.
+- **How a tolerance is applied is selectable**, separately for extra and unused kilometres,
+  because contracts differ: either every kilometre is settled once the tolerance is passed, or
+  only the kilometres beyond it. The difference between the two is 225.09 against 0.09 on a
+  2,501 kilometre overrun at nine hundredths per kilometre.
+- Three sensors and one status flag: the forecast settlement at contract end, what it would cost
+  if the target line is followed from today on, the kilometres left before the tolerance is used
+  up, and a flag for the forecast passing that tolerance.
+- The card gained a settlement section, with amounts formatted in the currency Home Assistant is
+  configured with, and a fourth status pill.
+
 ## [2.0.0] - 2026-08-29
 
 A rewrite around one correction: mileage is now measured against the odometer reading at the start
@@ -78,6 +95,7 @@ part of 2.0.0.
 First release: fourteen sensors and three binary sensors for target versus actual, remaining
 mileage and a forecast to the end of the contract.
 
+[2.1.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.1.0
 [2.0.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.0.0
 [1.0.1]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v1.0.1
 [1.0.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v1.0.0

@@ -44,5 +44,15 @@
   "editorTitle": "Titolo",
   "editorClamp": "Limita la percentuale al 100 %",
   "editorContractYear": "Mostra l'anno contrattuale",
-  "editorForecast": "Mostra la previsione"
+  "editorForecast": "Mostra la previsione",
+  "sectionCosts": "Conguaglio",
+  "mCostForecast": "Previsione fine contratto",
+  "mCostAtTarget": "Al ritmo obiettivo",
+  "mKmToTolerance": "Fino alla tolleranza",
+  "costPay": "pagamento previsto",
+  "costRefund": "rimborso previsto",
+  "costNone": "niente da conguagliare",
+  "pillToleranceOk": "tolleranza rispettata",
+  "pillToleranceExceeded": "tolleranza superata",
+  "editorCosts": "Mostra il conguaglio"
 }

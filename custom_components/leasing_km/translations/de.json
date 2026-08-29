@@ -13,7 +13,8 @@
           "start_km": "Kilometerstand bei Vertragsbeginn",
           "odometer_entity": "Entität für den Kilometerstand",
           "forecast_basis": "Prognosebasis",
-          "reminder_days": "Erinnern, wenn der Stand veraltet"
+          "reminder_days": "Erinnern, wenn der Stand veraltet",
+          "costs_enabled": "Kosten berechnen"
         },
         "data_description": {
           "name": "Wird als Gerätename verwendet, zum Beispiel der Name des Autos.",
@@ -23,7 +24,8 @@
           "start_km": "Bei einem Neuwagen mit leerem Tacho 0 lassen. Bei einem Gebrauchtwagen oder einer Vertragsübernahme den Stand am Tag des Vertragsbeginns eintragen.",
           "odometer_entity": "Ein Sensor, eine number oder ein input_number mit dem aktuellen Kilometerstand.",
           "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück.",
-          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat."
+          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat.",
+          "costs_enabled": "Rechnet die Abrechnung von Mehr- und Minderkilometern mit. Die Sätze folgen in einem zweiten Schritt."
         }
       },
       "reconfigure": {
@@ -37,7 +39,8 @@
           "start_km": "Kilometerstand bei Vertragsbeginn",
           "odometer_entity": "Entität für den Kilometerstand",
           "forecast_basis": "Prognosebasis",
-          "reminder_days": "Erinnern, wenn der Stand veraltet"
+          "reminder_days": "Erinnern, wenn der Stand veraltet",
+          "costs_enabled": "Kosten berechnen"
         },
         "data_description": {
           "name": "Wird als Gerätename verwendet, zum Beispiel der Name des Autos.",
@@ -47,7 +50,30 @@
           "start_km": "Bei einem Neuwagen mit leerem Tacho 0 lassen. Bei einem Gebrauchtwagen oder einer Vertragsübernahme den Stand am Tag des Vertragsbeginns eintragen.",
           "odometer_entity": "Ein Sensor, eine number oder ein input_number mit dem aktuellen Kilometerstand.",
           "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück.",
-          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat."
+          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat.",
+          "costs_enabled": "Rechnet die Abrechnung von Mehr- und Minderkilometern mit. Die Sätze folgen in einem zweiten Schritt."
+        }
+      },
+      "costs": {
+        "title": "Abrechnung",
+        "description": "Steht so in deinem Leasingvertrag. Die Sätze gelten in Hundertsteln deiner Währung je Kilometer, 9 bedeutet also 0,09 je Kilometer.",
+        "data": {
+          "excess_rate": "Satz für Mehrkilometer",
+          "excess_tolerance_km": "Toleranz für Mehrkilometer",
+          "excess_mode": "Wie Mehrkilometer berechnet werden",
+          "refund_rate": "Satz für Minderkilometer",
+          "refund_tolerance_km": "Toleranz für Minderkilometer",
+          "refund_mode": "Wie Minderkilometer erstattet werden",
+          "refund_limit_km": "Höchstens erstattete Kilometer"
+        },
+        "data_description": {
+          "excess_rate": "In Hundertsteln je Kilometer, zum Beispiel 9 für 0,09.",
+          "excess_tolerance_km": "Kilometer über der Laufleistung, die frei bleiben. 0, wenn dein Vertrag keine Toleranz kennt.",
+          "excess_mode": "Bei einer Freigrenze werden nach dem Überschreiten alle Kilometer berechnet. Bei einem Freibetrag nur die, die darüber liegen.",
+          "refund_rate": "In Hundertsteln je Kilometer. 0, wenn dein Vertrag nichts erstattet.",
+          "refund_tolerance_km": "Nicht erstattete Minderkilometer. 0, wenn dein Vertrag keine Toleranz kennt.",
+          "refund_mode": "Bei einer Freigrenze wird nach dem Überschreiten jeder Minderkilometer erstattet. Bei einem Freibetrag nur die, die darüber liegen.",
+          "refund_limit_km": "Obergrenze der erstatteten Kilometer. 0 für unbegrenzt."
         }
       }
     },
@@ -73,6 +99,12 @@
         "7": "Nach 7 Tagen",
         "14": "Nach 14 Tagen",
         "30": "Nach 30 Tagen"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Ab dem ersten Kilometer",
+        "above_tolerance": "Nur oberhalb der Toleranz"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Tage seit der letzten Aktualisierung"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Prognose Kosten Laufzeitende"
+      },
+      "cost_at_target_pace": {
+        "name": "Kosten bei Soll-Fahrweise"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Bis zur Toleranzgrenze"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Laufzeit-KM Prognose überschritten"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Toleranz für Mehrkilometer überschritten"
       }
     }
   },

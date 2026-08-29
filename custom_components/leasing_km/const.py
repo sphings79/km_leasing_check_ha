@@ -19,14 +19,15 @@ CONF_ODOMETER_ENTITY = "odometer_entity"
 CONF_FORECAST_BASIS = "forecast_basis"
 CONF_REMINDER_DAYS = "reminder_days"
 
-# Reserved for the cost calculation that lands in a later release. The keys are
-# defined here so the config entry does not need another migration then.
+# Settlement terms of the contract.
 CONF_COSTS_ENABLED = "costs_enabled"
 CONF_EXCESS_RATE = "excess_rate"
 CONF_REFUND_RATE = "refund_rate"
 CONF_EXCESS_TOLERANCE_KM = "excess_tolerance_km"
 CONF_REFUND_TOLERANCE_KM = "refund_tolerance_km"
 CONF_REFUND_LIMIT_KM = "refund_limit_km"
+CONF_EXCESS_MODE = "excess_mode"
+CONF_REFUND_MODE = "refund_mode"
 
 # --- Configuration keys used by version 1, kept for the migration ---------
 LEGACY_CONF_MONTHS = "laufzeit_monate"
@@ -45,6 +46,10 @@ DEFAULT_MONTHS = 48
 DEFAULT_TOTAL_KM = 80_000
 DEFAULT_START_KM = 0
 DEFAULT_REMINDER_DAYS = REMINDER_OFF
+DEFAULT_EXCESS_RATE = 9.0
+DEFAULT_REFUND_RATE = 0.0
+DEFAULT_TOLERANCE_KM = 0
+DEFAULT_REFUND_LIMIT_KM = 0
 
 UPDATE_INTERVAL = timedelta(minutes=30)
 

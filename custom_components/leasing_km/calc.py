@@ -18,6 +18,18 @@ from datetime import date
 from enum import StrEnum
 
 
+class ChargeMode(StrEnum):
+    """How a tolerance band is applied once it is exceeded.
+
+    Contracts differ here, so both are offered. With a free limit the tolerance
+    is lost the moment it is passed and every kilometre is settled; with a free
+    allowance only the kilometres beyond the tolerance are.
+    """
+
+    FROM_FIRST = "from_first"
+    ABOVE_TOLERANCE = "above_tolerance"
+
+
 class ForecastBasis(StrEnum):
     """Average daily rate the forecasts and warnings are based on."""
 
@@ -85,6 +97,47 @@ class Readings:
 
 
 @dataclass(frozen=True, slots=True)
+class CostTerms:
+    """The settlement terms of the contract, in hundredths per kilometre."""
+
+    excess_rate: float
+    refund_rate: float
+    excess_tolerance: float = 0.0
+    refund_tolerance: float = 0.0
+    refund_limit: float = 0.0
+    excess_mode: ChargeMode = ChargeMode.FROM_FIRST
+    refund_mode: ChargeMode = ChargeMode.ABOVE_TOLERANCE
+
+
+def settle(deviation: float, terms: CostTerms) -> float:
+    """Return what `deviation` kilometres cost, negative for a refund.
+
+    A positive deviation means kilometres above the allowance, a negative one
+    kilometres left unused.
+    """
+    if deviation > 0:
+        if terms.excess_tolerance and deviation <= terms.excess_tolerance:
+            return 0.0
+        billable = deviation
+        if terms.excess_mode is ChargeMode.ABOVE_TOLERANCE:
+            billable -= terms.excess_tolerance
+        return billable * terms.excess_rate / 100
+
+    if deviation < 0:
+        unused = -deviation
+        if terms.refund_tolerance and unused <= terms.refund_tolerance:
+            return 0.0
+        refundable = unused
+        if terms.refund_mode is ChargeMode.ABOVE_TOLERANCE:
+            refundable -= terms.refund_tolerance
+        if terms.refund_limit:
+            refundable = min(refundable, terms.refund_limit)
+        return -(refundable * terms.refund_rate / 100)
+
+    return 0.0
+
+
+@dataclass(frozen=True, slots=True)
 class Result:
     """Every value the integration exposes, in contract units."""
 
@@ -134,10 +187,16 @@ class Result:
     mileage_used_pct: float
     contract_elapsed_pct: float
 
+    # Settlement, only filled in when the contract terms are configured
+    cost_forecast_contract_end: float | None
+    cost_at_target_pace: float | None
+    km_to_excess_tolerance: float | None
+
     # Status
     above_target: bool
     annual_forecast_exceeded: bool
     contract_forecast_exceeded: bool
+    excess_tolerance_exceeded: bool
 
 
 def contract_year_bounds(contract: Contract, today: date) -> tuple[int, date, date]:
@@ -176,6 +235,7 @@ def evaluate(
     readings: Readings,
     today: date,
     basis: ForecastBasis = ForecastBasis.TOTAL,
+    terms: CostTerms | None = None,
 ) -> Result:
     """Calculate every exposed value for one contract on a given day."""
     km_driven = max(0.0, readings.odometer - contract.start_km)
@@ -274,6 +334,22 @@ def evaluate(
     else:
         annual_forecast_exceeded = False
 
+    # --- Settlement -------------------------------------------------------
+    # "At target pace" answers what it costs if the target line is followed
+    # from today on: the deviation at the end is then exactly today's.
+    cost_forecast = None
+    cost_at_target = None
+    km_to_tolerance = None
+    tolerance_exceeded = False
+    if terms is not None:
+        cost_at_target = settle(deviation_today, terms)
+        km_to_tolerance = max(0.0, terms.excess_tolerance - deviation_today)
+        if forecast_deviation_contract_end is not None:
+            cost_forecast = settle(forecast_deviation_contract_end, terms)
+            tolerance_exceeded = (
+                forecast_deviation_contract_end > terms.excess_tolerance
+            )
+
     return Result(
         km_driven=km_driven,
         elapsed_days=elapsed_days,
@@ -305,6 +381,9 @@ def evaluate(
         forecast_calendar_year_end=forecast_calendar_year_end,
         forecast_contract_end=forecast_contract_end,
         forecast_deviation_contract_end=forecast_deviation_contract_end,
+        cost_forecast_contract_end=cost_forecast,
+        cost_at_target_pace=cost_at_target,
+        km_to_excess_tolerance=km_to_tolerance,
         mileage_used_pct=km_driven / contract.total_km * 100,
         contract_elapsed_pct=min(elapsed_days / total_days * 100, 100.0),
         above_target=deviation_today > 0,
@@ -313,4 +392,5 @@ def evaluate(
             forecast_contract_end is not None
             and forecast_contract_end > contract.total_km
         ),
+        excess_tolerance_exceeded=tolerance_exceeded,
     )

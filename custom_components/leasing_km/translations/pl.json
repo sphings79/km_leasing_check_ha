@@ -12,7 +12,8 @@
           "start_km": "Przebieg na początku umowy",
           "odometer_entity": "Encja z przebiegiem",
           "forecast_basis": "Podstawa prognozy",
-          "reminder_days": "Przypomnij, gdy odczyt się zestarzeje"
+          "reminder_days": "Przypomnij, gdy odczyt się zestarzeje",
+          "costs_enabled": "Licz koszty"
         },
         "data_description": {
           "name": "Używana jako nazwa urządzenia, na przykład nazwa samochodu.",
@@ -22,7 +23,8 @@
           "start_km": "W nowym samochodzie zostaw 0. W samochodzie używanym lub przy przejęciu umowy podaj stan z dnia rozpoczęcia umowy.",
           "odometer_entity": "Sensor, number lub input_number z aktualnym stanem licznika.",
           "forecast_basis": "Na jakiej średniej opierają się prognozy i ostrzeżenia. Okna czasowe wymagają historii recordera, a bez niej wracają do średniej z całej umowy.",
-          "reminder_days": "Tylko dla input_number, który uzupełniasz sam: Home Assistant poprosi o nowy odczyt, gdy wartość nie zmieni się przez ten czas."
+          "reminder_days": "Tylko dla input_number, który uzupełniasz sam: Home Assistant poprosi o nowy odczyt, gdy wartość nie zmieni się przez ten czas.",
+          "costs_enabled": "Dolicza rozliczenie kilometrów ponad limit i poniżej limitu. Stawki podasz w drugim kroku."
         },
         "description": "Podaj dane swojej umowy leasingowej. Encja z przebiegiem musi już istnieć w Home Assistant."
       },
@@ -36,7 +38,8 @@
           "start_km": "Przebieg na początku umowy",
           "odometer_entity": "Encja z przebiegiem",
           "forecast_basis": "Podstawa prognozy",
-          "reminder_days": "Przypomnij, gdy odczyt się zestarzeje"
+          "reminder_days": "Przypomnij, gdy odczyt się zestarzeje",
+          "costs_enabled": "Licz koszty"
         },
         "data_description": {
           "name": "Używana jako nazwa urządzenia, na przykład nazwa samochodu.",
@@ -46,9 +49,32 @@
           "start_km": "W nowym samochodzie zostaw 0. W samochodzie używanym lub przy przejęciu umowy podaj stan z dnia rozpoczęcia umowy.",
           "odometer_entity": "Sensor, number lub input_number z aktualnym stanem licznika.",
           "forecast_basis": "Na jakiej średniej opierają się prognozy i ostrzeżenia. Okna czasowe wymagają historii recordera, a bez niej wracają do średniej z całej umowy.",
-          "reminder_days": "Tylko dla input_number, który uzupełniasz sam: Home Assistant poprosi o nowy odczyt, gdy wartość nie zmieni się przez ten czas."
+          "reminder_days": "Tylko dla input_number, który uzupełniasz sam: Home Assistant poprosi o nowy odczyt, gdy wartość nie zmieni się przez ten czas.",
+          "costs_enabled": "Dolicza rozliczenie kilometrów ponad limit i poniżej limitu. Stawki podasz w drugim kroku."
         },
         "description": "Zmień dane umowy. Dotychczasowa historia zostaje zachowana."
+      },
+      "costs": {
+        "title": "Rozliczenie",
+        "description": "Przepisz z umowy leasingowej. Stawki podaje się w setnych częściach waluty za kilometr, 9 oznacza więc 0,09 za kilometr.",
+        "data": {
+          "excess_rate": "Stawka za kilometry ponad limit",
+          "excess_tolerance_km": "Tolerancja dla kilometrów ponad limit",
+          "excess_mode": "Jak naliczane są kilometry ponad limit",
+          "refund_rate": "Zwrot za niewykorzystane kilometry",
+          "refund_tolerance_km": "Tolerancja dla niewykorzystanych kilometrów",
+          "refund_mode": "Jak zwracane są niewykorzystane kilometry",
+          "refund_limit_km": "Maksymalnie zwracane kilometry"
+        },
+        "data_description": {
+          "excess_rate": "W setnych za kilometr, na przykład 9 dla 0,09.",
+          "excess_tolerance_km": "Kilometry ponad limit, które pozostają bezpłatne. 0, jeśli umowa nie przewiduje tolerancji.",
+          "excess_mode": "Przy limicie bezwzględnym po jego przekroczeniu naliczane są wszystkie kilometry. Przy kwocie wolnej tylko te powyżej.",
+          "refund_rate": "W setnych za kilometr. 0, jeśli umowa nic nie zwraca.",
+          "refund_tolerance_km": "Niewykorzystane kilometry bez zwrotu. 0, jeśli umowa nie przewiduje tolerancji.",
+          "refund_mode": "Przy limicie bezwzględnym po przekroczeniu zwracane są wszystkie. Przy kwocie wolnej tylko te powyżej.",
+          "refund_limit_km": "Górna granica zwracanych kilometrów. 0 oznacza brak limitu."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Po 7 dniach",
         "14": "Po 14 dniach",
         "30": "Po 30 dniach"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Od pierwszego kilometra",
+        "above_tolerance": "Tylko powyżej tolerancji"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Dni od ostatniej aktualizacji"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Prognozowany koszt na koniec umowy"
+      },
+      "cost_at_target_pace": {
+        "name": "Koszt przy jeździe zgodnej z celem"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Do granicy tolerancji"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Prognoza limitu umowy przekroczona"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolerancja kilometrów ponad limit przekroczona"
       }
     }
   },

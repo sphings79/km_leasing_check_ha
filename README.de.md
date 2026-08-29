@@ -23,6 +23,7 @@
 - [Installation](#installation)
 - [Konfiguration](#konfiguration)
   - [Kein Sensor im Auto? Von Hand eintragen](#kein-sensor-im-auto-von-hand-eintragen)
+  - [Was es kosten wird](#was-es-kosten-wird)
 - [Umstieg von Version 1](#umstieg-von-version-1)
 - [Automatisierungsbeispiele](#automatisierungsbeispiele)
 - [Fehlersuche](#fehlersuche)
@@ -107,6 +108,7 @@ der Kartenauswahl.
 | `clamp_percent` | `false` | Kappt den Prozentwert bei 100 %, statt die echte Überschreitung zu zeigen |
 | `show_contract_year` | `true` | Zeigt den Vertragsjahresblock |
 | `show_forecast` | `true` | Zeigt den Prognoseblock |
+| `show_costs` | `true` | Zeigt die Abrechnung, sofern konfiguriert |
 
 Die Karte folgt deinem Theme: Sie verwendet ausschließlich die CSS-Variablen von Home Assistant und
 funktioniert dadurch in hellen wie dunklen Themes ohne eigene Einstellung. Sie ist in dieselben elf
@@ -179,6 +181,43 @@ Integrationseintrag ändern.
 | **Entität für den Kilometerstand** | Ein `sensor`, eine `number` oder ein `input_number` mit dem aktuellen Stand |
 | **Prognosebasis** | Durchschnitt der gesamten Laufzeit, letzte 30 Tage oder letzte 90 Tage |
 | **Erinnern, wenn der Stand veraltet** | Aus, oder nach 7, 14 oder 30 Tagen ohne Änderung |
+| **Kosten berechnen** | Öffnet einen zweiten Schritt für die Abrechnungssätze |
+
+### Was es kosten wird
+
+Schaltest du **Kosten berechnen** ein, fragt ein zweiter Schritt die Abrechnungssätze deines
+Vertrags ab.
+
+<div align="center">
+  <img src="assets/costs.de.svg" alt="Der zweite Einrichtungsschritt mit den Abrechnungssätzen: Satz und Toleranz für Mehrkilometer, Satz und Toleranz für Minderkilometer, die jeweilige Abrechnungsart und die Höchstzahl erstatteter Kilometer" width="100%">
+</div>
+
+Zweimal lesen lohnt sich bei einem Punkt — **wie die Toleranz wirkt**. Verträge machen es
+unterschiedlich, und der Unterschied ist teuer:
+
+| | 2.501 km über der Laufleistung, Toleranz 2.500 km, 0,09 je km |
+| --- | --- |
+| **Ab dem ersten Kilometer** (Freigrenze) | alle 2.501 km werden berechnet: **225,09** |
+| **Nur oberhalb der Toleranz** (Freibetrag) | 1 km wird berechnet: **0,09** |
+
+Beides kommt vor, deshalb ist beides wählbar — getrennt für Mehr- und Minderkilometer. Die
+Voreinstellung folgt dem üblichen deutschen Vertrag: Mehrkilometer ab dem ersten, Erstattung erst
+oberhalb der Toleranz und gedeckelt durch die Erstattungsgrenze.
+
+Die Sätze trägst du in Hundertsteln deiner Währung je Kilometer ein, so wie Verträge sie angeben:
+`9` bedeutet 0,09 je Kilometer. Die Währung kommt aus deinen Home-Assistant-Einstellungen.
+
+Dazu kommen drei Sensoren und ein Statusmelder:
+
+| Entität | Bedeutung |
+| --- | --- |
+| `sensor.<name>_cost_forecast_contract_end` | Was die Abrechnung kostet, wenn du weiterfährst wie bisher |
+| `sensor.<name>_cost_at_target_pace` | Was sie kostet, wenn du ab heute genau auf Soll fährst |
+| `sensor.<name>_km_to_excess_tolerance` | Kilometer, bis die Toleranz für Mehrkilometer aufgebraucht ist |
+| `binary_sensor.<name>_excess_tolerance_exceeded` | An, wenn die Prognose diese Toleranz überschreitet |
+
+Ein negativer Betrag ist eine Erstattung. Die Zahlen sind so gut wie deine Vertragsdaten und das
+lineare Modell dahinter — eine Rechnung sind sie nicht.
 
 ### Kein Sensor im Auto? Von Hand eintragen
 

@@ -23,6 +23,7 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
   - [No odometer sensor? Type it in](#no-odometer-sensor-type-it-in)
+  - [What it will cost](#what-it-will-cost)
 - [Upgrading from version 1](#upgrading-from-version-1)
 - [Automation examples](#automation-examples)
 - [Troubleshooting](#troubleshooting)
@@ -108,6 +109,7 @@ setup.
 | `clamp_percent` | `false` | Caps the percentage at 100 % instead of showing the real overrun |
 | `show_contract_year` | `true` | Shows the contract year section |
 | `show_forecast` | `true` | Shows the forecast section |
+| `show_costs` | `true` | Shows the settlement section, when it is configured |
 
 The card follows your theme: it only uses Home Assistant's own CSS variables, so it works in
 light and dark themes without a setting of its own. It is translated into the same eleven
@@ -178,6 +180,42 @@ Everything is configured in the dialog, and everything can be changed later thro
 | **Odometer entity** | A `sensor`, `number` or `input_number` holding the current odometer reading |
 | **Forecast basis** | Whole contract average, last 30 days or last 90 days |
 | **Remind me if the reading gets stale** | Off, or after 7, 14 or 30 days without a change |
+| **Calculate costs** | Opens a second step for the settlement terms |
+
+### What it will cost
+
+Switch **Calculate costs** on and a second step asks for the settlement terms of your contract.
+
+<div align="center">
+  <img src="assets/costs.svg" alt="The second setup step with the settlement terms: charge and tolerance for extra kilometres, refund and tolerance for unused ones, how each is applied, and the maximum refundable kilometres" width="100%">
+</div>
+
+The one thing worth reading twice is **how a tolerance is applied**, because contracts differ and
+the difference is expensive:
+
+| | 2,501 km above the allowance, tolerance 2,500 km, 0.09 per km |
+| --- | --- |
+| **From the first kilometre** | all 2,501 km are charged: **225.09** |
+| **Only beyond the tolerance** | 1 km is charged: **0.09** |
+
+Both exist in the wild, so both are offered, separately for extra and for unused kilometres. The
+defaults follow the common German contract: extra kilometres from the first one, refunds only
+beyond the tolerance and capped by the refund limit.
+
+Rates are entered in hundredths of your currency per kilometre, the way contracts state them:
+`9` means 0.09 per kilometre. The currency comes from your Home Assistant settings.
+
+This adds three sensors and one status flag:
+
+| Entity | Meaning |
+| --- | --- |
+| `sensor.<name>_cost_forecast_contract_end` | What the settlement costs if you keep driving as you do |
+| `sensor.<name>_cost_at_target_pace` | What it costs if you follow the target line from today on |
+| `sensor.<name>_km_to_excess_tolerance` | Kilometres left before the extra kilometre tolerance is used up |
+| `binary_sensor.<name>_excess_tolerance_exceeded` | On when the forecast passes that tolerance |
+
+A negative amount is a refund. The figures are as good as your contract data and the linear
+model behind them; they are not an invoice.
 
 ### No odometer sensor? Type it in
 

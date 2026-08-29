@@ -12,7 +12,8 @@
           "start_km": "Kilometerstand bij aanvang",
           "odometer_entity": "Kilometerstand-entiteit",
           "forecast_basis": "Basis voor de prognose",
-          "reminder_days": "Herinneren als de stand veroudert"
+          "reminder_days": "Herinneren als de stand veroudert",
+          "costs_enabled": "Kosten berekenen"
         },
         "data_description": {
           "name": "Wordt gebruikt als apparaatnaam, bijvoorbeeld de naam van de auto.",
@@ -22,7 +23,8 @@
           "start_km": "Laat 0 staan bij een nieuwe auto. Vul bij een gebruikte auto of een overgenomen contract de stand op de dag van aanvang in.",
           "odometer_entity": "Een sensor, number of input_number met de actuele kilometerstand.",
           "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd.",
-          "reminder_days": "Alleen voor een input_number die je zelf bijhoudt: Home Assistant vraagt om een nieuwe stand zodra de waarde zo lang niet is gewijzigd."
+          "reminder_days": "Alleen voor een input_number die je zelf bijhoudt: Home Assistant vraagt om een nieuwe stand zodra de waarde zo lang niet is gewijzigd.",
+          "costs_enabled": "Rekent de afrekening van meer- en minderkilometers mee. De tarieven volgen in een tweede stap."
         },
         "description": "Voer de gegevens van je leasecontract in. De kilometerstand-entiteit moet al in Home Assistant bestaan."
       },
@@ -36,7 +38,8 @@
           "start_km": "Kilometerstand bij aanvang",
           "odometer_entity": "Kilometerstand-entiteit",
           "forecast_basis": "Basis voor de prognose",
-          "reminder_days": "Herinneren als de stand veroudert"
+          "reminder_days": "Herinneren als de stand veroudert",
+          "costs_enabled": "Kosten berekenen"
         },
         "data_description": {
           "name": "Wordt gebruikt als apparaatnaam, bijvoorbeeld de naam van de auto.",
@@ -46,9 +49,32 @@
           "start_km": "Laat 0 staan bij een nieuwe auto. Vul bij een gebruikte auto of een overgenomen contract de stand op de dag van aanvang in.",
           "odometer_entity": "Een sensor, number of input_number met de actuele kilometerstand.",
           "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd.",
-          "reminder_days": "Alleen voor een input_number die je zelf bijhoudt: Home Assistant vraagt om een nieuwe stand zodra de waarde zo lang niet is gewijzigd."
+          "reminder_days": "Alleen voor een input_number die je zelf bijhoudt: Home Assistant vraagt om een nieuwe stand zodra de waarde zo lang niet is gewijzigd.",
+          "costs_enabled": "Rekent de afrekening van meer- en minderkilometers mee. De tarieven volgen in een tweede stap."
         },
         "description": "Wijzig de contractgegevens. De bestaande geschiedenis blijft behouden."
+      },
+      "costs": {
+        "title": "Afrekening",
+        "description": "Neem dit over uit je leasecontract. Tarieven gelden in honderdsten van je valuta per kilometer, 9 betekent dus 0,09 per kilometer.",
+        "data": {
+          "excess_rate": "Tarief voor meerkilometers",
+          "excess_tolerance_km": "Tolerantie voor meerkilometers",
+          "excess_mode": "Hoe meerkilometers worden berekend",
+          "refund_rate": "Tarief voor minderkilometers",
+          "refund_tolerance_km": "Tolerantie voor minderkilometers",
+          "refund_mode": "Hoe minderkilometers worden vergoed",
+          "refund_limit_km": "Maximaal vergoede kilometers"
+        },
+        "data_description": {
+          "excess_rate": "In honderdsten per kilometer, bijvoorbeeld 9 voor 0,09.",
+          "excess_tolerance_km": "Kilometers boven de kilometrage die vrij blijven. 0 als je contract geen tolerantie kent.",
+          "excess_mode": "Bij een vrije grens worden na overschrijding alle kilometers berekend. Bij een vrije voet alleen die erboven.",
+          "refund_rate": "In honderdsten per kilometer. 0 als je contract niets vergoedt.",
+          "refund_tolerance_km": "Minderkilometers die niet worden vergoed. 0 als je contract geen tolerantie kent.",
+          "refund_mode": "Bij een vrije grens wordt na overschrijding elke minderkilometer vergoed. Bij een vrije voet alleen die erboven.",
+          "refund_limit_km": "Bovengrens van de vergoede kilometers. 0 voor onbeperkt."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Na 7 dagen",
         "14": "Na 14 dagen",
         "30": "Na 30 dagen"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Vanaf de eerste kilometer",
+        "above_tolerance": "Alleen boven de tolerantie"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Dagen sinds de laatste update"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Prognose kosten einde contract"
+      },
+      "cost_at_target_pace": {
+        "name": "Kosten bij normtempo"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Tot de tolerantiegrens"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Contractkilometrage prognose overschreden"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolerantie voor meerkilometers overschreden"
       }
     }
   },

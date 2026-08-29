@@ -8,7 +8,7 @@ import type { CardConfig, Hass, HassEntity, Instance } from "./types";
 
 import "./editor";
 
-const VERSION = "2.0.0";
+const VERSION = "2.1.0";
 
 const ARC_START = 180;
 const ARC_SWEEP = 180;
@@ -127,6 +127,22 @@ export class LeasingKmCard extends LitElement {
     });
   }
 
+  /** Format a settlement value in the currency the sensor reports. */
+  private _money(key: string): string {
+    const value = this._value(key);
+    if (value === null) return localize(language(this._hass), "unknown");
+    const currency = this._unit(key);
+    try {
+      return value.toLocaleString(locale(this._hass), {
+        style: "currency",
+        currency,
+      });
+    } catch {
+      // An unusual currency code is better shown plainly than not at all.
+      return `${this._number(value, 2)} ${currency}`.trim();
+    }
+  }
+
   /** Format a value with the unit of the entity it came from. */
   private _quantity(key: string, digits = 0, signed = false): string {
     const value = this._value(key);
@@ -174,6 +190,7 @@ export class LeasingKmCard extends LitElement {
           ? nothing
           : this._renderForecast(lang, contractRisk)}
         ${this._renderRemaining(lang)}
+        ${this._config.show_costs === false ? nothing : this._renderCosts(lang)}
         ${this._renderPills(lang, overTarget, contractRisk)}
       </ha-card>
     `;
@@ -380,6 +397,36 @@ export class LeasingKmCard extends LitElement {
     `;
   }
 
+  private _renderCosts(lang: string): TemplateResult | typeof nothing {
+    const forecast = this._value("cost_forecast_contract_end");
+    if (forecast === null) return nothing;
+    const hint =
+      forecast > 0 ? "costPay" : forecast < 0 ? "costRefund" : "costNone";
+    const atTarget = this._value("cost_at_target_pace");
+
+    return html`
+      <div class="section">${localize(lang, "sectionCosts")}</div>
+      <div class="grid">
+        ${this._tile(
+          localize(lang, "mCostForecast"),
+          this._money("cost_forecast_contract_end"),
+          localize(lang, hint),
+          forecast > 0 ? "bad" : forecast < 0 ? "good" : undefined,
+        )}
+        ${this._tile(
+          localize(lang, "mCostAtTarget"),
+          this._money("cost_at_target_pace"),
+          undefined,
+          (atTarget ?? 0) > 0 ? "bad" : (atTarget ?? 0) < 0 ? "good" : undefined,
+        )}
+        ${this._tile(
+          localize(lang, "mKmToTolerance"),
+          this._quantity("km_to_excess_tolerance"),
+        )}
+      </div>
+    `;
+  }
+
   private _renderPills(
     lang: string,
     overTarget: boolean,
@@ -392,11 +439,15 @@ export class LeasingKmCard extends LitElement {
         ${localize(lang, bad ? badKey : goodKey)}
       </span>
     `;
+    const tolerance = this._flag("excess_tolerance_exceeded");
     return html`
       <div class="pills">
         ${pill(overTarget, "pillOverDaily", "pillUnderDaily")}
         ${pill(annualRisk, "pillYearRisk", "pillYearSafe")}
         ${pill(risk, "pillLimitExceeded", "pillLimitOk")}
+        ${tolerance === null
+          ? nothing
+          : pill(tolerance, "pillToleranceExceeded", "pillToleranceOk")}
       </div>
     `;
   }

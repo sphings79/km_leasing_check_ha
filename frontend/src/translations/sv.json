@@ -44,5 +44,15 @@
   "editorTitle": "Titel",
   "editorClamp": "Begränsa procenten till 100 %",
   "editorContractYear": "Visa avtalsår",
-  "editorForecast": "Visa prognos"
+  "editorForecast": "Visa prognos",
+  "sectionCosts": "Avräkning",
+  "mCostForecast": "Prognos vid avtalets slut",
+  "mCostAtTarget": "Vid måltakt",
+  "mKmToTolerance": "Till toleransen",
+  "costPay": "tilläggsbetalning väntas",
+  "costRefund": "ersättning väntas",
+  "costNone": "inget att avräkna",
+  "pillToleranceOk": "toleransen hålls",
+  "pillToleranceExceeded": "toleransen överskriden",
+  "editorCosts": "Visa avräkning"
 }

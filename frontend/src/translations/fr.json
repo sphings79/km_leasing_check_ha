@@ -44,5 +44,15 @@
   "editorTitle": "Titre",
   "editorClamp": "Limiter le pourcentage à 100 %",
   "editorContractYear": "Afficher l'année de contrat",
-  "editorForecast": "Afficher la prévision"
+  "editorForecast": "Afficher la prévision",
+  "sectionCosts": "Décompte",
+  "mCostForecast": "Prévision fin de contrat",
+  "mCostAtTarget": "Au rythme objectif",
+  "mKmToTolerance": "Avant la tolérance",
+  "costPay": "supplément attendu",
+  "costRefund": "remboursement attendu",
+  "costNone": "rien à décompter",
+  "pillToleranceOk": "tolérance respectée",
+  "pillToleranceExceeded": "tolérance dépassée",
+  "editorCosts": "Afficher le décompte"
 }

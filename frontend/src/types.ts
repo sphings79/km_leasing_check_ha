@@ -35,6 +35,7 @@ export interface CardConfig {
   clamp_percent?: boolean;
   show_contract_year?: boolean;
   show_forecast?: boolean;
+  show_costs?: boolean;
 }
 
 /** One leasing contract discovered in Home Assistant. */

@@ -9,18 +9,30 @@ from homeassistant.const import CONF_NAME
 from homeassistant.helpers import selector
 import voluptuous as vol
 
-from .calc import ForecastBasis
+from .calc import ChargeMode, ForecastBasis
 from .const import (
+    CONF_COSTS_ENABLED,
+    CONF_EXCESS_MODE,
+    CONF_EXCESS_RATE,
+    CONF_EXCESS_TOLERANCE_KM,
     CONF_FORECAST_BASIS,
     CONF_MONTHS,
     CONF_ODOMETER_ENTITY,
+    CONF_REFUND_LIMIT_KM,
+    CONF_REFUND_MODE,
+    CONF_REFUND_RATE,
+    CONF_REFUND_TOLERANCE_KM,
     CONF_REMINDER_DAYS,
     CONF_START_DATE,
     CONF_START_KM,
     CONF_TOTAL_KM,
+    DEFAULT_EXCESS_RATE,
     DEFAULT_MONTHS,
+    DEFAULT_REFUND_LIMIT_KM,
+    DEFAULT_REFUND_RATE,
     DEFAULT_REMINDER_DAYS,
     DEFAULT_START_KM,
+    DEFAULT_TOLERANCE_KM,
     DEFAULT_TOTAL_KM,
     DOMAIN,
     MANUAL_DOMAIN,
@@ -78,6 +90,10 @@ def _schema(defaults: dict[str, Any]) -> vol.Schema:
                 )
             ),
             vol.Required(
+                CONF_COSTS_ENABLED,
+                default=defaults.get(CONF_COSTS_ENABLED, False),
+            ): selector.BooleanSelector(),
+            vol.Required(
                 CONF_REMINDER_DAYS,
                 default=defaults.get(CONF_REMINDER_DAYS, DEFAULT_REMINDER_DAYS),
             ): selector.SelectSelector(
@@ -89,6 +105,51 @@ def _schema(defaults: dict[str, Any]) -> vol.Schema:
             ),
         }
     )
+
+
+def _cost_schema(defaults: dict[str, Any]) -> vol.Schema:
+    """Build the settlement form, pre-filled with `defaults`."""
+
+    def rate(key: str, fallback: float) -> Any:
+        return vol.Required(
+            key, default=defaults.get(key, fallback)
+        ), selector.NumberSelector(
+            selector.NumberSelectorConfig(
+                min=0, max=500, step=0.01, mode=selector.NumberSelectorMode.BOX
+            )
+        )
+
+    def kilometres(key: str, fallback: float) -> Any:
+        # Free steps on purpose: tolerances like 2,750 km do exist.
+        return vol.Required(
+            key, default=defaults.get(key, fallback)
+        ), selector.NumberSelector(
+            selector.NumberSelectorConfig(
+                min=0, max=500_000, step=1, mode=selector.NumberSelectorMode.BOX
+            )
+        )
+
+    def mode(key: str, fallback: ChargeMode) -> Any:
+        return vol.Required(
+            key, default=defaults.get(key, fallback.value)
+        ), selector.SelectSelector(
+            selector.SelectSelectorConfig(
+                options=[choice.value for choice in ChargeMode],
+                translation_key="charge_mode",
+                mode=selector.SelectSelectorMode.DROPDOWN,
+            )
+        )
+
+    fields = [
+        rate(CONF_EXCESS_RATE, DEFAULT_EXCESS_RATE),
+        kilometres(CONF_EXCESS_TOLERANCE_KM, DEFAULT_TOLERANCE_KM),
+        mode(CONF_EXCESS_MODE, ChargeMode.FROM_FIRST),
+        rate(CONF_REFUND_RATE, DEFAULT_REFUND_RATE),
+        kilometres(CONF_REFUND_TOLERANCE_KM, DEFAULT_TOLERANCE_KM),
+        mode(CONF_REFUND_MODE, ChargeMode.ABOVE_TOLERANCE),
+        kilometres(CONF_REFUND_LIMIT_KM, DEFAULT_REFUND_LIMIT_KM),
+    ]
+    return vol.Schema(dict(fields))
 
 
 def _validate(user_input: dict[str, Any]) -> dict[str, str]:
@@ -107,6 +168,10 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 2
 
+    def __init__(self) -> None:
+        """Hold the contract until the optional cost step is done."""
+        self._contract: dict[str, Any] = {}
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
@@ -119,14 +184,34 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     f"{user_input[CONF_ODOMETER_ENTITY]}_{user_input[CONF_START_DATE]}"
                 )
                 self._abort_if_unique_id_configured()
+                self._contract = _normalise(user_input)
+                if user_input[CONF_COSTS_ENABLED]:
+                    return await self.async_step_costs()
                 return self.async_create_entry(
-                    title=user_input[CONF_NAME], data=_normalise(user_input)
+                    title=user_input[CONF_NAME], data=self._contract
                 )
 
         return self.async_show_form(
             step_id="user",
             data_schema=_schema(user_input or {}),
             errors=errors,
+        )
+
+    async def async_step_costs(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
+        """Ask for the settlement terms of the contract."""
+        if user_input is not None:
+            data = {**self._contract, **_normalise_costs(user_input)}
+            if self.source == config_entries.SOURCE_RECONFIGURE:
+                entry = self._get_reconfigure_entry()
+                return self.async_update_reload_and_abort(
+                    entry, title=data[CONF_NAME], data=data
+                )
+            return self.async_create_entry(title=data[CONF_NAME], data=data)
+
+        return self.async_show_form(
+            step_id="costs", data_schema=_cost_schema(self._contract)
         )
 
     async def async_step_reconfigure(
@@ -138,10 +223,11 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             errors = _validate(user_input)
             if not errors:
+                self._contract = {**dict(entry.data), **_normalise(user_input)}
+                if user_input[CONF_COSTS_ENABLED]:
+                    return await self.async_step_costs()
                 return self.async_update_reload_and_abort(
-                    entry,
-                    title=user_input[CONF_NAME],
-                    data=_normalise(user_input),
+                    entry, title=user_input[CONF_NAME], data=self._contract
                 )
 
         return self.async_show_form(
@@ -157,4 +243,19 @@ def _normalise(user_input: dict[str, Any]) -> dict[str, Any]:
     data[CONF_MONTHS] = int(data[CONF_MONTHS])
     data[CONF_TOTAL_KM] = float(data[CONF_TOTAL_KM])
     data[CONF_START_KM] = float(data[CONF_START_KM])
+    return data
+
+
+def _normalise_costs(user_input: dict[str, Any]) -> dict[str, Any]:
+    """Store the settlement terms as plain numbers."""
+    numeric = (
+        CONF_EXCESS_RATE,
+        CONF_EXCESS_TOLERANCE_KM,
+        CONF_REFUND_RATE,
+        CONF_REFUND_TOLERANCE_KM,
+        CONF_REFUND_LIMIT_KM,
+    )
+    data = dict(user_input)
+    for key in numeric:
+        data[key] = float(data[key])
     return data

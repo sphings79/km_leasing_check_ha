@@ -44,5 +44,15 @@
   "editorTitle": "Título",
   "editorClamp": "Limitar a percentagem a 100 %",
   "editorContractYear": "Mostrar o ano de contrato",
-  "editorForecast": "Mostrar a previsão"
+  "editorForecast": "Mostrar a previsão",
+  "sectionCosts": "Acerto",
+  "mCostForecast": "Previsão fim do contrato",
+  "mCostAtTarget": "Ao ritmo do objetivo",
+  "mKmToTolerance": "Até à tolerância",
+  "costPay": "pagamento previsto",
+  "costRefund": "reembolso previsto",
+  "costNone": "nada a acertar",
+  "pillToleranceOk": "tolerância cumprida",
+  "pillToleranceExceeded": "tolerância excedida",
+  "editorCosts": "Mostrar o acerto"
 }
