@@ -48,7 +48,7 @@ the integration has no `requirements` at all and only reads an entity that alrea
 your installation.
 
 <div align="center">
-  <img src="assets/setup.svg" alt="The Home Assistant setup dialog of the Leasing KM Calculator, with fields for name, contract start date, duration in months, total mileage allowance, odometer reading at contract start, odometer entity, forecast basis and the stale reading reminder" width="100%">
+  <img src="assets/setup.svg" alt="The Home Assistant setup dialog of the Leasing KM Calculator, with fields for name, contract start date, duration in months, total mileage allowance, odometer reading at contract start, odometer entity, forecast basis, the stale reading reminder and the switch for the cost calculation" width="100%">
 </div>
 
 ## Entities you get
@@ -57,7 +57,7 @@ One device per contract, named the way you named it. The entity ids are language
 they read the same in every installation; only the displayed names are translated.
 
 <div align="center">
-  <img src="assets/entities.svg" alt="Overview of the entities created for one leasing contract: mileage driven, actual and target per day, deviation today and at month end, contract year figures, allowances, forecasts, percentages and three status flags" width="100%">
+  <img src="assets/entities.svg" alt="Overview of the entities created for one leasing contract: mileage driven, actual and target per day, deviation today and at month end, contract year figures, allowances, forecasts, percentages, the settlement in money and four status flags" width="100%">
 </div>
 
 | Entity | Meaning | Example |
@@ -99,7 +99,7 @@ registers the resource for you, so **Leasing KM Card** appears in the card picke
 setup.
 
 <div align="center">
-  <img src="assets/card.svg" alt="The Leasing KM card on a dashboard: a gauge showing 65.2 per cent of the mileage used against 70.4 per cent of the contract elapsed, tiles for deviation today, deviation at month end, actual per day and mileage left, a contract year section, forecast tiles and three green status pills" width="500">
+  <img src="assets/card.svg" alt="The Leasing KM card on a dashboard: a gauge showing 65.2 per cent of the mileage used against 70.4 per cent of the contract elapsed, tiles for deviation today, deviation at month end, actual per day and mileage left, a contract year section, forecast tiles, a settlement section with the expected refund and four green status pills" width="500">
 </div>
 
 | Option | Default | What it does |

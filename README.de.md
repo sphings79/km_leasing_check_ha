@@ -47,7 +47,7 @@ Alles läuft lokal. Keine Netzwerkanfragen, keine API-Schlüssel, kein Cloud-Kon
 hat überhaupt keine `requirements` und liest nur eine Entität, die es bei dir ohnehin gibt.
 
 <div align="center">
-  <img src="assets/setup.de.svg" alt="Der Einrichtungsdialog des Leasing KM-Rechners in Home Assistant mit Feldern für Name, Vertragsbeginn, Laufzeit in Monaten, Gesamtlaufleistung, Kilometerstand bei Vertragsbeginn, Kilometerstands-Entität, Prognosebasis und Erinnerung bei veraltetem Stand" width="100%">
+  <img src="assets/setup.de.svg" alt="Der Einrichtungsdialog des Leasing KM-Rechners in Home Assistant mit Feldern für Name, Vertragsbeginn, Laufzeit in Monaten, Gesamtlaufleistung, Kilometerstand bei Vertragsbeginn, Kilometerstands-Entität, Prognosebasis, Erinnerung bei veraltetem Stand und dem Schalter für die Kostenberechnung" width="100%">
 </div>
 
 ## Diese Entitäten entstehen
@@ -56,7 +56,7 @@ Ein Gerät je Vertrag, benannt wie du es benennst. Die Entitäts-IDs sind sprach
 lauten in jeder Installation gleich; übersetzt werden nur die angezeigten Namen.
 
 <div align="center">
-  <img src="assets/entities.de.svg" alt="Übersicht der Entitäten eines Leasingvertrags: gefahrene Kilometer, Tagesleistung Ist und Soll, Differenz heute und zum Monatsende, Vertragsjahreswerte, Limits, Prognosen, Prozentwerte und drei Statusmelder" width="100%">
+  <img src="assets/entities.de.svg" alt="Übersicht der Entitäten eines Leasingvertrags: gefahrene Kilometer, Tagesleistung Ist und Soll, Differenz heute und zum Monatsende, Vertragsjahreswerte, Limits, Prognosen, Prozentwerte, die Abrechnung in Geld und vier Statusmelder" width="100%">
 </div>
 
 | Entität | Bedeutung | Beispiel |
@@ -98,7 +98,7 @@ aus und trägt die Ressource selbst ein — **Leasing KM Card** steht direkt nac
 der Kartenauswahl.
 
 <div align="center">
-  <img src="assets/card.de.svg" alt="Die Leasing-KM-Karte auf einem Dashboard: eine Anzeige mit 65,2 Prozent absolvierter Laufleistung gegen 70,4 Prozent abgelaufener Laufzeit, Kacheln für Differenz heute, Differenz Monatsende, Tagesleistung Ist und Restkilometer, ein Vertragsjahresblock, Prognosekacheln und drei grüne Statusmelder" width="500">
+  <img src="assets/card.de.svg" alt="Die Leasing-KM-Karte auf einem Dashboard: eine Anzeige mit 65,2 Prozent absolvierter Laufleistung gegen 70,4 Prozent abgelaufener Laufzeit, Kacheln für Differenz heute, Differenz Monatsende, Tagesleistung Ist und Restkilometer, ein Vertragsjahresblock, Prognosekacheln, einem Abrechnungsblock mit der erwarteten Erstattung und vier grünen Statusmeldern" width="500">
 </div>
 
 | Option | Standard | Wirkung |
