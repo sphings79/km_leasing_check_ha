@@ -1,5 +1,6 @@
 {
-  "name": "Leasing KM-Rechner",
+  "name": "Leasing KM Calculator",
   "hide_default_branch": true,
-  "homeassistant": "2026.4.0"
+  "homeassistant": "2026.4.0",
+  "render_readme": true
 }

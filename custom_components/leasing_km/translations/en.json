@@ -1,114 +1,160 @@
 {
+  "title": "Leasing KM Calculator",
   "config": {
     "step": {
       "user": {
-        "title": "Set up Leasing KM Calculator",
-        "description": "Enter your leasing contract details. The odometer entity must already exist in Home Assistant.",
+        "title": "Leasing contract",
+        "description": "Enter the details of your leasing contract. The odometer entity has to exist in Home Assistant already.",
         "data": {
+          "name": "Name",
           "start_date": "Contract start date",
-          "laufzeit_monate": "Contract duration",
-          "km_gesamt": "Total allowed kilometres",
-          "km_entity": "Current odometer entity"
+          "months": "Contract duration in months",
+          "total_km": "Total mileage allowance",
+          "start_km": "Odometer reading at contract start",
+          "odometer_entity": "Odometer entity",
+          "forecast_basis": "Forecast basis"
         },
         "data_description": {
+          "name": "Shown as the device name, for example the name of the car.",
           "start_date": "First day of the leasing contract.",
-          "laufzeit_monate": "Duration in months (e.g. 24, 36, 48).",
-          "km_gesamt": "Total kilometres included in the contract.",
-          "km_entity": "A sensor or input_number that holds the current odometer reading in km."
+          "months": "For example 24, 36 or 48.",
+          "total_km": "Mileage included in the contract, in the unit of your odometer entity.",
+          "start_km": "Leave at 0 for a new car delivered with an empty odometer. For a used car or a contract taken over, enter the reading on the day the contract started.",
+          "odometer_entity": "A sensor, number or input_number holding the current odometer reading.",
+          "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available."
         }
       },
       "reconfigure": {
-        "title": "Reconfigure Leasing KM Calculator",
+        "title": "Leasing contract",
+        "description": "Change the contract details. Existing history is kept.",
         "data": {
+          "name": "Name",
           "start_date": "Contract start date",
-          "laufzeit_monate": "Contract duration",
-          "km_gesamt": "Total allowed kilometres",
-          "km_entity": "Current odometer entity"
+          "months": "Contract duration in months",
+          "total_km": "Total mileage allowance",
+          "start_km": "Odometer reading at contract start",
+          "odometer_entity": "Odometer entity",
+          "forecast_basis": "Forecast basis"
+        },
+        "data_description": {
+          "name": "Shown as the device name, for example the name of the car.",
+          "start_date": "First day of the leasing contract.",
+          "months": "For example 24, 36 or 48.",
+          "total_km": "Mileage included in the contract, in the unit of your odometer entity.",
+          "start_km": "Leave at 0 for a new car delivered with an empty odometer. For a used car or a contract taken over, enter the reading on the day the contract started.",
+          "odometer_entity": "A sensor, number or input_number holding the current odometer reading.",
+          "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available."
         }
       }
     },
-    "error": {
-      "entity_unavailable": "The selected odometer entity is currently unavailable.",
-      "invalid_value": "The odometer entity does not report a valid numeric value."
-    },
     "abort": {
-      "already_configured": "This leasing contract is already configured."
+      "already_configured": "This contract is already set up.",
+      "reconfigure_successful": "Contract updated."
     }
   },
-  "options": {
-    "step": {
-      "init": {
-        "title": "Configure Leasing KM Calculator",
-        "data": {
-          "start_date": "Contract start date",
-          "laufzeit_monate": "Contract duration",
-          "km_gesamt": "Total allowed kilometres",
-          "km_entity": "Current odometer entity"
-        },
-        "data_description": {
-          "start_date": "First day of the leasing contract.",
-          "laufzeit_monate": "Duration in months (e.g. 24, 36, 48).",
-          "km_gesamt": "Total kilometres included in the contract.",
-          "km_entity": "A sensor or input_number that holds the current odometer reading in km."
-        }
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Whole contract average",
+        "d30": "Last 30 days",
+        "d90": "Last 90 days"
       }
     }
   },
   "entity": {
     "sensor": {
-      "tagesleistung_ist": {
-        "name": "Actual km per day"
+      "km_driven": {
+        "name": "Mileage driven"
       },
-      "tagesleistung_soll": {
-        "name": "Target km per day"
+      "daily_actual": {
+        "name": "Actual per day"
       },
-      "soll_km_heute": {
+      "daily_target": {
+        "name": "Target per day"
+      },
+      "daily_actual_30d": {
+        "name": "Actual per day (30 days)"
+      },
+      "daily_actual_90d": {
+        "name": "Actual per day (90 days)"
+      },
+      "target_today": {
         "name": "Target mileage today"
       },
-      "differenz_heute": {
+      "deviation_today": {
         "name": "Deviation today"
       },
-      "soll_km_monatsende": {
+      "target_month_end": {
         "name": "Target mileage at month end"
       },
-      "differenz_monatsende": {
+      "deviation_month_end": {
         "name": "Deviation at month end"
       },
-      "verbleibend_jahresende": {
-        "name": "Remaining until year end"
+      "contract_year_driven": {
+        "name": "Driven this contract year"
       },
-      "verbleibend_laufzeitende": {
-        "name": "Remaining until contract end"
+      "contract_year_deviation": {
+        "name": "Deviation this contract year"
       },
-      "noch_erlaubt": {
-        "name": "Total kilometres left"
+      "contract_year_allowance": {
+        "name": "Allowance this contract year"
       },
-      "jahres_soll": {
+      "annual_allowance": {
         "name": "Annual mileage allowance"
       },
-      "prognose_jahresende": {
+      "remaining_contract_year": {
+        "name": "Remaining this contract year"
+      },
+      "remaining_calendar_year": {
+        "name": "Remaining until year end"
+      },
+      "remaining_contract_end": {
+        "name": "Remaining until contract end"
+      },
+      "remaining_total": {
+        "name": "Mileage left"
+      },
+      "forecast_contract_year_end": {
+        "name": "Forecast at contract year end"
+      },
+      "forecast_calendar_year_end": {
         "name": "Forecast at year end"
       },
-      "prognose_laufzeitende": {
+      "forecast_contract_end": {
         "name": "Forecast at contract end"
       },
-      "km_absolviert": {
+      "forecast_deviation_contract_end": {
+        "name": "Forecast deviation at contract end"
+      },
+      "mileage_used": {
         "name": "Mileage used"
       },
-      "laufzeit_absolviert": {
+      "contract_elapsed": {
         "name": "Contract elapsed"
+      },
+      "contract_end_date": {
+        "name": "Contract end"
+      },
+      "days_remaining": {
+        "name": "Days remaining"
       }
     },
     "binary_sensor": {
-      "ueber_soll": {
+      "above_target": {
         "name": "Above target"
       },
-      "jahres_km_ueberschritten": {
+      "annual_forecast_exceeded": {
         "name": "Annual allowance forecast exceeded"
       },
-      "laufzeit_km_ueberschritten": {
+      "contract_forecast_exceeded": {
         "name": "Contract allowance forecast exceeded"
       }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Leasing KM entity IDs have changed",
+      "description": "Version 2 uses language independent entity IDs. Please update your dashboards, automations and scripts:\n\n{renames}"
     }
   }
 }
