@@ -44,5 +44,15 @@
   "editorTitle": "Title",
   "editorClamp": "Cap the percentage at 100 %",
   "editorContractYear": "Show the contract year",
-  "editorForecast": "Show the forecast"
+  "editorForecast": "Show the forecast",
+  "sectionCosts": "Settlement",
+  "mCostForecast": "Forecast at contract end",
+  "mCostAtTarget": "At target pace",
+  "mKmToTolerance": "Until the tolerance",
+  "costPay": "payment expected",
+  "costRefund": "refund expected",
+  "costNone": "nothing to settle",
+  "pillToleranceOk": "tolerance kept",
+  "pillToleranceExceeded": "tolerance exceeded",
+  "editorCosts": "Show the settlement"
 }

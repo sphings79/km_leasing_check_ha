@@ -14,6 +14,11 @@ many kilometres it includes and what the odometer read on day one. From there yo
 - **Status flags** for automations, so you get a notification instead of a surprise at handover
 - **A Lovelace card**, included and registered automatically
 
+Optionally it also settles the contract: enter the charge for extra kilometres, the refund for
+unused ones and the tolerances, and you get the expected cost or refund at contract end. How a
+tolerance is applied is selectable, because contracts differ on whether passing it charges every
+kilometre or only the ones beyond it.
+
 Everything is calculated locally. The integration makes no network requests at all, has no
 `requirements` and needs no account.
 

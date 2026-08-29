@@ -21,6 +21,7 @@ const SCHEMA: FormSchemaItem[] = [
   { name: "clamp_percent", selector: { boolean: {} } },
   { name: "show_contract_year", selector: { boolean: {} } },
   { name: "show_forecast", selector: { boolean: {} } },
+  { name: "show_costs", selector: { boolean: {} } },
 ];
 
 const LABELS: Record<string, string> = {
@@ -29,6 +30,7 @@ const LABELS: Record<string, string> = {
   clamp_percent: "editorClamp",
   show_contract_year: "editorContractYear",
   show_forecast: "editorForecast",
+  show_costs: "editorCosts",
 };
 
 export class LeasingKmCardEditor extends LitElement {

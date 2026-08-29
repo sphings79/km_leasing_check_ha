@@ -12,7 +12,8 @@
           "start_km": "Stav tachometru na začátku smlouvy",
           "odometer_entity": "Entita se stavem tachometru",
           "forecast_basis": "Základ prognózy",
-          "reminder_days": "Připomenout, když odečet zestárne"
+          "reminder_days": "Připomenout, když odečet zestárne",
+          "costs_enabled": "Počítat náklady"
         },
         "data_description": {
           "name": "Použije se jako název zařízení, například jméno auta.",
@@ -22,7 +23,8 @@
           "start_km": "U nového auta ponech 0. U ojetého auta nebo převzaté smlouvy zadej stav ke dni začátku smlouvy.",
           "odometer_entity": "Sensor, number nebo input_number s aktuálním stavem tachometru.",
           "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy.",
-          "reminder_days": "Jen pro input_number, který si udržuješ sám: Home Assistant si řekne o nový odečet, jakmile se hodnota takto dlouho nezmění."
+          "reminder_days": "Jen pro input_number, který si udržuješ sám: Home Assistant si řekne o nový odečet, jakmile se hodnota takto dlouho nezmění.",
+          "costs_enabled": "Přidá vyúčtování více a méně najetých kilometrů. Sazby zadáš ve druhém kroku."
         },
         "description": "Zadej údaje své leasingové smlouvy. Entita se stavem tachometru už musí v Home Assistantu existovat."
       },
@@ -36,7 +38,8 @@
           "start_km": "Stav tachometru na začátku smlouvy",
           "odometer_entity": "Entita se stavem tachometru",
           "forecast_basis": "Základ prognózy",
-          "reminder_days": "Připomenout, když odečet zestárne"
+          "reminder_days": "Připomenout, když odečet zestárne",
+          "costs_enabled": "Počítat náklady"
         },
         "data_description": {
           "name": "Použije se jako název zařízení, například jméno auta.",
@@ -46,9 +49,32 @@
           "start_km": "U nového auta ponech 0. U ojetého auta nebo převzaté smlouvy zadej stav ke dni začátku smlouvy.",
           "odometer_entity": "Sensor, number nebo input_number s aktuálním stavem tachometru.",
           "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy.",
-          "reminder_days": "Jen pro input_number, který si udržuješ sám: Home Assistant si řekne o nový odečet, jakmile se hodnota takto dlouho nezmění."
+          "reminder_days": "Jen pro input_number, který si udržuješ sám: Home Assistant si řekne o nový odečet, jakmile se hodnota takto dlouho nezmění.",
+          "costs_enabled": "Přidá vyúčtování více a méně najetých kilometrů. Sazby zadáš ve druhém kroku."
         },
         "description": "Změň údaje smlouvy. Dosavadní historie zůstane zachována."
+      },
+      "costs": {
+        "title": "Vyúčtování",
+        "description": "Převezmi z leasingové smlouvy. Sazby se zadávají ve setinách tvé měny za kilometr, 9 tedy znamená 0,09 za kilometr.",
+        "data": {
+          "excess_rate": "Sazba za více najeté kilometry",
+          "excess_tolerance_km": "Tolerance pro více najeté kilometry",
+          "excess_mode": "Jak se účtují více najeté kilometry",
+          "refund_rate": "Náhrada za méně najeté kilometry",
+          "refund_tolerance_km": "Tolerance pro méně najeté kilometry",
+          "refund_mode": "Jak se hradí méně najeté kilometry",
+          "refund_limit_km": "Nejvýše hrazené kilometry"
+        },
+        "data_description": {
+          "excess_rate": "V setinách za kilometr, například 9 pro 0,09.",
+          "excess_tolerance_km": "Kilometry nad limit, které zůstávají zdarma. 0, pokud smlouva toleranci nemá.",
+          "excess_mode": "U tvrdé hranice se po jejím překročení účtují všechny kilometry. U odpočtu jen ty nad ní.",
+          "refund_rate": "V setinách za kilometr. 0, pokud smlouva nic nehradí.",
+          "refund_tolerance_km": "Méně najeté kilometry, které se nehradí. 0, pokud smlouva toleranci nemá.",
+          "refund_mode": "U tvrdé hranice se po překročení hradí všechny. U odpočtu jen ty nad ní.",
+          "refund_limit_km": "Horní hranice hrazených kilometrů. 0 znamená bez omezení."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Po 7 dnech",
         "14": "Po 14 dnech",
         "30": "Po 30 dnech"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Od prvního kilometru",
+        "above_tolerance": "Jen nad toleranci"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Dní od poslední aktualizace"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Předpokládané náklady na konci smlouvy"
+      },
+      "cost_at_target_pace": {
+        "name": "Náklady při cílovém tempu"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Do hranice tolerance"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Prognóza smlouvy překročena"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolerance více najetých kilometrů překročena"
       }
     }
   },

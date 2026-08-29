@@ -44,5 +44,15 @@
   "editorTitle": "Název",
   "editorClamp": "Omezit procenta na 100 %",
   "editorContractYear": "Zobrazit smluvní rok",
-  "editorForecast": "Zobrazit prognózu"
+  "editorForecast": "Zobrazit prognózu",
+  "sectionCosts": "Vyúčtování",
+  "mCostForecast": "Prognóza na konci smlouvy",
+  "mCostAtTarget": "Při cílovém tempu",
+  "mKmToTolerance": "Do tolerance",
+  "costPay": "očekává se doplatek",
+  "costRefund": "očekává se náhrada",
+  "costNone": "není co vyúčtovat",
+  "pillToleranceOk": "tolerance dodržena",
+  "pillToleranceExceeded": "tolerance překročena",
+  "editorCosts": "Zobrazit vyúčtování"
 }

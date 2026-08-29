@@ -44,5 +44,15 @@
   "editorTitle": "Tytuł",
   "editorClamp": "Ogranicz procent do 100 %",
   "editorContractYear": "Pokaż rok umowy",
-  "editorForecast": "Pokaż prognozę"
+  "editorForecast": "Pokaż prognozę",
+  "sectionCosts": "Rozliczenie",
+  "mCostForecast": "Prognoza na koniec umowy",
+  "mCostAtTarget": "Przy jeździe zgodnej z celem",
+  "mKmToTolerance": "Do tolerancji",
+  "costPay": "spodziewana dopłata",
+  "costRefund": "spodziewany zwrot",
+  "costNone": "nie ma czego rozliczać",
+  "pillToleranceOk": "tolerancja dotrzymana",
+  "pillToleranceExceeded": "tolerancja przekroczona",
+  "editorCosts": "Pokaż rozliczenie"
 }

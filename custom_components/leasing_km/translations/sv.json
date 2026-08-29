@@ -12,7 +12,8 @@
           "start_km": "Mätarställning vid avtalets start",
           "odometer_entity": "Entitet för mätarställning",
           "forecast_basis": "Grund för prognosen",
-          "reminder_days": "Påminn mig om avläsningen blir gammal"
+          "reminder_days": "Påminn mig om avläsningen blir gammal",
+          "costs_enabled": "Beräkna kostnader"
         },
         "data_description": {
           "name": "Används som enhetsnamn, till exempel bilens namn.",
@@ -22,7 +23,8 @@
           "start_km": "Lämna 0 för en ny bil. För en begagnad bil eller ett övertaget avtal, ange ställningen den dag avtalet började.",
           "odometer_entity": "En sensor, number eller input_number med aktuell mätarställning.",
           "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet.",
-          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge."
+          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge.",
+          "costs_enabled": "Räknar med avräkningen av extra och outnyttjade kilometer. Taxorna kommer i ett andra steg."
         },
         "description": "Ange uppgifterna för ditt leasingavtal. Entiteten för mätarställningen måste redan finnas i Home Assistant."
       },
@@ -36,7 +38,8 @@
           "start_km": "Mätarställning vid avtalets start",
           "odometer_entity": "Entitet för mätarställning",
           "forecast_basis": "Grund för prognosen",
-          "reminder_days": "Påminn mig om avläsningen blir gammal"
+          "reminder_days": "Påminn mig om avläsningen blir gammal",
+          "costs_enabled": "Beräkna kostnader"
         },
         "data_description": {
           "name": "Används som enhetsnamn, till exempel bilens namn.",
@@ -46,9 +49,32 @@
           "start_km": "Lämna 0 för en ny bil. För en begagnad bil eller ett övertaget avtal, ange ställningen den dag avtalet började.",
           "odometer_entity": "En sensor, number eller input_number med aktuell mätarställning.",
           "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet.",
-          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge."
+          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge.",
+          "costs_enabled": "Räknar med avräkningen av extra och outnyttjade kilometer. Taxorna kommer i ett andra steg."
         },
         "description": "Ändra avtalsuppgifterna. Befintlig historik behålls."
+      },
+      "costs": {
+        "title": "Avräkning",
+        "description": "Hämta det från ditt leasingavtal. Taxorna anges i hundradelar av din valuta per kilometer, 9 betyder alltså 0,09 per kilometer.",
+        "data": {
+          "excess_rate": "Taxa för extra kilometer",
+          "excess_tolerance_km": "Tolerans för extra kilometer",
+          "excess_mode": "Hur extra kilometer debiteras",
+          "refund_rate": "Ersättning för outnyttjade kilometer",
+          "refund_tolerance_km": "Tolerans för outnyttjade kilometer",
+          "refund_mode": "Hur outnyttjade kilometer ersätts",
+          "refund_limit_km": "Högst ersatta kilometer"
+        },
+        "data_description": {
+          "excess_rate": "I hundradelar per kilometer, till exempel 9 för 0,09.",
+          "excess_tolerance_km": "Kilometer över gränsen som förblir avgiftsfria. 0 om avtalet saknar tolerans.",
+          "excess_mode": "Med en fri gräns debiteras alla kilometer när toleransen passeras. Med ett grundavdrag bara de däröver.",
+          "refund_rate": "I hundradelar per kilometer. 0 om avtalet inte ersätter något.",
+          "refund_tolerance_km": "Outnyttjade kilometer som inte ersätts. 0 om avtalet saknar tolerans.",
+          "refund_mode": "Med en fri gräns ersätts alla när toleransen passeras. Med ett grundavdrag bara de däröver.",
+          "refund_limit_km": "Övre gräns för ersatta kilometer. 0 för obegränsat."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Efter 7 dagar",
         "14": "Efter 14 dagar",
         "30": "Efter 30 dagar"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Från första kilometern",
+        "above_tolerance": "Bara över toleransen"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Dagar sedan senaste uppdateringen"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Prognostiserad kostnad vid avtalets slut"
+      },
+      "cost_at_target_pace": {
+        "name": "Kostnad vid måltakt"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Till toleransgränsen"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Avtalsprognos överskriden"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolerans för extra kilometer överskriden"
       }
     }
   },

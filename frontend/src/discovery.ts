@@ -32,10 +32,14 @@ export const KEYS = [
   "mileage_used",
   "contract_elapsed",
   "contract_end_date",
+  "cost_forecast_contract_end",
+  "cost_at_target_pace",
+  "km_to_excess_tolerance",
   "days_remaining",
   "above_target",
   "annual_forecast_exceeded",
   "contract_forecast_exceeded",
+  "excess_tolerance_exceeded",
 ] as const;
 
 // Longest first, so `daily_actual_30d` never matches as `daily_actual`.

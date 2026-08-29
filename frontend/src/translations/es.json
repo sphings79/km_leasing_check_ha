@@ -44,5 +44,15 @@
   "editorTitle": "Título",
   "editorClamp": "Limitar el porcentaje al 100 %",
   "editorContractYear": "Mostrar el año de contrato",
-  "editorForecast": "Mostrar la previsión"
+  "editorForecast": "Mostrar la previsión",
+  "sectionCosts": "Liquidación",
+  "mCostForecast": "Previsión fin del contrato",
+  "mCostAtTarget": "Al ritmo objetivo",
+  "mKmToTolerance": "Hasta la tolerancia",
+  "costPay": "pago previsto",
+  "costRefund": "reembolso previsto",
+  "costNone": "nada que liquidar",
+  "pillToleranceOk": "tolerancia respetada",
+  "pillToleranceExceeded": "tolerancia superada",
+  "editorCosts": "Mostrar la liquidación"
 }

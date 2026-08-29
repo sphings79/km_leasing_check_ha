@@ -78,6 +78,15 @@
       },
       "odometer_updated_days_ago": {
         "default": "mdi:calendar-refresh"
+      },
+      "cost_forecast_contract_end": {
+        "default": "mdi:cash-clock"
+      },
+      "cost_at_target_pace": {
+        "default": "mdi:cash-check"
+      },
+      "km_to_excess_tolerance": {
+        "default": "mdi:gate-alert"
       }
     },
     "binary_sensor": {
@@ -100,6 +109,13 @@
         "state": {
           "on": "mdi:shield-car",
           "off": "mdi:shield-check"
+        }
+      },
+      "excess_tolerance_exceeded": {
+        "default": "mdi:gate-open",
+        "state": {
+          "on": "mdi:gate-alert",
+          "off": "mdi:gate"
         }
       }
     }

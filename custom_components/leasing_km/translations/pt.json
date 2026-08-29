@@ -12,7 +12,8 @@
           "start_km": "Quilometragem no início do contrato",
           "odometer_entity": "Entidade do conta-quilómetros",
           "forecast_basis": "Base da previsão",
-          "reminder_days": "Lembrar-me se a leitura ficar antiga"
+          "reminder_days": "Lembrar-me se a leitura ficar antiga",
+          "costs_enabled": "Calcular custos"
         },
         "data_description": {
           "name": "Usado como nome do dispositivo, por exemplo o nome do carro.",
@@ -22,7 +23,8 @@
           "start_km": "Deixa 0 num carro novo. Num carro usado ou num contrato assumido, indica a leitura do dia em que o contrato começou.",
           "odometer_entity": "Um sensor, number ou input_number com a leitura atual do conta-quilómetros.",
           "forecast_basis": "Em que média assentam as previsões e os avisos. As janelas precisam do histórico do recorder e, sem ele, voltam à média de todo o contrato.",
-          "reminder_days": "Apenas para um input_number que mantens tu: o Home Assistant pede uma leitura nova quando o valor não muda durante este tempo."
+          "reminder_days": "Apenas para um input_number que mantens tu: o Home Assistant pede uma leitura nova quando o valor não muda durante este tempo.",
+          "costs_enabled": "Inclui o acerto de quilómetros a mais e a menos. As tarifas vêm num segundo passo."
         },
         "description": "Introduz os dados do teu contrato de leasing. A entidade do conta-quilómetros já tem de existir no Home Assistant."
       },
@@ -36,7 +38,8 @@
           "start_km": "Quilometragem no início do contrato",
           "odometer_entity": "Entidade do conta-quilómetros",
           "forecast_basis": "Base da previsão",
-          "reminder_days": "Lembrar-me se a leitura ficar antiga"
+          "reminder_days": "Lembrar-me se a leitura ficar antiga",
+          "costs_enabled": "Calcular custos"
         },
         "data_description": {
           "name": "Usado como nome do dispositivo, por exemplo o nome do carro.",
@@ -46,9 +49,32 @@
           "start_km": "Deixa 0 num carro novo. Num carro usado ou num contrato assumido, indica a leitura do dia em que o contrato começou.",
           "odometer_entity": "Um sensor, number ou input_number com a leitura atual do conta-quilómetros.",
           "forecast_basis": "Em que média assentam as previsões e os avisos. As janelas precisam do histórico do recorder e, sem ele, voltam à média de todo o contrato.",
-          "reminder_days": "Apenas para um input_number que mantens tu: o Home Assistant pede uma leitura nova quando o valor não muda durante este tempo."
+          "reminder_days": "Apenas para um input_number que mantens tu: o Home Assistant pede uma leitura nova quando o valor não muda durante este tempo.",
+          "costs_enabled": "Inclui o acerto de quilómetros a mais e a menos. As tarifas vêm num segundo passo."
         },
         "description": "Alterar os dados do contrato. O histórico existente é mantido."
+      },
+      "costs": {
+        "title": "Acerto",
+        "description": "Retira isto do teu contrato de leasing. As tarifas são em centésimos da tua moeda por quilómetro, ou seja, 9 significa 0,09 por quilómetro.",
+        "data": {
+          "excess_rate": "Tarifa por quilómetros a mais",
+          "excess_tolerance_km": "Tolerância para quilómetros a mais",
+          "excess_mode": "Como são cobrados os quilómetros a mais",
+          "refund_rate": "Reembolso por quilómetros a menos",
+          "refund_tolerance_km": "Tolerância para quilómetros a menos",
+          "refund_mode": "Como são reembolsados os quilómetros a menos",
+          "refund_limit_km": "Quilómetros reembolsáveis no máximo"
+        },
+        "data_description": {
+          "excess_rate": "Em centésimos por quilómetro, por exemplo 9 para 0,09.",
+          "excess_tolerance_km": "Quilómetros acima do limite que ficam livres. 0 se o contrato não tiver tolerância.",
+          "excess_mode": "Com um limite isento cobram-se todos os quilómetros assim que a tolerância é ultrapassada. Com uma franquia apenas os que ficam acima.",
+          "refund_rate": "Em centésimos por quilómetro. 0 se o contrato não reembolsar nada.",
+          "refund_tolerance_km": "Quilómetros a menos que não são reembolsados. 0 se o contrato não tiver tolerância.",
+          "refund_mode": "Com um limite isento reembolsam-se todos assim que a tolerância é ultrapassada. Com uma franquia apenas os que ficam acima.",
+          "refund_limit_km": "Limite máximo de quilómetros reembolsáveis. 0 para sem limite."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Após 7 dias",
         "14": "Após 14 dias",
         "30": "Após 30 dias"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "A partir do primeiro quilómetro",
+        "above_tolerance": "Apenas acima da tolerância"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Dias desde a última atualização"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Custo previsto no fim do contrato"
+      },
+      "cost_at_target_pace": {
+        "name": "Custo ao ritmo do objetivo"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Até ao limite de tolerância"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Previsão do contrato excedida"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolerância de quilómetros a mais excedida"
       }
     }
   },

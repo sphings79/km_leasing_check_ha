@@ -12,7 +12,8 @@
           "start_km": "Chilometraggio all'inizio del contratto",
           "odometer_entity": "Entità del contachilometri",
           "forecast_basis": "Base della previsione",
-          "reminder_days": "Avvisami se la lettura invecchia"
+          "reminder_days": "Avvisami se la lettura invecchia",
+          "costs_enabled": "Calcola i costi"
         },
         "data_description": {
           "name": "Usato come nome del dispositivo, ad esempio il nome dell'auto.",
@@ -22,7 +23,8 @@
           "start_km": "Lascia 0 per un'auto nuova. Per un'auto usata o un contratto subentrato, indica la lettura del giorno di inizio.",
           "odometer_entity": "Un sensor, number o input_number con la lettura attuale del contachilometri.",
           "forecast_basis": "Su quale media si basano previsioni e avvisi. Le finestre richiedono lo storico del recorder e altrimenti tornano alla media dell'intero contratto.",
-          "reminder_days": "Solo per un input_number che aggiorni tu: Home Assistant chiede una nuova lettura quando il valore non cambia da questo periodo."
+          "reminder_days": "Solo per un input_number che aggiorni tu: Home Assistant chiede una nuova lettura quando il valore non cambia da questo periodo.",
+          "costs_enabled": "Aggiunge il conguaglio dei chilometri in più e in meno. Le tariffe arrivano in un secondo passaggio."
         },
         "description": "Inserisci i dati del tuo contratto di leasing. L'entità del contachilometri deve già esistere in Home Assistant."
       },
@@ -36,7 +38,8 @@
           "start_km": "Chilometraggio all'inizio del contratto",
           "odometer_entity": "Entità del contachilometri",
           "forecast_basis": "Base della previsione",
-          "reminder_days": "Avvisami se la lettura invecchia"
+          "reminder_days": "Avvisami se la lettura invecchia",
+          "costs_enabled": "Calcola i costi"
         },
         "data_description": {
           "name": "Usato come nome del dispositivo, ad esempio il nome dell'auto.",
@@ -46,9 +49,32 @@
           "start_km": "Lascia 0 per un'auto nuova. Per un'auto usata o un contratto subentrato, indica la lettura del giorno di inizio.",
           "odometer_entity": "Un sensor, number o input_number con la lettura attuale del contachilometri.",
           "forecast_basis": "Su quale media si basano previsioni e avvisi. Le finestre richiedono lo storico del recorder e altrimenti tornano alla media dell'intero contratto.",
-          "reminder_days": "Solo per un input_number che aggiorni tu: Home Assistant chiede una nuova lettura quando il valore non cambia da questo periodo."
+          "reminder_days": "Solo per un input_number che aggiorni tu: Home Assistant chiede una nuova lettura quando il valore non cambia da questo periodo.",
+          "costs_enabled": "Aggiunge il conguaglio dei chilometri in più e in meno. Le tariffe arrivano in un secondo passaggio."
         },
         "description": "Modifica i dati del contratto. Lo storico esistente viene mantenuto."
+      },
+      "costs": {
+        "title": "Conguaglio",
+        "description": "Riprendilo dal tuo contratto di leasing. Le tariffe sono in centesimi della tua valuta al chilometro, quindi 9 significa 0,09 al chilometro.",
+        "data": {
+          "excess_rate": "Tariffa per i chilometri in più",
+          "excess_tolerance_km": "Tolleranza per i chilometri in più",
+          "excess_mode": "Come vengono addebitati i chilometri in più",
+          "refund_rate": "Rimborso per i chilometri in meno",
+          "refund_tolerance_km": "Tolleranza per i chilometri in meno",
+          "refund_mode": "Come vengono rimborsati i chilometri in meno",
+          "refund_limit_km": "Chilometri rimborsabili al massimo"
+        },
+        "data_description": {
+          "excess_rate": "In centesimi al chilometro, ad esempio 9 per 0,09.",
+          "excess_tolerance_km": "Chilometri oltre il limite che restano gratuiti. 0 se il contratto non prevede tolleranza.",
+          "excess_mode": "Con una franchigia assoluta si addebitano tutti i chilometri una volta superata la tolleranza. Con una franchigia relativa solo quelli oltre.",
+          "refund_rate": "In centesimi al chilometro. 0 se il contratto non rimborsa nulla.",
+          "refund_tolerance_km": "Chilometri in meno che non vengono rimborsati. 0 se il contratto non prevede tolleranza.",
+          "refund_mode": "Con una franchigia assoluta si rimborsano tutti una volta superata la tolleranza. Con una franchigia relativa solo quelli oltre.",
+          "refund_limit_km": "Tetto dei chilometri rimborsabili. 0 per illimitato."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Dopo 7 giorni",
         "14": "Dopo 14 giorni",
         "30": "Dopo 30 giorni"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Dal primo chilometro",
+        "above_tolerance": "Solo oltre la tolleranza"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Giorni dall'ultimo aggiornamento"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Costo previsto a fine contratto"
+      },
+      "cost_at_target_pace": {
+        "name": "Costo al ritmo obiettivo"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Fino al limite di tolleranza"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Previsione del contratto superata"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolleranza dei chilometri in più superata"
       }
     }
   },

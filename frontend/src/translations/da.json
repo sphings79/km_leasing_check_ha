@@ -44,5 +44,15 @@
   "editorTitle": "Titel",
   "editorClamp": "Begræns procent til 100 %",
   "editorContractYear": "Vis kontraktår",
-  "editorForecast": "Vis prognose"
+  "editorForecast": "Vis prognose",
+  "sectionCosts": "Afregning",
+  "mCostForecast": "Prognose ved kontraktudløb",
+  "mCostAtTarget": "Ved målhastighed",
+  "mKmToTolerance": "Indtil tolerancen",
+  "costPay": "efterbetaling forventet",
+  "costRefund": "godtgørelse forventet",
+  "costNone": "intet at afregne",
+  "pillToleranceOk": "tolerance overholdt",
+  "pillToleranceExceeded": "tolerance overskredet",
+  "editorCosts": "Vis afregning"
 }

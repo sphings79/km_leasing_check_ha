@@ -12,7 +12,8 @@
           "start_km": "Kilometerstand ved kontraktstart",
           "odometer_entity": "Kilometerstand-entitet",
           "forecast_basis": "Grundlag for prognosen",
-          "reminder_days": "Mind mig om det, hvis aflæsningen bliver gammel"
+          "reminder_days": "Mind mig om det, hvis aflæsningen bliver gammel",
+          "costs_enabled": "Beregn omkostninger"
         },
         "data_description": {
           "name": "Bruges som enhedsnavn, for eksempel bilens navn.",
@@ -22,7 +23,8 @@
           "start_km": "Lad stå på 0 ved en ny bil. Ved en brugt bil eller en overtaget kontrakt angives standen på kontraktens første dag.",
           "odometer_entity": "En sensor, number eller input_number med den aktuelle kilometerstand.",
           "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten.",
-          "reminder_days": "Kun for en input_number, du selv vedligeholder: Home Assistant beder om en ny aflæsning, når værdien ikke har ændret sig i så lang tid."
+          "reminder_days": "Kun for en input_number, du selv vedligeholder: Home Assistant beder om en ny aflæsning, når værdien ikke har ændret sig i så lang tid.",
+          "costs_enabled": "Tager afregningen af merkilometer og mindrekilometer med. Satserne følger i et andet trin."
         },
         "description": "Indtast oplysningerne om din leasingkontrakt. Kilometerstand-entiteten skal allerede findes i Home Assistant."
       },
@@ -36,7 +38,8 @@
           "start_km": "Kilometerstand ved kontraktstart",
           "odometer_entity": "Kilometerstand-entitet",
           "forecast_basis": "Grundlag for prognosen",
-          "reminder_days": "Mind mig om det, hvis aflæsningen bliver gammel"
+          "reminder_days": "Mind mig om det, hvis aflæsningen bliver gammel",
+          "costs_enabled": "Beregn omkostninger"
         },
         "data_description": {
           "name": "Bruges som enhedsnavn, for eksempel bilens navn.",
@@ -46,9 +49,32 @@
           "start_km": "Lad stå på 0 ved en ny bil. Ved en brugt bil eller en overtaget kontrakt angives standen på kontraktens første dag.",
           "odometer_entity": "En sensor, number eller input_number med den aktuelle kilometerstand.",
           "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten.",
-          "reminder_days": "Kun for en input_number, du selv vedligeholder: Home Assistant beder om en ny aflæsning, når værdien ikke har ændret sig i så lang tid."
+          "reminder_days": "Kun for en input_number, du selv vedligeholder: Home Assistant beder om en ny aflæsning, når værdien ikke har ændret sig i så lang tid.",
+          "costs_enabled": "Tager afregningen af merkilometer og mindrekilometer med. Satserne følger i et andet trin."
         },
         "description": "Ret kontraktoplysningerne. Den hidtidige historik bevares."
+      },
+      "costs": {
+        "title": "Afregning",
+        "description": "Tag det fra din leasingkontrakt. Satserne angives i hundrededele af din valuta pr. kilometer, 9 betyder altså 0,09 pr. kilometer.",
+        "data": {
+          "excess_rate": "Sats for merkilometer",
+          "excess_tolerance_km": "Tolerance for merkilometer",
+          "excess_mode": "Hvordan merkilometer beregnes",
+          "refund_rate": "Godtgørelse for mindrekilometer",
+          "refund_tolerance_km": "Tolerance for mindrekilometer",
+          "refund_mode": "Hvordan mindrekilometer godtgøres",
+          "refund_limit_km": "Højst godtgjorte kilometer"
+        },
+        "data_description": {
+          "excess_rate": "I hundrededele pr. kilometer, for eksempel 9 for 0,09.",
+          "excess_tolerance_km": "Kilometer ud over grænsen, som forbliver gratis. 0, hvis kontrakten ikke har en tolerance.",
+          "excess_mode": "Med en fri grænse beregnes alle kilometer, når tolerancen er overskredet. Med et fradrag kun dem derover.",
+          "refund_rate": "I hundrededele pr. kilometer. 0, hvis kontrakten ikke godtgør noget.",
+          "refund_tolerance_km": "Mindrekilometer, der ikke godtgøres. 0, hvis kontrakten ikke har en tolerance.",
+          "refund_mode": "Med en fri grænse godtgøres alle, når tolerancen er overskredet. Med et fradrag kun dem derover.",
+          "refund_limit_km": "Øvre grænse for godtgjorte kilometer. 0 for ubegrænset."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Efter 7 dage",
         "14": "Efter 14 dage",
         "30": "Efter 30 dage"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Fra første kilometer",
+        "above_tolerance": "Kun over tolerancen"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Dage siden sidste opdatering"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Forventet omkostning ved kontraktudløb"
+      },
+      "cost_at_target_pace": {
+        "name": "Omkostning ved målhastighed"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Indtil tolerancegrænsen"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Kontraktprognose overskredet"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolerance for merkilometer overskredet"
       }
     }
   },

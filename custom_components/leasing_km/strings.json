@@ -13,7 +13,8 @@
           "start_km": "Odometer reading at contract start",
           "odometer_entity": "Odometer entity",
           "forecast_basis": "Forecast basis",
-          "reminder_days": "Remind me if the reading gets stale"
+          "reminder_days": "Remind me if the reading gets stale",
+          "costs_enabled": "Calculate costs"
         },
         "data_description": {
           "name": "Shown as the device name, for example the name of the car.",
@@ -23,7 +24,8 @@
           "start_km": "Leave at 0 for a new car delivered with an empty odometer. For a used car or a contract taken over, enter the reading on the day the contract started.",
           "odometer_entity": "A sensor, number or input_number holding the current odometer reading.",
           "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available.",
-          "reminder_days": "Only for an input_number you maintain yourself: Home Assistant asks for a new reading once the value has not changed for this long."
+          "reminder_days": "Only for an input_number you maintain yourself: Home Assistant asks for a new reading once the value has not changed for this long.",
+          "costs_enabled": "Adds the settlement of extra and unused kilometres. The rates follow in a second step."
         }
       },
       "reconfigure": {
@@ -37,7 +39,8 @@
           "start_km": "Odometer reading at contract start",
           "odometer_entity": "Odometer entity",
           "forecast_basis": "Forecast basis",
-          "reminder_days": "Remind me if the reading gets stale"
+          "reminder_days": "Remind me if the reading gets stale",
+          "costs_enabled": "Calculate costs"
         },
         "data_description": {
           "name": "Shown as the device name, for example the name of the car.",
@@ -47,7 +50,30 @@
           "start_km": "Leave at 0 for a new car delivered with an empty odometer. For a used car or a contract taken over, enter the reading on the day the contract started.",
           "odometer_entity": "A sensor, number or input_number holding the current odometer reading.",
           "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available.",
-          "reminder_days": "Only for an input_number you maintain yourself: Home Assistant asks for a new reading once the value has not changed for this long."
+          "reminder_days": "Only for an input_number you maintain yourself: Home Assistant asks for a new reading once the value has not changed for this long.",
+          "costs_enabled": "Adds the settlement of extra and unused kilometres. The rates follow in a second step."
+        }
+      },
+      "costs": {
+        "title": "Settlement terms",
+        "description": "Take these from your leasing contract. Rates are in hundredths of your currency per kilometre, so 9 means 0.09 per kilometre.",
+        "data": {
+          "excess_rate": "Charge for extra kilometres",
+          "excess_tolerance_km": "Tolerance for extra kilometres",
+          "excess_mode": "How extra kilometres are charged",
+          "refund_rate": "Refund for unused kilometres",
+          "refund_tolerance_km": "Tolerance for unused kilometres",
+          "refund_mode": "How unused kilometres are refunded",
+          "refund_limit_km": "Maximum refundable kilometres"
+        },
+        "data_description": {
+          "excess_rate": "In hundredths per kilometre, for example 9 for 0.09.",
+          "excess_tolerance_km": "Kilometres above the allowance that stay free. 0 if your contract has no tolerance.",
+          "excess_mode": "A free limit charges every kilometre once the tolerance is passed. A free allowance charges only what lies beyond it.",
+          "refund_rate": "In hundredths per kilometre. 0 if your contract refunds nothing.",
+          "refund_tolerance_km": "Unused kilometres that are not refunded. 0 if your contract has no tolerance.",
+          "refund_mode": "A free limit refunds every unused kilometre once the tolerance is passed. A free allowance refunds only what lies beyond it.",
+          "refund_limit_km": "Upper limit of refundable kilometres. 0 for no limit."
         }
       }
     },
@@ -73,6 +99,12 @@
         "7": "After 7 days",
         "14": "After 14 days",
         "30": "After 30 days"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "From the first kilometre",
+        "above_tolerance": "Only beyond the tolerance"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Days since odometer update"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Forecast cost at contract end"
+      },
+      "cost_at_target_pace": {
+        "name": "Cost at target pace"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Until the tolerance is used up"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Contract allowance forecast exceeded"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Extra kilometre tolerance exceeded"
       }
     }
   },

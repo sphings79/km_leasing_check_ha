@@ -44,5 +44,15 @@
   "editorTitle": "Titel",
   "editorClamp": "Prozentwert bei 100 % kappen",
   "editorContractYear": "Vertragsjahr anzeigen",
-  "editorForecast": "Prognose anzeigen"
+  "editorForecast": "Prognose anzeigen",
+  "sectionCosts": "Abrechnung",
+  "mCostForecast": "Prognose Laufzeitende",
+  "mCostAtTarget": "Bei Soll-Fahrweise",
+  "mKmToTolerance": "Bis zur Toleranz",
+  "costPay": "Nachzahlung erwartet",
+  "costRefund": "Erstattung erwartet",
+  "costNone": "nichts abzurechnen",
+  "pillToleranceOk": "Toleranz eingehalten",
+  "pillToleranceExceeded": "Toleranz überschritten",
+  "editorCosts": "Abrechnung anzeigen"
 }

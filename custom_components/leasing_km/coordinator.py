@@ -15,7 +15,9 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import dt as dt_util
 
 from .calc import (
+    ChargeMode,
     Contract,
+    CostTerms,
     ForecastBasis,
     Readings,
     Result,
@@ -23,9 +25,17 @@ from .calc import (
     evaluate,
 )
 from .const import (
+    CONF_COSTS_ENABLED,
+    CONF_EXCESS_MODE,
+    CONF_EXCESS_RATE,
+    CONF_EXCESS_TOLERANCE_KM,
     CONF_FORECAST_BASIS,
     CONF_MONTHS,
     CONF_ODOMETER_ENTITY,
+    CONF_REFUND_LIMIT_KM,
+    CONF_REFUND_MODE,
+    CONF_REFUND_RATE,
+    CONF_REFUND_TOLERANCE_KM,
     CONF_REMINDER_DAYS,
     CONF_START_DATE,
     CONF_START_KM,
@@ -98,6 +108,29 @@ class LeasingKmCoordinator(DataUpdateCoordinator[Result]):
         return self.config_entry.data[CONF_ODOMETER_ENTITY]
 
     @property
+    def cost_terms(self) -> CostTerms | None:
+        """Return the settlement terms, or None when they are not configured."""
+        cfg = self.config_entry.data
+        if not cfg.get(CONF_COSTS_ENABLED):
+            return None
+        return CostTerms(
+            excess_rate=float(cfg.get(CONF_EXCESS_RATE, 0)),
+            refund_rate=float(cfg.get(CONF_REFUND_RATE, 0)),
+            excess_tolerance=float(cfg.get(CONF_EXCESS_TOLERANCE_KM, 0)),
+            refund_tolerance=float(cfg.get(CONF_REFUND_TOLERANCE_KM, 0)),
+            refund_limit=float(cfg.get(CONF_REFUND_LIMIT_KM, 0)),
+            excess_mode=ChargeMode(cfg.get(CONF_EXCESS_MODE, ChargeMode.FROM_FIRST)),
+            refund_mode=ChargeMode(
+                cfg.get(CONF_REFUND_MODE, ChargeMode.ABOVE_TOLERANCE)
+            ),
+        )
+
+    @property
+    def currency(self) -> str:
+        """Return the currency Home Assistant is configured with."""
+        return self.hass.config.currency
+
+    @property
     def reminder_days(self) -> int | None:
         """Return after how many idle days to ask for a new reading."""
         choice = self.config_entry.data.get(CONF_REMINDER_DAYS, DEFAULT_REMINDER_DAYS)
@@ -122,7 +155,7 @@ class LeasingKmCoordinator(DataUpdateCoordinator[Result]):
         basis = ForecastBasis(
             self.config_entry.data.get(CONF_FORECAST_BASIS, ForecastBasis.TOTAL)
         )
-        return evaluate(contract, readings, today, basis)
+        return evaluate(contract, readings, today, basis, self.cost_terms)
 
     def _read_odometer(self) -> float:
         """Return the current odometer reading, ignoring implausible values.

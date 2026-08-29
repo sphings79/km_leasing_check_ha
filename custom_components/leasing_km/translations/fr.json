@@ -12,7 +12,8 @@
           "start_km": "Kilométrage au début du contrat",
           "odometer_entity": "Entité du compteur kilométrique",
           "forecast_basis": "Base de la prévision",
-          "reminder_days": "Me rappeler si le relevé vieillit"
+          "reminder_days": "Me rappeler si le relevé vieillit",
+          "costs_enabled": "Calculer les coûts"
         },
         "data_description": {
           "name": "Utilisé comme nom d'appareil, par exemple le nom de la voiture.",
@@ -22,7 +23,8 @@
           "start_km": "Laisser 0 pour une voiture neuve. Pour une voiture d'occasion ou un contrat repris, indiquer le relevé au jour du début du contrat.",
           "odometer_entity": "Un sensor, number ou input_number contenant le relevé actuel du compteur.",
           "forecast_basis": "Sur quelle moyenne reposent les prévisions et les alertes. Les fenêtres glissantes ont besoin de l'historique du recorder et reviennent sinon à la moyenne sur tout le contrat.",
-          "reminder_days": "Uniquement pour un input_number que tu tiens à jour toi-même : Home Assistant réclame un nouveau relevé dès que la valeur n'a pas changé pendant cette durée."
+          "reminder_days": "Uniquement pour un input_number que tu tiens à jour toi-même : Home Assistant réclame un nouveau relevé dès que la valeur n'a pas changé pendant cette durée.",
+          "costs_enabled": "Ajoute le décompte des kilomètres en trop et non parcourus. Les tarifs suivent dans une deuxième étape."
         },
         "description": "Saisis les données de ton contrat de leasing. L'entité du compteur kilométrique doit déjà exister dans Home Assistant."
       },
@@ -36,7 +38,8 @@
           "start_km": "Kilométrage au début du contrat",
           "odometer_entity": "Entité du compteur kilométrique",
           "forecast_basis": "Base de la prévision",
-          "reminder_days": "Me rappeler si le relevé vieillit"
+          "reminder_days": "Me rappeler si le relevé vieillit",
+          "costs_enabled": "Calculer les coûts"
         },
         "data_description": {
           "name": "Utilisé comme nom d'appareil, par exemple le nom de la voiture.",
@@ -46,9 +49,32 @@
           "start_km": "Laisser 0 pour une voiture neuve. Pour une voiture d'occasion ou un contrat repris, indiquer le relevé au jour du début du contrat.",
           "odometer_entity": "Un sensor, number ou input_number contenant le relevé actuel du compteur.",
           "forecast_basis": "Sur quelle moyenne reposent les prévisions et les alertes. Les fenêtres glissantes ont besoin de l'historique du recorder et reviennent sinon à la moyenne sur tout le contrat.",
-          "reminder_days": "Uniquement pour un input_number que tu tiens à jour toi-même : Home Assistant réclame un nouveau relevé dès que la valeur n'a pas changé pendant cette durée."
+          "reminder_days": "Uniquement pour un input_number que tu tiens à jour toi-même : Home Assistant réclame un nouveau relevé dès que la valeur n'a pas changé pendant cette durée.",
+          "costs_enabled": "Ajoute le décompte des kilomètres en trop et non parcourus. Les tarifs suivent dans une deuxième étape."
         },
         "description": "Modifier les données du contrat. L'historique existant est conservé."
+      },
+      "costs": {
+        "title": "Décompte",
+        "description": "À reprendre de ton contrat de leasing. Les tarifs sont en centièmes de ta devise par kilomètre, 9 signifie donc 0,09 par kilomètre.",
+        "data": {
+          "excess_rate": "Tarif des kilomètres excédentaires",
+          "excess_tolerance_km": "Tolérance sur les kilomètres excédentaires",
+          "excess_mode": "Mode de facturation des kilomètres excédentaires",
+          "refund_rate": "Remboursement des kilomètres non parcourus",
+          "refund_tolerance_km": "Tolérance sur les kilomètres non parcourus",
+          "refund_mode": "Mode de remboursement des kilomètres non parcourus",
+          "refund_limit_km": "Kilomètres remboursables au maximum"
+        },
+        "data_description": {
+          "excess_rate": "En centièmes par kilomètre, par exemple 9 pour 0,09.",
+          "excess_tolerance_km": "Kilomètres au-delà du forfait qui restent gratuits. 0 si ton contrat ne prévoit pas de tolérance.",
+          "excess_mode": "Avec une franchise simple, tous les kilomètres sont facturés dès que la tolérance est dépassée. Avec un abattement, seuls ceux au-delà le sont.",
+          "refund_rate": "En centièmes par kilomètre. 0 si ton contrat ne rembourse rien.",
+          "refund_tolerance_km": "Kilomètres non parcourus qui ne sont pas remboursés. 0 si ton contrat ne prévoit pas de tolérance.",
+          "refund_mode": "Avec une franchise simple, tous les kilomètres non parcourus sont remboursés dès que la tolérance est dépassée. Avec un abattement, seuls ceux au-delà le sont.",
+          "refund_limit_km": "Plafond des kilomètres remboursables. 0 pour illimité."
+        }
       }
     },
     "abort": {
@@ -73,6 +99,12 @@
         "7": "Après 7 jours",
         "14": "Après 14 jours",
         "30": "Après 30 jours"
+      }
+    },
+    "charge_mode": {
+      "options": {
+        "from_first": "Dès le premier kilomètre",
+        "above_tolerance": "Seulement au-delà de la tolérance"
       }
     }
   },
@@ -155,6 +187,15 @@
       },
       "odometer_updated_days_ago": {
         "name": "Jours depuis la dernière mise à jour"
+      },
+      "cost_forecast_contract_end": {
+        "name": "Coût prévu en fin de contrat"
+      },
+      "cost_at_target_pace": {
+        "name": "Coût au rythme objectif"
+      },
+      "km_to_excess_tolerance": {
+        "name": "Avant la limite de tolérance"
       }
     },
     "binary_sensor": {
@@ -166,6 +207,9 @@
       },
       "contract_forecast_exceeded": {
         "name": "Prévision du contrat dépassée"
+      },
+      "excess_tolerance_exceeded": {
+        "name": "Tolérance des kilomètres excédentaires dépassée"
       }
     }
   },

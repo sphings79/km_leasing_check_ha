@@ -33,6 +33,7 @@ class Unit(Enum):
     PERCENT = "percent"
     DURATION = "duration"
     DATE = "date"
+    MONEY = "money"
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -44,6 +45,8 @@ class LeasingKmSensorDescription(SensorEntityDescription):
     attributes_fn: Callable[[Result], dict[str, Any]] | None = None
     # Values that do not come out of the calculation but off the coordinator.
     coordinator_fn: Callable[[LeasingKmCoordinator], float | None] | None = None
+    # Only created when the contract's settlement terms are configured.
+    needs_costs: bool = False
 
 
 def _contract_attributes(data: Result) -> dict[str, Any]:
@@ -235,6 +238,32 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         entity_registry_enabled_default=False,
         value_fn=lambda d: d.contract_end_date,
     ),
+    # --- Settlement -------------------------------------------------------
+    LeasingKmSensorDescription(
+        key="cost_forecast_contract_end",
+        translation_key="cost_forecast_contract_end",
+        unit=Unit.MONEY,
+        device_class=SensorDeviceClass.MONETARY,
+        suggested_display_precision=2,
+        needs_costs=True,
+        value_fn=lambda d: d.cost_forecast_contract_end,
+    ),
+    LeasingKmSensorDescription(
+        key="cost_at_target_pace",
+        translation_key="cost_at_target_pace",
+        unit=Unit.MONEY,
+        device_class=SensorDeviceClass.MONETARY,
+        suggested_display_precision=2,
+        needs_costs=True,
+        value_fn=lambda d: d.cost_at_target_pace,
+    ),
+    LeasingKmSensorDescription(
+        key="km_to_excess_tolerance",
+        translation_key="km_to_excess_tolerance",
+        suggested_display_precision=0,
+        needs_costs=True,
+        value_fn=lambda d: d.km_to_excess_tolerance,
+    ),
     LeasingKmSensorDescription(
         key="odometer_updated_days_ago",
         translation_key="odometer_updated_days_ago",
@@ -262,8 +291,11 @@ async def async_setup_entry(
 ) -> None:
     """Set up the calculated sensors for one contract."""
     coordinator: LeasingKmCoordinator = entry.runtime_data
+    settles = coordinator.cost_terms is not None
     async_add_entities(
-        LeasingKmSensor(coordinator, entry, description) for description in SENSORS
+        LeasingKmSensor(coordinator, entry, description)
+        for description in SENSORS
+        if settles or not description.needs_costs
     )
 
 
@@ -292,6 +324,8 @@ class LeasingKmSensor(LeasingKmEntity, SensorEntity):
                 self._attr_native_unit_of_measurement = PERCENTAGE
             case Unit.DURATION:
                 self._attr_native_unit_of_measurement = UnitOfTime.DAYS
+            case Unit.MONEY:
+                self._attr_native_unit_of_measurement = coordinator.currency
             case Unit.DATE:
                 pass
 

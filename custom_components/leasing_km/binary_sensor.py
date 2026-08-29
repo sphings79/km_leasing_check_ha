@@ -24,6 +24,8 @@ class LeasingKmBinarySensorDescription(BinarySensorEntityDescription):
     """Description of a single status flag."""
 
     value_fn: Callable[[Result], bool]
+    # Only created when the contract's settlement terms are configured.
+    needs_costs: bool = False
 
 
 BINARY_SENSORS: tuple[LeasingKmBinarySensorDescription, ...] = (
@@ -42,6 +44,12 @@ BINARY_SENSORS: tuple[LeasingKmBinarySensorDescription, ...] = (
         translation_key="contract_forecast_exceeded",
         value_fn=lambda d: d.contract_forecast_exceeded,
     ),
+    LeasingKmBinarySensorDescription(
+        key="excess_tolerance_exceeded",
+        translation_key="excess_tolerance_exceeded",
+        needs_costs=True,
+        value_fn=lambda d: d.excess_tolerance_exceeded,
+    ),
 )
 
 
@@ -52,9 +60,11 @@ async def async_setup_entry(
 ) -> None:
     """Set up the status flags for one contract."""
     coordinator: LeasingKmCoordinator = entry.runtime_data
+    settles = coordinator.cost_terms is not None
     async_add_entities(
         LeasingKmBinarySensor(coordinator, entry, description)
         for description in BINARY_SENSORS
+        if settles or not description.needs_costs
     )
 
 
