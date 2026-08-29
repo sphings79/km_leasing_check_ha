@@ -1,0 +1,48 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      # ruff-action publishes no floating major tag, so the version is pinned.
+      - uses: astral-sh/ruff-action@v4.1.0
+        with:
+          args: check
+      - uses: astral-sh/ruff-action@v4.1.0
+        with:
+          args: format --check
+      - run: pip install pytest pytest-homeassistant-custom-component
+      - run: pytest
+
+  frontend:
+    name: Card bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - run: npx tsc --noEmit
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+      # The bundle is committed because HACS does not build anything, so it has
+      # to match the sources it was built from.
+      - name: The committed bundle is up to date
+        run: git diff --exit-code -- custom_components/leasing_km/frontend/

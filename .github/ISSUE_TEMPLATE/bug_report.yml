@@ -1,0 +1,39 @@
+name: Bug report
+description: Something calculates or behaves wrong
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version of this integration
+      placeholder: "2.0.0"
+    validations:
+      required: true
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant version
+      placeholder: "2026.8.3"
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Contract settings
+      description: >
+        Start date, duration, total mileage, odometer reading at contract start
+        and the forecast basis. Leave out anything you would rather not share.
+      render: text
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log output
+      description: Settings, System, Logs, filtered for leasing_km.
+      render: text
