@@ -1,2 +1,4 @@
+# Pinned so the CI runs against the same Home Assistant as local
+# development; this release line requires Python 3.14.
 pytest
 pytest-homeassistant-custom-component==0.13.359
