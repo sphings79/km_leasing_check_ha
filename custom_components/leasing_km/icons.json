@@ -75,6 +75,9 @@
       },
       "days_remaining": {
         "default": "mdi:calendar-clock-outline"
+      },
+      "odometer_updated_days_ago": {
+        "default": "mdi:calendar-refresh"
       }
     },
     "binary_sensor": {

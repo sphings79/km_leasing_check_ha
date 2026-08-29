@@ -11,7 +11,8 @@
           "total_km": "Totale kilometrage",
           "start_km": "Kilometerstand bij aanvang",
           "odometer_entity": "Kilometerstand-entiteit",
-          "forecast_basis": "Basis voor de prognose"
+          "forecast_basis": "Basis voor de prognose",
+          "reminder_days": "Herinneren als de stand veroudert"
         },
         "data_description": {
           "name": "Wordt gebruikt als apparaatnaam, bijvoorbeeld de naam van de auto.",
@@ -20,7 +21,8 @@
           "total_km": "De in het contract inbegrepen kilometers, in de eenheid van je kilometerstand-entiteit.",
           "start_km": "Laat 0 staan bij een nieuwe auto. Vul bij een gebruikte auto of een overgenomen contract de stand op de dag van aanvang in.",
           "odometer_entity": "Een sensor, number of input_number met de actuele kilometerstand.",
-          "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd."
+          "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd.",
+          "reminder_days": "Alleen voor een input_number die je zelf bijhoudt: Home Assistant vraagt om een nieuwe stand zodra de waarde zo lang niet is gewijzigd."
         },
         "description": "Voer de gegevens van je leasecontract in. De kilometerstand-entiteit moet al in Home Assistant bestaan."
       },
@@ -33,7 +35,8 @@
           "total_km": "Totale kilometrage",
           "start_km": "Kilometerstand bij aanvang",
           "odometer_entity": "Kilometerstand-entiteit",
-          "forecast_basis": "Basis voor de prognose"
+          "forecast_basis": "Basis voor de prognose",
+          "reminder_days": "Herinneren als de stand veroudert"
         },
         "data_description": {
           "name": "Wordt gebruikt als apparaatnaam, bijvoorbeeld de naam van de auto.",
@@ -42,7 +45,8 @@
           "total_km": "De in het contract inbegrepen kilometers, in de eenheid van je kilometerstand-entiteit.",
           "start_km": "Laat 0 staan bij een nieuwe auto. Vul bij een gebruikte auto of een overgenomen contract de stand op de dag van aanvang in.",
           "odometer_entity": "Een sensor, number of input_number met de actuele kilometerstand.",
-          "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd."
+          "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd.",
+          "reminder_days": "Alleen voor een input_number die je zelf bijhoudt: Home Assistant vraagt om een nieuwe stand zodra de waarde zo lang niet is gewijzigd."
         },
         "description": "Wijzig de contractgegevens. De bestaande geschiedenis blijft behouden."
       }
@@ -50,6 +54,9 @@
     "abort": {
       "already_configured": "Dit contract is al ingesteld.",
       "reconfigure_successful": "Contract bijgewerkt."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "Een herinnering werkt alleen met een input_number die je zelf bijhoudt. Een voertuigsensor zwijgt zolang de auto stilstaat."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Gemiddelde hele looptijd",
         "d30": "Laatste 30 dagen",
         "d90": "Laatste 90 dagen"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Uit",
+        "7": "Na 7 dagen",
+        "14": "Na 14 dagen",
+        "30": "Na 30 dagen"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Resterende dagen"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Dagen sinds de laatste update"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "Entiteits-ID's van Leasing KM zijn gewijzigd",
       "description": "Versie 2 gebruikt taalonafhankelijke entiteits-ID's. Pas je dashboards, automatiseringen en scripts aan:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: de kilometerstand is {days} dagen oud",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Kilometerstand bijwerken",
+            "description": "Vul de actuele stand in. Die wordt direct naar {entity_id} geschreven.",
+            "data": {
+              "odometer": "Kilometerstand"
+            }
+          }
+        }
+      }
     }
   }
 }

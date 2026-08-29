@@ -12,7 +12,8 @@
           "total_km": "Gesamtlaufleistung",
           "start_km": "Kilometerstand bei Vertragsbeginn",
           "odometer_entity": "Entität für den Kilometerstand",
-          "forecast_basis": "Prognosebasis"
+          "forecast_basis": "Prognosebasis",
+          "reminder_days": "Erinnern, wenn der Stand veraltet"
         },
         "data_description": {
           "name": "Wird als Gerätename verwendet, zum Beispiel der Name des Autos.",
@@ -21,7 +22,8 @@
           "total_km": "Im Vertrag enthaltene Laufleistung, in der Einheit deiner Kilometerstands-Entität.",
           "start_km": "Bei einem Neuwagen mit leerem Tacho 0 lassen. Bei einem Gebrauchtwagen oder einer Vertragsübernahme den Stand am Tag des Vertragsbeginns eintragen.",
           "odometer_entity": "Ein Sensor, eine number oder ein input_number mit dem aktuellen Kilometerstand.",
-          "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück."
+          "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück.",
+          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat."
         }
       },
       "reconfigure": {
@@ -34,7 +36,8 @@
           "total_km": "Gesamtlaufleistung",
           "start_km": "Kilometerstand bei Vertragsbeginn",
           "odometer_entity": "Entität für den Kilometerstand",
-          "forecast_basis": "Prognosebasis"
+          "forecast_basis": "Prognosebasis",
+          "reminder_days": "Erinnern, wenn der Stand veraltet"
         },
         "data_description": {
           "name": "Wird als Gerätename verwendet, zum Beispiel der Name des Autos.",
@@ -43,13 +46,17 @@
           "total_km": "Im Vertrag enthaltene Laufleistung, in der Einheit deiner Kilometerstands-Entität.",
           "start_km": "Bei einem Neuwagen mit leerem Tacho 0 lassen. Bei einem Gebrauchtwagen oder einer Vertragsübernahme den Stand am Tag des Vertragsbeginns eintragen.",
           "odometer_entity": "Ein Sensor, eine number oder ein input_number mit dem aktuellen Kilometerstand.",
-          "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück."
+          "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück.",
+          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat."
         }
       }
     },
     "abort": {
       "already_configured": "Dieser Vertrag ist bereits eingerichtet.",
       "reconfigure_successful": "Vertrag aktualisiert."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "Eine Erinnerung funktioniert nur mit einem selbst gepflegten input_number. Ein Fahrzeugsensor schweigt, solange das Auto steht."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Durchschnitt der gesamten Laufzeit",
         "d30": "Letzte 30 Tage",
         "d90": "Letzte 90 Tage"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Aus",
+        "7": "Nach 7 Tagen",
+        "14": "Nach 14 Tagen",
+        "30": "Nach 30 Tagen"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Verbleibende Tage"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Tage seit der letzten Aktualisierung"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "Entitäts-IDs von Leasing KM haben sich geändert",
       "description": "Version 2 verwendet sprachunabhängige Entitäts-IDs. Bitte passe deine Dashboards, Automatisierungen und Skripte an:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: Der Kilometerstand ist {days} Tage alt",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Kilometerstand aktualisieren",
+            "description": "Trag den aktuellen Stand ein. Er wird direkt in {entity_id} geschrieben.",
+            "data": {
+              "odometer": "Kilometerstand"
+            }
+          }
+        }
+      }
     }
   }
 }

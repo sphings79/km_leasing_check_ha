@@ -12,7 +12,8 @@
           "total_km": "Total mileage allowance",
           "start_km": "Odometer reading at contract start",
           "odometer_entity": "Odometer entity",
-          "forecast_basis": "Forecast basis"
+          "forecast_basis": "Forecast basis",
+          "reminder_days": "Remind me if the reading gets stale"
         },
         "data_description": {
           "name": "Shown as the device name, for example the name of the car.",
@@ -21,7 +22,8 @@
           "total_km": "Mileage included in the contract, in the unit of your odometer entity.",
           "start_km": "Leave at 0 for a new car delivered with an empty odometer. For a used car or a contract taken over, enter the reading on the day the contract started.",
           "odometer_entity": "A sensor, number or input_number holding the current odometer reading.",
-          "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available."
+          "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available.",
+          "reminder_days": "Only for an input_number you maintain yourself: Home Assistant asks for a new reading once the value has not changed for this long."
         }
       },
       "reconfigure": {
@@ -34,7 +36,8 @@
           "total_km": "Total mileage allowance",
           "start_km": "Odometer reading at contract start",
           "odometer_entity": "Odometer entity",
-          "forecast_basis": "Forecast basis"
+          "forecast_basis": "Forecast basis",
+          "reminder_days": "Remind me if the reading gets stale"
         },
         "data_description": {
           "name": "Shown as the device name, for example the name of the car.",
@@ -43,13 +46,17 @@
           "total_km": "Mileage included in the contract, in the unit of your odometer entity.",
           "start_km": "Leave at 0 for a new car delivered with an empty odometer. For a used car or a contract taken over, enter the reading on the day the contract started.",
           "odometer_entity": "A sensor, number or input_number holding the current odometer reading.",
-          "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available."
+          "forecast_basis": "Which average the forecasts and warnings are based on. The windowed averages need recorder history and fall back to the whole contract average when none is available.",
+          "reminder_days": "Only for an input_number you maintain yourself: Home Assistant asks for a new reading once the value has not changed for this long."
         }
       }
     },
     "abort": {
       "already_configured": "This contract is already set up.",
       "reconfigure_successful": "Contract updated."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "A reminder only works with an input_number you maintain yourself. A vehicle sensor is quiet whenever the car is parked."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Whole contract average",
         "d30": "Last 30 days",
         "d90": "Last 90 days"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Off",
+        "7": "After 7 days",
+        "14": "After 14 days",
+        "30": "After 30 days"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Days remaining"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Days since odometer update"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "Leasing KM entity IDs have changed",
       "description": "Version 2 uses language independent entity IDs. Please update your dashboards, automations and scripts:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: the odometer reading is {days} days old",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Update the odometer reading",
+            "description": "Enter the current reading. It is written straight into {entity_id}.",
+            "data": {
+              "odometer": "Odometer reading"
+            }
+          }
+        }
+      }
     }
   }
 }

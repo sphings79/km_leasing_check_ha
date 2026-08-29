@@ -17,6 +17,7 @@ CONF_TOTAL_KM = "total_km"
 CONF_START_KM = "start_km"
 CONF_ODOMETER_ENTITY = "odometer_entity"
 CONF_FORECAST_BASIS = "forecast_basis"
+CONF_REMINDER_DAYS = "reminder_days"
 
 # Reserved for the cost calculation that lands in a later release. The keys are
 # defined here so the config entry does not need another migration then.
@@ -32,9 +33,18 @@ LEGACY_CONF_MONTHS = "laufzeit_monate"
 LEGACY_CONF_TOTAL_KM = "km_gesamt"
 LEGACY_CONF_ODOMETER_ENTITY = "km_entity"
 
+# How long the odometer may stay untouched before the integration asks for a
+# new reading. Only meaningful for a manually maintained input_number.
+REMINDER_OFF = "off"
+REMINDER_CHOICES = (REMINDER_OFF, "7", "14", "30")
+MANUAL_DOMAIN = "input_number"
+
+STORAGE_VERSION = 1
+
 DEFAULT_MONTHS = 48
 DEFAULT_TOTAL_KM = 80_000
 DEFAULT_START_KM = 0
+DEFAULT_REMINDER_DAYS = REMINDER_OFF
 
 UPDATE_INTERVAL = timedelta(minutes=30)
 

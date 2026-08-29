@@ -4,10 +4,13 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta
 import logging
+from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, UnitOfLength
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import issue_registry as ir
+from homeassistant.helpers.storage import Store
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 
@@ -23,12 +26,17 @@ from .const import (
     CONF_FORECAST_BASIS,
     CONF_MONTHS,
     CONF_ODOMETER_ENTITY,
+    CONF_REMINDER_DAYS,
     CONF_START_DATE,
     CONF_START_KM,
     CONF_TOTAL_KM,
+    DEFAULT_REMINDER_DAYS,
     DOMAIN,
     HISTORY_INTERVAL,
+    MANUAL_DOMAIN,
     ODOMETER_ROLLBACK_TOLERANCE,
+    REMINDER_OFF,
+    STORAGE_VERSION,
     UPDATE_INTERVAL,
 )
 from .history import async_odometer_at
@@ -56,6 +64,12 @@ class LeasingKmCoordinator(DataUpdateCoordinator[Result]):
         self._history: dict[str, float | None] = {}
         self._history_fetched: datetime | None = None
         self._history_year_start: date | None = None
+        # The reading and the moment it last changed, kept across restarts:
+        # an input_number restores its value on start, which would otherwise
+        # reset the reminder every time Home Assistant is restarted.
+        self._store: Store = Store(hass, STORAGE_VERSION, f"{DOMAIN}.{entry.entry_id}")
+        self._tracked: dict[str, Any] | None = None
+        self.days_since_odometer_change: int | None = None
 
     @property
     def native_unit(self) -> str:
@@ -83,11 +97,23 @@ class LeasingKmCoordinator(DataUpdateCoordinator[Result]):
         """Return the entity id the odometer is read from."""
         return self.config_entry.data[CONF_ODOMETER_ENTITY]
 
+    @property
+    def reminder_days(self) -> int | None:
+        """Return after how many idle days to ask for a new reading."""
+        choice = self.config_entry.data.get(CONF_REMINDER_DAYS, DEFAULT_REMINDER_DAYS)
+        if choice == REMINDER_OFF or not self.odometer_entity.startswith(
+            f"{MANUAL_DOMAIN}."
+        ):
+            return None
+        return int(choice)
+
     async def _async_update_data(self) -> Result:
         """Read the odometer and recalculate every value."""
         contract = self.contract
         today = dt_util.now().date()
         odometer = self._read_odometer()
+
+        await self._async_track_change(odometer)
 
         readings = Readings(
             odometer=odometer,
@@ -144,6 +170,48 @@ class LeasingKmCoordinator(DataUpdateCoordinator[Result]):
             raise UpdateFailed(reason)
         _LOGGER.debug("%s, keeping the last known reading", reason)
         return self._last_odometer
+
+    async def _async_track_change(self, odometer: float) -> None:
+        """Remember when the reading last changed and nag if that is long ago."""
+        now = dt_util.utcnow()
+        if self._tracked is None:
+            self._tracked = await self._store.async_load() or {}
+
+        if self._tracked.get("odometer") != odometer:
+            self._tracked = {"odometer": odometer, "changed_at": now.isoformat()}
+            await self._store.async_save(self._tracked)
+
+        changed_at = dt_util.parse_datetime(self._tracked["changed_at"]) or now
+        self.days_since_odometer_change = (now - changed_at).days
+        self._async_update_reminder()
+
+    def _async_update_reminder(self) -> None:
+        """Raise or drop the repair issue asking for a fresh odometer reading."""
+        issue_id = f"odometer_stale_{self.config_entry.entry_id}"
+        limit = self.reminder_days
+        days = self.days_since_odometer_change
+
+        if limit is None or days is None or days < limit:
+            ir.async_delete_issue(self.hass, DOMAIN, issue_id)
+            return
+
+        ir.async_create_issue(
+            self.hass,
+            DOMAIN,
+            issue_id,
+            is_fixable=True,
+            severity=ir.IssueSeverity.WARNING,
+            translation_key="odometer_stale",
+            translation_placeholders={
+                "name": self.config_entry.title,
+                "days": str(days),
+                "entity_id": self.odometer_entity,
+            },
+            data={
+                "entry_id": self.config_entry.entry_id,
+                "entity_id": self.odometer_entity,
+            },
+        )
 
     async def _async_history(
         self, contract: Contract, today: date

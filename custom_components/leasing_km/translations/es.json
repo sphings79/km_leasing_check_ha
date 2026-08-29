@@ -11,7 +11,8 @@
           "total_km": "Kilometraje total",
           "start_km": "Kilometraje al inicio del contrato",
           "odometer_entity": "Entidad del cuentakilómetros",
-          "forecast_basis": "Base de la previsión"
+          "forecast_basis": "Base de la previsión",
+          "reminder_days": "Avisarme si la lectura se queda antigua"
         },
         "data_description": {
           "name": "Se usa como nombre del dispositivo, por ejemplo el nombre del coche.",
@@ -20,7 +21,8 @@
           "total_km": "Kilometraje incluido en el contrato, en la unidad de tu entidad del cuentakilómetros.",
           "start_km": "Deja 0 en un coche nuevo. En un coche usado o un contrato asumido, indica la lectura del día en que empezó el contrato.",
           "odometer_entity": "Un sensor, number o input_number con la lectura actual del cuentakilómetros.",
-          "forecast_basis": "En qué media se basan las previsiones y los avisos. Las ventanas necesitan historial del recorder y, si no lo hay, vuelven a la media de todo el contrato."
+          "forecast_basis": "En qué media se basan las previsiones y los avisos. Las ventanas necesitan historial del recorder y, si no lo hay, vuelven a la media de todo el contrato.",
+          "reminder_days": "Solo para un input_number que mantienes tú: Home Assistant pide una lectura nueva cuando el valor lleva este tiempo sin cambiar."
         },
         "description": "Introduce los datos de tu contrato de leasing. La entidad del cuentakilómetros ya debe existir en Home Assistant."
       },
@@ -33,7 +35,8 @@
           "total_km": "Kilometraje total",
           "start_km": "Kilometraje al inicio del contrato",
           "odometer_entity": "Entidad del cuentakilómetros",
-          "forecast_basis": "Base de la previsión"
+          "forecast_basis": "Base de la previsión",
+          "reminder_days": "Avisarme si la lectura se queda antigua"
         },
         "data_description": {
           "name": "Se usa como nombre del dispositivo, por ejemplo el nombre del coche.",
@@ -42,7 +45,8 @@
           "total_km": "Kilometraje incluido en el contrato, en la unidad de tu entidad del cuentakilómetros.",
           "start_km": "Deja 0 en un coche nuevo. En un coche usado o un contrato asumido, indica la lectura del día en que empezó el contrato.",
           "odometer_entity": "Un sensor, number o input_number con la lectura actual del cuentakilómetros.",
-          "forecast_basis": "En qué media se basan las previsiones y los avisos. Las ventanas necesitan historial del recorder y, si no lo hay, vuelven a la media de todo el contrato."
+          "forecast_basis": "En qué media se basan las previsiones y los avisos. Las ventanas necesitan historial del recorder y, si no lo hay, vuelven a la media de todo el contrato.",
+          "reminder_days": "Solo para un input_number que mantienes tú: Home Assistant pide una lectura nueva cuando el valor lleva este tiempo sin cambiar."
         },
         "description": "Cambia los datos del contrato. El historial existente se conserva."
       }
@@ -50,6 +54,9 @@
     "abort": {
       "already_configured": "Este contrato ya está configurado.",
       "reconfigure_successful": "Contrato actualizado."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "El aviso solo funciona con un input_number que mantienes tú. Un sensor del vehículo calla mientras el coche está parado."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Media de todo el contrato",
         "d30": "Últimos 30 días",
         "d90": "Últimos 90 días"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Desactivado",
+        "7": "Tras 7 días",
+        "14": "Tras 14 días",
+        "30": "Tras 30 días"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Días restantes"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Días desde la última actualización"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "Los IDs de entidad de Leasing KM han cambiado",
       "description": "La versión 2 usa IDs de entidad independientes del idioma. Actualiza tus paneles, automatizaciones y scripts:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: la lectura del cuentakilómetros tiene {days} días",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Actualizar el cuentakilómetros",
+            "description": "Introduce la lectura actual. Se escribe directamente en {entity_id}.",
+            "data": {
+              "odometer": "Lectura del cuentakilómetros"
+            }
+          }
+        }
+      }
     }
   }
 }

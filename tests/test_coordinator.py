@@ -1,11 +1,17 @@
 """Tests for the coordinator's reading of the odometer entity."""
 
+from datetime import timedelta
+
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
+from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.helpers import issue_registry as ir
+from homeassistant.setup import async_setup_component
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.leasing_km.const import DOMAIN
+from custom_components.leasing_km.repairs import async_create_fix_flow
 
 DATA = {
     "name": "Testwagen",
@@ -110,3 +116,66 @@ async def test_contract_starting_in_the_future_still_creates_entities(
         hass.states.get("binary_sensor.neuwagen_contract_forecast_exceeded").state
         == "off"
     )
+
+
+async def test_reminder_is_off_for_a_vehicle_sensor(hass: HomeAssistant):
+    """A parked car reports nothing for days, which is not a problem."""
+    entry = await _setup(hass, "45000")
+    hass.config_entries.async_update_entry(entry, data={**DATA, "reminder_days": "7"})
+    await hass.async_block_till_done()
+
+    assert entry.runtime_data.reminder_days is None
+
+
+async def test_reminder_raises_and_clears_a_repair_issue(hass: HomeAssistant, freezer):
+    hass.states.async_set("input_number.odo", "45000", {"unit_of_measurement": "km"})
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        version=2,
+        title="Testwagen",
+        data={**DATA, "odometer_entity": "input_number.odo", "reminder_days": "7"},
+    )
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    issue_id = f"odometer_stale_{entry.entry_id}"
+    registry = ir.async_get(hass)
+    assert registry.async_get_issue(DOMAIN, issue_id) is None
+
+    # Eight days later the value is still the same one.
+    freezer.tick(timedelta(days=8))
+    await entry.runtime_data.async_refresh()
+    await hass.async_block_till_done()
+
+    issue = registry.async_get_issue(DOMAIN, issue_id)
+    assert issue is not None
+    assert issue.is_fixable is True
+    assert issue.translation_placeholders["days"] == "8"
+
+    # Entering a new reading clears it again.
+    hass.states.async_set("input_number.odo", "46000", {"unit_of_measurement": "km"})
+    await hass.async_block_till_done()
+    assert registry.async_get_issue(DOMAIN, issue_id) is None
+
+
+async def test_the_repair_flow_writes_the_new_reading(hass: HomeAssistant):
+    assert await async_setup_component(
+        hass,
+        "input_number",
+        {"input_number": {"odo": {"min": 0, "max": 500000, "initial": 45000}}},
+    )
+    await hass.async_block_till_done()
+
+    flow = await async_create_fix_flow(
+        hass, "odometer_stale_abc", {"entity_id": "input_number.odo"}
+    )
+    flow.hass = hass
+    form = await flow.async_step_init()
+    assert form["step_id"] == "confirm"
+
+    result = await flow.async_step_confirm({"odometer": 46500})
+    await hass.async_block_till_done()
+
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert hass.states.get("input_number.odo").state == "46500.0"

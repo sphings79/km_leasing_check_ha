@@ -39,9 +39,11 @@ class Unit(Enum):
 class LeasingKmSensorDescription(SensorEntityDescription):
     """Description of a single calculated sensor."""
 
-    value_fn: Callable[[Result], float | date | None]
+    value_fn: Callable[[Result], float | date | None] | None = None
     unit: Unit = Unit.DISTANCE
     attributes_fn: Callable[[Result], dict[str, Any]] | None = None
+    # Values that do not come out of the calculation but off the coordinator.
+    coordinator_fn: Callable[[LeasingKmCoordinator], float | None] | None = None
 
 
 def _contract_attributes(data: Result) -> dict[str, Any]:
@@ -234,6 +236,15 @@ SENSORS: tuple[LeasingKmSensorDescription, ...] = (
         value_fn=lambda d: d.contract_end_date,
     ),
     LeasingKmSensorDescription(
+        key="odometer_updated_days_ago",
+        translation_key="odometer_updated_days_ago",
+        unit=Unit.DURATION,
+        device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        coordinator_fn=lambda c: c.days_since_odometer_change,
+    ),
+    LeasingKmSensorDescription(
         key="days_remaining",
         translation_key="days_remaining",
         unit=Unit.DURATION,
@@ -287,7 +298,9 @@ class LeasingKmSensor(LeasingKmEntity, SensorEntity):
     @property
     def native_value(self) -> float | date | None:
         """Return the calculated value."""
-        if self.coordinator.data is None:
+        if self.entity_description.coordinator_fn is not None:
+            return self.entity_description.coordinator_fn(self.coordinator)
+        if self.coordinator.data is None or self.entity_description.value_fn is None:
             return None
         return self.entity_description.value_fn(self.coordinator.data)
 

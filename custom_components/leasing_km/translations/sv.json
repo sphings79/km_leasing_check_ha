@@ -11,7 +11,8 @@
           "total_km": "Total körsträcka",
           "start_km": "Mätarställning vid avtalets start",
           "odometer_entity": "Entitet för mätarställning",
-          "forecast_basis": "Grund för prognosen"
+          "forecast_basis": "Grund för prognosen",
+          "reminder_days": "Påminn mig om avläsningen blir gammal"
         },
         "data_description": {
           "name": "Används som enhetsnamn, till exempel bilens namn.",
@@ -20,7 +21,8 @@
           "total_km": "Körsträcka som ingår i avtalet, i enheten från din mätarställningsentitet.",
           "start_km": "Lämna 0 för en ny bil. För en begagnad bil eller ett övertaget avtal, ange ställningen den dag avtalet började.",
           "odometer_entity": "En sensor, number eller input_number med aktuell mätarställning.",
-          "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet."
+          "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet.",
+          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge."
         },
         "description": "Ange uppgifterna för ditt leasingavtal. Entiteten för mätarställningen måste redan finnas i Home Assistant."
       },
@@ -33,7 +35,8 @@
           "total_km": "Total körsträcka",
           "start_km": "Mätarställning vid avtalets start",
           "odometer_entity": "Entitet för mätarställning",
-          "forecast_basis": "Grund för prognosen"
+          "forecast_basis": "Grund för prognosen",
+          "reminder_days": "Påminn mig om avläsningen blir gammal"
         },
         "data_description": {
           "name": "Används som enhetsnamn, till exempel bilens namn.",
@@ -42,7 +45,8 @@
           "total_km": "Körsträcka som ingår i avtalet, i enheten från din mätarställningsentitet.",
           "start_km": "Lämna 0 för en ny bil. För en begagnad bil eller ett övertaget avtal, ange ställningen den dag avtalet började.",
           "odometer_entity": "En sensor, number eller input_number med aktuell mätarställning.",
-          "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet."
+          "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet.",
+          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge."
         },
         "description": "Ändra avtalsuppgifterna. Befintlig historik behålls."
       }
@@ -50,6 +54,9 @@
     "abort": {
       "already_configured": "Det här avtalet är redan konfigurerat.",
       "reconfigure_successful": "Avtalet uppdaterat."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "En påminnelse fungerar bara med en input_number som du sköter själv. En sensor i bilen är tyst så länge bilen står stilla."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Genomsnitt för hela avtalet",
         "d30": "Senaste 30 dagarna",
         "d90": "Senaste 90 dagarna"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Av",
+        "7": "Efter 7 dagar",
+        "14": "Efter 14 dagar",
+        "30": "Efter 30 dagar"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Återstående dagar"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Dagar sedan senaste uppdateringen"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "Entitets-id:n för Leasing KM har ändrats",
       "description": "Version 2 använder språkoberoende entitets-id:n. Uppdatera dina instrumentpaneler, automationer och skript:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: mätarställningen är {days} dagar gammal",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Uppdatera mätarställningen",
+            "description": "Ange den aktuella ställningen. Den skrivs direkt till {entity_id}.",
+            "data": {
+              "odometer": "Mätarställning"
+            }
+          }
+        }
+      }
     }
   }
 }

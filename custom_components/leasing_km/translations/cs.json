@@ -11,7 +11,8 @@
           "total_km": "Celkový nájezd",
           "start_km": "Stav tachometru na začátku smlouvy",
           "odometer_entity": "Entita se stavem tachometru",
-          "forecast_basis": "Základ prognózy"
+          "forecast_basis": "Základ prognózy",
+          "reminder_days": "Připomenout, když odečet zestárne"
         },
         "data_description": {
           "name": "Použije se jako název zařízení, například jméno auta.",
@@ -20,7 +21,8 @@
           "total_km": "Nájezd zahrnutý ve smlouvě, v jednotce tvé entity tachometru.",
           "start_km": "U nového auta ponech 0. U ojetého auta nebo převzaté smlouvy zadej stav ke dni začátku smlouvy.",
           "odometer_entity": "Sensor, number nebo input_number s aktuálním stavem tachometru.",
-          "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy."
+          "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy.",
+          "reminder_days": "Jen pro input_number, který si udržuješ sám: Home Assistant si řekne o nový odečet, jakmile se hodnota takto dlouho nezmění."
         },
         "description": "Zadej údaje své leasingové smlouvy. Entita se stavem tachometru už musí v Home Assistantu existovat."
       },
@@ -33,7 +35,8 @@
           "total_km": "Celkový nájezd",
           "start_km": "Stav tachometru na začátku smlouvy",
           "odometer_entity": "Entita se stavem tachometru",
-          "forecast_basis": "Základ prognózy"
+          "forecast_basis": "Základ prognózy",
+          "reminder_days": "Připomenout, když odečet zestárne"
         },
         "data_description": {
           "name": "Použije se jako název zařízení, například jméno auta.",
@@ -42,7 +45,8 @@
           "total_km": "Nájezd zahrnutý ve smlouvě, v jednotce tvé entity tachometru.",
           "start_km": "U nového auta ponech 0. U ojetého auta nebo převzaté smlouvy zadej stav ke dni začátku smlouvy.",
           "odometer_entity": "Sensor, number nebo input_number s aktuálním stavem tachometru.",
-          "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy."
+          "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy.",
+          "reminder_days": "Jen pro input_number, který si udržuješ sám: Home Assistant si řekne o nový odečet, jakmile se hodnota takto dlouho nezmění."
         },
         "description": "Změň údaje smlouvy. Dosavadní historie zůstane zachována."
       }
@@ -50,6 +54,9 @@
     "abort": {
       "already_configured": "Tato smlouva je již nastavena.",
       "reconfigure_successful": "Smlouva aktualizována."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "Připomenutí funguje jen s input_number, který si udržuješ sám. Senzor vozidla mlčí, dokud auto stojí."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Průměr celé smlouvy",
         "d30": "Posledních 30 dní",
         "d90": "Posledních 90 dní"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Vypnuto",
+        "7": "Po 7 dnech",
+        "14": "Po 14 dnech",
+        "30": "Po 30 dnech"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Zbývající dny"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Dní od poslední aktualizace"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "ID entit Leasing KM se změnila",
       "description": "Verze 2 používá jazykově nezávislá ID entit. Uprav své nástěnky, automatizace a skripty:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: stav tachometru je {days} dní starý",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Aktualizovat stav tachometru",
+            "description": "Zadej aktuální stav. Zapíše se rovnou do {entity_id}.",
+            "data": {
+              "odometer": "Stav tachometru"
+            }
+          }
+        }
+      }
     }
   }
 }

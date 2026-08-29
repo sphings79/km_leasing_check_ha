@@ -22,6 +22,7 @@
 - [Wie gerechnet wird](#wie-gerechnet-wird)
 - [Installation](#installation)
 - [Konfiguration](#konfiguration)
+  - [Kein Sensor im Auto? Von Hand eintragen](#kein-sensor-im-auto-von-hand-eintragen)
 - [Umstieg von Version 1](#umstieg-von-version-1)
 - [Automatisierungsbeispiele](#automatisierungsbeispiele)
 - [Fehlersuche](#fehlersuche)
@@ -45,7 +46,7 @@ Alles läuft lokal. Keine Netzwerkanfragen, keine API-Schlüssel, kein Cloud-Kon
 hat überhaupt keine `requirements` und liest nur eine Entität, die es bei dir ohnehin gibt.
 
 <div align="center">
-  <img src="assets/setup.de.svg" alt="Der Einrichtungsdialog des Leasing KM-Rechners in Home Assistant mit Feldern für Name, Vertragsbeginn, Laufzeit in Monaten, Gesamtlaufleistung, Kilometerstand bei Vertragsbeginn, Kilometerstands-Entität und Prognosebasis" width="100%">
+  <img src="assets/setup.de.svg" alt="Der Einrichtungsdialog des Leasing KM-Rechners in Home Assistant mit Feldern für Name, Vertragsbeginn, Laufzeit in Monaten, Gesamtlaufleistung, Kilometerstand bei Vertragsbeginn, Kilometerstands-Entität, Prognosebasis und Erinnerung bei veraltetem Stand" width="100%">
 </div>
 
 ## Diese Entitäten entstehen
@@ -81,9 +82,9 @@ lauten in jeder Installation gleich; übersetzt werden nur die angezeigten Namen
 | `binary_sensor.<name>_annual_forecast_exceeded` | An, wenn dieses Vertragsjahr über Budget läuft | `Aus` |
 | `binary_sensor.<name>_contract_forecast_exceeded` | An, wenn der ganze Vertrag über Budget läuft | `Aus` |
 
-Sieben weitere Sensoren sind ab Werk deaktiviert und lassen sich einzeln einschalten: die 30- und
-90-Tage-Durchschnitte, die Kalenderjahreswerte, das Budget des Vertragsjahres, das Vertragsende
-und die verbleibenden Tage.
+Acht weitere Sensoren sind ab Werk deaktiviert und lassen sich einzeln einschalten: die 30- und
+90-Tage-Durchschnitte, die Kalenderjahreswerte, das Budget des Vertragsjahres, das Vertragsende,
+die verbleibenden Tage und die Tage seit der letzten Aktualisierung des Kilometerstands.
 
 `sensor.<name>_contract_elapsed` trägt zusätzlich die Vertragsdaten als Attribute:
 `contract_end`, `elapsed_days`, `total_days`, `days_remaining`, `contract_year`,
@@ -177,6 +178,24 @@ Integrationseintrag ändern.
 | **Kilometerstand bei Vertragsbeginn** | `0` beim Neuwagen, der tatsächliche Stand beim Gebrauchtwagen oder einer Vertragsübernahme |
 | **Entität für den Kilometerstand** | Ein `sensor`, eine `number` oder ein `input_number` mit dem aktuellen Stand |
 | **Prognosebasis** | Durchschnitt der gesamten Laufzeit, letzte 30 Tage oder letzte 90 Tage |
+| **Erinnern, wenn der Stand veraltet** | Aus, oder nach 7, 14 oder 30 Tagen ohne Änderung |
+
+### Kein Sensor im Auto? Von Hand eintragen
+
+Hat dein Auto keine Integration, legst du einen `input_number` an und trägst den Stand ein, wenn du
+tankst oder daran denkst. Damit genau dieses Daran-Denken nicht die Schwachstelle bleibt, kann die
+Integration die Entität im Auge behalten: Ändert sich der Wert 7, 14 oder 30 Tage lang nicht,
+erscheint eine Reparaturmeldung, die nach einem frischen Stand fragt — **mit einem Feld, in das du
+ihn direkt einträgst**. Beim Absenden schreibt die Integration den Wert in deinen `input_number`
+und die Meldung verschwindet.
+
+Die Erinnerung gibt es bewusst nur für einen selbst gepflegten `input_number`. Ein Sensor aus einer
+Fahrzeug-Integration schweigt, solange das Auto steht — dieselbe Erinnerung wäre dort nur ein
+Fehlalarm.
+
+Sie übersteht Neustarts: Home Assistant stellt einen `input_number` beim Start wieder her, was die
+Frist sonst bei jedem Neustart zurücksetzen würde. Deshalb merkt sich die Integration den Stand und
+den Zeitpunkt der letzten Änderung selbst.
 
 Die Kilometerfelder gelten in der Einheit deiner Kilometerstands-Entität. Die Entitäten tragen die
 Geräteklasse `distance`, Home Assistant rechnet also um, falls dein Einheitensystem abweicht.
@@ -262,7 +281,8 @@ Recorder-Historie, ist das normal.
 
 **Brauche ich dafür eine Fahrzeug-Integration?**
 Nein. Es genügt eine beliebige Entität mit einer Zahl, auch ein `input_number`, den du einmal pro
-Woche von Hand pflegst.
+Woche von Hand pflegst. Für diesen Fall erinnert dich die Integration auf Wunsch, wenn der Wert
+veraltet — siehe [Kein Sensor im Auto? Von Hand eintragen](#kein-sensor-im-auto-von-hand-eintragen).
 
 **Mein Tacho liefert Meilen. Geht das?**
 Ja. Trag den Vertrag ebenfalls in Meilen ein, dann rechnet die Integration durchgängig in Meilen.

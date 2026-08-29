@@ -22,6 +22,7 @@
 - [How the numbers are calculated](#how-the-numbers-are-calculated)
 - [Installation](#installation)
 - [Configuration](#configuration)
+  - [No odometer sensor? Type it in](#no-odometer-sensor-type-it-in)
 - [Upgrading from version 1](#upgrading-from-version-1)
 - [Automation examples](#automation-examples)
 - [Troubleshooting](#troubleshooting)
@@ -46,7 +47,7 @@ the integration has no `requirements` at all and only reads an entity that alrea
 your installation.
 
 <div align="center">
-  <img src="assets/setup.svg" alt="The Home Assistant setup dialog of the Leasing KM Calculator, with fields for name, contract start date, duration in months, total mileage allowance, odometer reading at contract start, odometer entity and forecast basis" width="100%">
+  <img src="assets/setup.svg" alt="The Home Assistant setup dialog of the Leasing KM Calculator, with fields for name, contract start date, duration in months, total mileage allowance, odometer reading at contract start, odometer entity, forecast basis and the stale reading reminder" width="100%">
 </div>
 
 ## Entities you get
@@ -82,9 +83,9 @@ they read the same in every installation; only the displayed names are translate
 | `binary_sensor.<name>_annual_forecast_exceeded` | On when this contract year is heading over budget | `off` |
 | `binary_sensor.<name>_contract_forecast_exceeded` | On when the whole contract is heading over budget | `off` |
 
-Seven more sensors ship disabled and can be switched on per entity: the 30 and 90 day averages,
-the calendar year figures, the contract year allowance, the contract end date and the days
-remaining.
+Eight more sensors ship disabled and can be switched on per entity: the 30 and 90 day averages,
+the calendar year figures, the contract year allowance, the contract end date, the days remaining
+and the days since the odometer was last updated.
 
 `sensor.<name>_contract_elapsed` also carries the contract metadata as attributes:
 `contract_end`, `elapsed_days`, `total_days`, `days_remaining`, `contract_year`,
@@ -176,6 +177,23 @@ Everything is configured in the dialog, and everything can be changed later thro
 | **Odometer reading at contract start** | `0` for a new car, the real reading for a used car or a contract taken over |
 | **Odometer entity** | A `sensor`, `number` or `input_number` holding the current odometer reading |
 | **Forecast basis** | Whole contract average, last 30 days or last 90 days |
+| **Remind me if the reading gets stale** | Off, or after 7, 14 or 30 days without a change |
+
+### No odometer sensor? Type it in
+
+If your car has no integration, make an `input_number` and update it whenever you fill up or think
+of it. So that thinking of it is not the weak spot, the integration can watch that entity: if the
+value has not changed for 7, 14 or 30 days, a repair notice appears asking for a fresh reading,
+**with a field to enter it right there**. Submitting the repair writes the value into your
+`input_number` and clears the notice.
+
+The reminder is deliberately limited to an `input_number` you maintain yourself. A sensor supplied
+by a vehicle integration goes quiet whenever the car is parked, so the same reminder would only
+produce false alarms.
+
+It survives restarts: Home Assistant restores an `input_number` on start, which would otherwise
+reset the clock every time you restart, so the integration remembers the reading and the moment it
+last changed by itself.
 
 The mileage fields are in whatever unit your odometer entity reports. The entities carry the
 `distance` device class, so Home Assistant converts them for you if your unit system differs.
@@ -261,6 +279,8 @@ older than the recorder history.
 
 **Do I need a vehicle integration for this?**
 No. Any entity holding a number will do, including an `input_number` you type into once a week.
+For that case the integration can remind you when the value gets stale, see
+[No odometer sensor? Type it in](#no-odometer-sensor-type-it-in).
 
 **My odometer reports miles. Does that work?**
 Yes. Enter the contract in miles as well, and the integration keeps everything in miles. If your

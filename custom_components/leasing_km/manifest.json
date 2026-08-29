@@ -10,7 +10,8 @@
   ],
   "config_flow": true,
   "dependencies": [
-    "http"
+    "http",
+    "repairs"
   ],
   "documentation": "https://github.com/sphings79/leasing-km-home-assistant",
   "integration_type": "service",

@@ -11,7 +11,8 @@
           "total_km": "Samlet kilometergrænse",
           "start_km": "Kilometerstand ved kontraktstart",
           "odometer_entity": "Kilometerstand-entitet",
-          "forecast_basis": "Grundlag for prognosen"
+          "forecast_basis": "Grundlag for prognosen",
+          "reminder_days": "Mind mig om det, hvis aflæsningen bliver gammel"
         },
         "data_description": {
           "name": "Bruges som enhedsnavn, for eksempel bilens navn.",
@@ -20,7 +21,8 @@
           "total_km": "Kilometer inkluderet i kontrakten, i enheden fra din kilometerstand-entitet.",
           "start_km": "Lad stå på 0 ved en ny bil. Ved en brugt bil eller en overtaget kontrakt angives standen på kontraktens første dag.",
           "odometer_entity": "En sensor, number eller input_number med den aktuelle kilometerstand.",
-          "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten."
+          "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten.",
+          "reminder_days": "Kun for en input_number, du selv vedligeholder: Home Assistant beder om en ny aflæsning, når værdien ikke har ændret sig i så lang tid."
         },
         "description": "Indtast oplysningerne om din leasingkontrakt. Kilometerstand-entiteten skal allerede findes i Home Assistant."
       },
@@ -33,7 +35,8 @@
           "total_km": "Samlet kilometergrænse",
           "start_km": "Kilometerstand ved kontraktstart",
           "odometer_entity": "Kilometerstand-entitet",
-          "forecast_basis": "Grundlag for prognosen"
+          "forecast_basis": "Grundlag for prognosen",
+          "reminder_days": "Mind mig om det, hvis aflæsningen bliver gammel"
         },
         "data_description": {
           "name": "Bruges som enhedsnavn, for eksempel bilens navn.",
@@ -42,7 +45,8 @@
           "total_km": "Kilometer inkluderet i kontrakten, i enheden fra din kilometerstand-entitet.",
           "start_km": "Lad stå på 0 ved en ny bil. Ved en brugt bil eller en overtaget kontrakt angives standen på kontraktens første dag.",
           "odometer_entity": "En sensor, number eller input_number med den aktuelle kilometerstand.",
-          "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten."
+          "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten.",
+          "reminder_days": "Kun for en input_number, du selv vedligeholder: Home Assistant beder om en ny aflæsning, når værdien ikke har ændret sig i så lang tid."
         },
         "description": "Ret kontraktoplysningerne. Den hidtidige historik bevares."
       }
@@ -50,6 +54,9 @@
     "abort": {
       "already_configured": "Denne kontrakt er allerede oprettet.",
       "reconfigure_successful": "Kontrakten er opdateret."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "En påmindelse virker kun med en input_number, du selv vedligeholder. En sensor i bilen er tavs, så længe bilen holder stille."
     }
   },
   "selector": {
@@ -58,6 +65,14 @@
         "total": "Gennemsnit for hele kontrakten",
         "d30": "Seneste 30 dage",
         "d90": "Seneste 90 dage"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Fra",
+        "7": "Efter 7 dage",
+        "14": "Efter 14 dage",
+        "30": "Efter 30 dage"
       }
     }
   },
@@ -137,6 +152,9 @@
       },
       "days_remaining": {
         "name": "Resterende dage"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Dage siden sidste opdatering"
       }
     },
     "binary_sensor": {
@@ -155,6 +173,20 @@
     "entity_ids_renamed": {
       "title": "Entitets-id'er for Leasing KM er ændret",
       "description": "Version 2 bruger sproguafhængige entitets-id'er. Opdater dine dashboards, automatiseringer og scripts:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: kilometerstanden er {days} dage gammel",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Opdater kilometerstanden",
+            "description": "Indtast den aktuelle stand. Den skrives direkte i {entity_id}.",
+            "data": {
+              "odometer": "Kilometerstand"
+            }
+          }
+        }
+      }
     }
   }
 }

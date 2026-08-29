@@ -14,13 +14,18 @@ from .const import (
     CONF_FORECAST_BASIS,
     CONF_MONTHS,
     CONF_ODOMETER_ENTITY,
+    CONF_REMINDER_DAYS,
     CONF_START_DATE,
     CONF_START_KM,
     CONF_TOTAL_KM,
     DEFAULT_MONTHS,
+    DEFAULT_REMINDER_DAYS,
     DEFAULT_START_KM,
     DEFAULT_TOTAL_KM,
     DOMAIN,
+    MANUAL_DOMAIN,
+    REMINDER_CHOICES,
+    REMINDER_OFF,
 )
 
 ODOMETER_DOMAINS = ["sensor", "input_number", "number"]
@@ -72,8 +77,29 @@ def _schema(defaults: dict[str, Any]) -> vol.Schema:
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 )
             ),
+            vol.Required(
+                CONF_REMINDER_DAYS,
+                default=defaults.get(CONF_REMINDER_DAYS, DEFAULT_REMINDER_DAYS),
+            ): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=list(REMINDER_CHOICES),
+                    translation_key="reminder_days",
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )
+            ),
         }
     )
+
+
+def _validate(user_input: dict[str, Any]) -> dict[str, str]:
+    """Return the field errors for a submitted form."""
+    reminder = user_input.get(CONF_REMINDER_DAYS, REMINDER_OFF)
+    entity_id = user_input[CONF_ODOMETER_ENTITY]
+    if reminder != REMINDER_OFF and not entity_id.startswith(f"{MANUAL_DOMAIN}."):
+        # A vehicle sensor is quiet whenever the car is parked, so a reminder
+        # would only ever produce false alarms.
+        return {CONF_REMINDER_DAYS: "reminder_needs_manual_entity"}
+    return {}
 
 
 class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -85,31 +111,43 @@ class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
         """Ask for the contract details."""
+        errors: dict[str, str] = {}
         if user_input is not None:
-            await self.async_set_unique_id(
-                f"{user_input[CONF_ODOMETER_ENTITY]}_{user_input[CONF_START_DATE]}"
-            )
-            self._abort_if_unique_id_configured()
-            return self.async_create_entry(
-                title=user_input[CONF_NAME], data=_normalise(user_input)
-            )
+            errors = _validate(user_input)
+            if not errors:
+                await self.async_set_unique_id(
+                    f"{user_input[CONF_ODOMETER_ENTITY]}_{user_input[CONF_START_DATE]}"
+                )
+                self._abort_if_unique_id_configured()
+                return self.async_create_entry(
+                    title=user_input[CONF_NAME], data=_normalise(user_input)
+                )
 
-        return self.async_show_form(step_id="user", data_schema=_schema({}))
+        return self.async_show_form(
+            step_id="user",
+            data_schema=_schema(user_input or {}),
+            errors=errors,
+        )
 
     async def async_step_reconfigure(
         self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
         """Let the user edit every contract detail in place."""
         entry = self._get_reconfigure_entry()
+        errors: dict[str, str] = {}
         if user_input is not None:
-            return self.async_update_reload_and_abort(
-                entry,
-                title=user_input[CONF_NAME],
-                data=_normalise(user_input),
-            )
+            errors = _validate(user_input)
+            if not errors:
+                return self.async_update_reload_and_abort(
+                    entry,
+                    title=user_input[CONF_NAME],
+                    data=_normalise(user_input),
+                )
 
         return self.async_show_form(
-            step_id="reconfigure", data_schema=_schema(dict(entry.data))
+            step_id="reconfigure",
+            data_schema=_schema(user_input or dict(entry.data)),
+            errors=errors,
         )
 
 
