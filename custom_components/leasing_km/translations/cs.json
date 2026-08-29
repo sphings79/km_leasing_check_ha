@@ -1,0 +1,160 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Leasingová smlouva",
+        "data": {
+          "name": "Název",
+          "start_date": "Začátek smlouvy",
+          "months": "Doba trvání v měsících",
+          "total_km": "Celkový nájezd",
+          "start_km": "Stav tachometru na začátku smlouvy",
+          "odometer_entity": "Entita se stavem tachometru",
+          "forecast_basis": "Základ prognózy"
+        },
+        "data_description": {
+          "name": "Použije se jako název zařízení, například jméno auta.",
+          "start_date": "První den leasingové smlouvy.",
+          "months": "Například 24, 36 nebo 48.",
+          "total_km": "Nájezd zahrnutý ve smlouvě, v jednotce tvé entity tachometru.",
+          "start_km": "U nového auta ponech 0. U ojetého auta nebo převzaté smlouvy zadej stav ke dni začátku smlouvy.",
+          "odometer_entity": "Sensor, number nebo input_number s aktuálním stavem tachometru.",
+          "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy."
+        },
+        "description": "Zadej údaje své leasingové smlouvy. Entita se stavem tachometru už musí v Home Assistantu existovat."
+      },
+      "reconfigure": {
+        "title": "Leasingová smlouva",
+        "data": {
+          "name": "Název",
+          "start_date": "Začátek smlouvy",
+          "months": "Doba trvání v měsících",
+          "total_km": "Celkový nájezd",
+          "start_km": "Stav tachometru na začátku smlouvy",
+          "odometer_entity": "Entita se stavem tachometru",
+          "forecast_basis": "Základ prognózy"
+        },
+        "data_description": {
+          "name": "Použije se jako název zařízení, například jméno auta.",
+          "start_date": "První den leasingové smlouvy.",
+          "months": "Například 24, 36 nebo 48.",
+          "total_km": "Nájezd zahrnutý ve smlouvě, v jednotce tvé entity tachometru.",
+          "start_km": "U nového auta ponech 0. U ojetého auta nebo převzaté smlouvy zadej stav ke dni začátku smlouvy.",
+          "odometer_entity": "Sensor, number nebo input_number s aktuálním stavem tachometru.",
+          "forecast_basis": "Na jakém průměru stojí prognózy a varování. Časová okna potřebují historii recorderu, jinak se vrátí k průměru celé smlouvy."
+        },
+        "description": "Změň údaje smlouvy. Dosavadní historie zůstane zachována."
+      }
+    },
+    "abort": {
+      "already_configured": "Tato smlouva je již nastavena.",
+      "reconfigure_successful": "Smlouva aktualizována."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Průměr celé smlouvy",
+        "d30": "Posledních 30 dní",
+        "d90": "Posledních 90 dní"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Ujetá vzdálenost"
+      },
+      "daily_actual": {
+        "name": "Skutečnost za den"
+      },
+      "daily_target": {
+        "name": "Cíl za den"
+      },
+      "daily_actual_30d": {
+        "name": "Skutečnost za den (30 dní)"
+      },
+      "daily_actual_90d": {
+        "name": "Skutečnost za den (90 dní)"
+      },
+      "target_today": {
+        "name": "Cílový nájezd dnes"
+      },
+      "deviation_today": {
+        "name": "Odchylka dnes"
+      },
+      "target_month_end": {
+        "name": "Cílový nájezd na konci měsíce"
+      },
+      "deviation_month_end": {
+        "name": "Odchylka na konci měsíce"
+      },
+      "contract_year_driven": {
+        "name": "Ujeto ve smluvním roce"
+      },
+      "contract_year_deviation": {
+        "name": "Odchylka ve smluvním roce"
+      },
+      "contract_year_allowance": {
+        "name": "Limit ve smluvním roce"
+      },
+      "annual_allowance": {
+        "name": "Roční limit nájezdu"
+      },
+      "remaining_contract_year": {
+        "name": "Zbývá ve smluvním roce"
+      },
+      "remaining_calendar_year": {
+        "name": "Zbývá do konce roku"
+      },
+      "remaining_contract_end": {
+        "name": "Zbývá do konce smlouvy"
+      },
+      "remaining_total": {
+        "name": "Zbývající kilometry"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prognóza konce smluvního roku"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Prognóza konce roku"
+      },
+      "forecast_contract_end": {
+        "name": "Prognóza konce smlouvy"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Očekávaná odchylka na konci smlouvy"
+      },
+      "mileage_used": {
+        "name": "Využitý nájezd"
+      },
+      "contract_elapsed": {
+        "name": "Uplynulo ze smlouvy"
+      },
+      "contract_end_date": {
+        "name": "Konec smlouvy"
+      },
+      "days_remaining": {
+        "name": "Zbývající dny"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Nad cílem"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Roční prognóza překročena"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Prognóza smlouvy překročena"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "ID entit Leasing KM se změnila",
+      "description": "Verze 2 používá jazykově nezávislá ID entit. Uprav své nástěnky, automatizace a skripty:\n\n{renames}"
+    }
+  }
+}

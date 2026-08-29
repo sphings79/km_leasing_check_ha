@@ -1,10 +1,10 @@
 """Serve the Lovelace card that ships with this integration.
 
 HACS installs the integration folder only, so the built card bundle lives in
-`frontend/` next to this module. The integration serves it and registers it as
-a Lovelace resource, which means users of a storage mode dashboard do not have
-to add a resource entry by hand. YAML dashboards still need the entry, which is
-documented in the README.
+`frontend/` next to this module. The integration serves that folder and
+registers the card as a Lovelace resource, which means users of a storage mode
+dashboard do not have to add a resource entry by hand. YAML dashboards still
+need the entry, which is documented in the README.
 """
 
 from __future__ import annotations
@@ -22,7 +22,8 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 CARD_FILENAME = "leasing-km-card.js"
-CARD_URL = f"/{DOMAIN}/{CARD_FILENAME}"
+FRONTEND_URL = f"/{DOMAIN}"
+CARD_URL = f"{FRONTEND_URL}/{CARD_FILENAME}"
 REGISTERED = f"{DOMAIN}_frontend_registered"
 
 
@@ -34,11 +35,13 @@ async def async_register_card(hass: HomeAssistant) -> None:
 
     integration = await async_get_integration(hass, DOMAIN)
     version = integration.version
+    # The whole folder, not just the entry file: the translation catalogs are
+    # separate chunks the card fetches for the user's language.
     await hass.http.async_register_static_paths(
         [
             StaticPathConfig(
-                CARD_URL,
-                str(integration.file_path / "frontend" / CARD_FILENAME),
+                FRONTEND_URL,
+                str(integration.file_path / "frontend"),
                 cache_headers=False,
             )
         ]

@@ -5,13 +5,18 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     outDir: "../custom_components/leasing_km/frontend",
-    emptyOutDir: false,
+    emptyOutDir: true,
     target: "es2022",
     sourcemap: false,
     lib: {
       entry: "src/leasing-km-card.ts",
       formats: ["es"],
       fileName: () => "leasing-km-card.js",
+    },
+    rollupOptions: {
+      // Stable names: the bundle is committed, so hashes would only churn the
+      // diff and leave stale files behind.
+      output: { chunkFileNames: "[name].js" },
     },
   },
 });

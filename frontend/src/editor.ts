@@ -2,7 +2,7 @@ import { LitElement, html, nothing, type TemplateResult } from "lit";
 import { state } from "lit/decorators.js";
 
 import { INTEGRATION } from "./discovery";
-import { language, localize } from "./localize";
+import { ensureCatalog, language, localize } from "./localize";
 import type { CardConfig, Hass } from "./types";
 
 interface FormSchemaItem {
@@ -34,7 +34,18 @@ const LABELS: Record<string, string> = {
 export class LeasingKmCardEditor extends LitElement {
   @state() private _config?: CardConfig;
 
-  public hass?: Hass;
+  private _hass?: Hass;
+
+  set hass(hass: Hass) {
+    this._hass = hass;
+    void ensureCatalog(language(hass)).then(
+      (loaded) => loaded && this.requestUpdate(),
+    );
+  }
+
+  get hass(): Hass | undefined {
+    return this._hass;
+  }
 
   setConfig(config: CardConfig): void {
     this._config = config;

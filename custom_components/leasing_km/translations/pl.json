@@ -1,0 +1,160 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Umowa leasingowa",
+        "data": {
+          "name": "Nazwa",
+          "start_date": "Początek umowy",
+          "months": "Czas trwania w miesiącach",
+          "total_km": "Całkowity limit przebiegu",
+          "start_km": "Przebieg na początku umowy",
+          "odometer_entity": "Encja z przebiegiem",
+          "forecast_basis": "Podstawa prognozy"
+        },
+        "data_description": {
+          "name": "Używana jako nazwa urządzenia, na przykład nazwa samochodu.",
+          "start_date": "Pierwszy dzień umowy leasingowej.",
+          "months": "Na przykład 24, 36 lub 48.",
+          "total_km": "Przebieg zawarty w umowie, w jednostce Twojej encji z przebiegiem.",
+          "start_km": "W nowym samochodzie zostaw 0. W samochodzie używanym lub przy przejęciu umowy podaj stan z dnia rozpoczęcia umowy.",
+          "odometer_entity": "Sensor, number lub input_number z aktualnym stanem licznika.",
+          "forecast_basis": "Na jakiej średniej opierają się prognozy i ostrzeżenia. Okna czasowe wymagają historii recordera, a bez niej wracają do średniej z całej umowy."
+        },
+        "description": "Podaj dane swojej umowy leasingowej. Encja z przebiegiem musi już istnieć w Home Assistant."
+      },
+      "reconfigure": {
+        "title": "Umowa leasingowa",
+        "data": {
+          "name": "Nazwa",
+          "start_date": "Początek umowy",
+          "months": "Czas trwania w miesiącach",
+          "total_km": "Całkowity limit przebiegu",
+          "start_km": "Przebieg na początku umowy",
+          "odometer_entity": "Encja z przebiegiem",
+          "forecast_basis": "Podstawa prognozy"
+        },
+        "data_description": {
+          "name": "Używana jako nazwa urządzenia, na przykład nazwa samochodu.",
+          "start_date": "Pierwszy dzień umowy leasingowej.",
+          "months": "Na przykład 24, 36 lub 48.",
+          "total_km": "Przebieg zawarty w umowie, w jednostce Twojej encji z przebiegiem.",
+          "start_km": "W nowym samochodzie zostaw 0. W samochodzie używanym lub przy przejęciu umowy podaj stan z dnia rozpoczęcia umowy.",
+          "odometer_entity": "Sensor, number lub input_number z aktualnym stanem licznika.",
+          "forecast_basis": "Na jakiej średniej opierają się prognozy i ostrzeżenia. Okna czasowe wymagają historii recordera, a bez niej wracają do średniej z całej umowy."
+        },
+        "description": "Zmień dane umowy. Dotychczasowa historia zostaje zachowana."
+      }
+    },
+    "abort": {
+      "already_configured": "Ta umowa jest już skonfigurowana.",
+      "reconfigure_successful": "Umowa zaktualizowana."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Średnia z całej umowy",
+        "d30": "Ostatnie 30 dni",
+        "d90": "Ostatnie 90 dni"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Przejechany przebieg"
+      },
+      "daily_actual": {
+        "name": "Faktycznie na dzień"
+      },
+      "daily_target": {
+        "name": "Cel na dzień"
+      },
+      "daily_actual_30d": {
+        "name": "Faktycznie na dzień (30 dni)"
+      },
+      "daily_actual_90d": {
+        "name": "Faktycznie na dzień (90 dni)"
+      },
+      "target_today": {
+        "name": "Docelowy przebieg dziś"
+      },
+      "deviation_today": {
+        "name": "Odchylenie dziś"
+      },
+      "target_month_end": {
+        "name": "Docelowy przebieg na koniec miesiąca"
+      },
+      "deviation_month_end": {
+        "name": "Odchylenie na koniec miesiąca"
+      },
+      "contract_year_driven": {
+        "name": "Przejechano w roku umowy"
+      },
+      "contract_year_deviation": {
+        "name": "Odchylenie w roku umowy"
+      },
+      "contract_year_allowance": {
+        "name": "Limit w roku umowy"
+      },
+      "annual_allowance": {
+        "name": "Roczny limit przebiegu"
+      },
+      "remaining_contract_year": {
+        "name": "Pozostało w roku umowy"
+      },
+      "remaining_calendar_year": {
+        "name": "Pozostało do końca roku"
+      },
+      "remaining_contract_end": {
+        "name": "Pozostało do końca umowy"
+      },
+      "remaining_total": {
+        "name": "Pozostały przebieg"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prognoza na koniec roku umowy"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Prognoza na koniec roku"
+      },
+      "forecast_contract_end": {
+        "name": "Prognoza na koniec umowy"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Prognozowane odchylenie na koniec umowy"
+      },
+      "mileage_used": {
+        "name": "Wykorzystany przebieg"
+      },
+      "contract_elapsed": {
+        "name": "Upłynęło umowy"
+      },
+      "contract_end_date": {
+        "name": "Koniec umowy"
+      },
+      "days_remaining": {
+        "name": "Pozostałe dni"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Powyżej celu"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Prognoza rocznego limitu przekroczona"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Prognoza limitu umowy przekroczona"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Identyfikatory encji Leasing KM uległy zmianie",
+      "description": "Wersja 2 używa identyfikatorów niezależnych od języka. Zaktualizuj pulpity, automatyzacje i skrypty:\n\n{renames}"
+    }
+  }
+}

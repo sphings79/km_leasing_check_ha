@@ -1,0 +1,160 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Leasecontract",
+        "data": {
+          "name": "Naam",
+          "start_date": "Startdatum contract",
+          "months": "Looptijd in maanden",
+          "total_km": "Totale kilometrage",
+          "start_km": "Kilometerstand bij aanvang",
+          "odometer_entity": "Kilometerstand-entiteit",
+          "forecast_basis": "Basis voor de prognose"
+        },
+        "data_description": {
+          "name": "Wordt gebruikt als apparaatnaam, bijvoorbeeld de naam van de auto.",
+          "start_date": "Eerste dag van het leasecontract.",
+          "months": "Bijvoorbeeld 24, 36 of 48.",
+          "total_km": "De in het contract inbegrepen kilometers, in de eenheid van je kilometerstand-entiteit.",
+          "start_km": "Laat 0 staan bij een nieuwe auto. Vul bij een gebruikte auto of een overgenomen contract de stand op de dag van aanvang in.",
+          "odometer_entity": "Een sensor, number of input_number met de actuele kilometerstand.",
+          "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd."
+        },
+        "description": "Voer de gegevens van je leasecontract in. De kilometerstand-entiteit moet al in Home Assistant bestaan."
+      },
+      "reconfigure": {
+        "title": "Leasecontract",
+        "data": {
+          "name": "Naam",
+          "start_date": "Startdatum contract",
+          "months": "Looptijd in maanden",
+          "total_km": "Totale kilometrage",
+          "start_km": "Kilometerstand bij aanvang",
+          "odometer_entity": "Kilometerstand-entiteit",
+          "forecast_basis": "Basis voor de prognose"
+        },
+        "data_description": {
+          "name": "Wordt gebruikt als apparaatnaam, bijvoorbeeld de naam van de auto.",
+          "start_date": "Eerste dag van het leasecontract.",
+          "months": "Bijvoorbeeld 24, 36 of 48.",
+          "total_km": "De in het contract inbegrepen kilometers, in de eenheid van je kilometerstand-entiteit.",
+          "start_km": "Laat 0 staan bij een nieuwe auto. Vul bij een gebruikte auto of een overgenomen contract de stand op de dag van aanvang in.",
+          "odometer_entity": "Een sensor, number of input_number met de actuele kilometerstand.",
+          "forecast_basis": "Op welk gemiddelde de prognose en de waarschuwingen berusten. De tijdvensters hebben recordergeschiedenis nodig en vallen anders terug op het gemiddelde over de hele looptijd."
+        },
+        "description": "Wijzig de contractgegevens. De bestaande geschiedenis blijft behouden."
+      }
+    },
+    "abort": {
+      "already_configured": "Dit contract is al ingesteld.",
+      "reconfigure_successful": "Contract bijgewerkt."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Gemiddelde hele looptijd",
+        "d30": "Laatste 30 dagen",
+        "d90": "Laatste 90 dagen"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Gereden kilometers"
+      },
+      "daily_actual": {
+        "name": "Werkelijk per dag"
+      },
+      "daily_target": {
+        "name": "Doel per dag"
+      },
+      "daily_actual_30d": {
+        "name": "Werkelijk per dag (30 dagen)"
+      },
+      "daily_actual_90d": {
+        "name": "Werkelijk per dag (90 dagen)"
+      },
+      "target_today": {
+        "name": "Doelkilometrage vandaag"
+      },
+      "deviation_today": {
+        "name": "Afwijking vandaag"
+      },
+      "target_month_end": {
+        "name": "Doelkilometrage einde maand"
+      },
+      "deviation_month_end": {
+        "name": "Afwijking einde maand"
+      },
+      "contract_year_driven": {
+        "name": "Gereden in het contractjaar"
+      },
+      "contract_year_deviation": {
+        "name": "Afwijking in het contractjaar"
+      },
+      "contract_year_allowance": {
+        "name": "Budget in het contractjaar"
+      },
+      "annual_allowance": {
+        "name": "Jaarlijkse kilometrage"
+      },
+      "remaining_contract_year": {
+        "name": "Resterend in het contractjaar"
+      },
+      "remaining_calendar_year": {
+        "name": "Resterend tot einde jaar"
+      },
+      "remaining_contract_end": {
+        "name": "Resterend tot einde contract"
+      },
+      "remaining_total": {
+        "name": "Kilometers over"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prognose einde contractjaar"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Prognose einde jaar"
+      },
+      "forecast_contract_end": {
+        "name": "Prognose einde contract"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Prognose afwijking einde contract"
+      },
+      "mileage_used": {
+        "name": "Kilometrage gebruikt"
+      },
+      "contract_elapsed": {
+        "name": "Looptijd verstreken"
+      },
+      "contract_end_date": {
+        "name": "Einde contract"
+      },
+      "days_remaining": {
+        "name": "Resterende dagen"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Boven doel"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Jaarkilometrage prognose overschreden"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Contractkilometrage prognose overschreden"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Entiteits-ID's van Leasing KM zijn gewijzigd",
+      "description": "Versie 2 gebruikt taalonafhankelijke entiteits-ID's. Pas je dashboards, automatiseringen en scripts aan:\n\n{renames}"
+    }
+  }
+}

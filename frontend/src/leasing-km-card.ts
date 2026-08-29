@@ -2,7 +2,7 @@ import { LitElement, html, nothing, svg, type TemplateResult } from "lit";
 import { state } from "lit/decorators.js";
 
 import { discover, resolve } from "./discovery";
-import { language, locale, localize } from "./localize";
+import { ensureCatalog, language, locale, localize } from "./localize";
 import { styles } from "./styles";
 import type { CardConfig, Hass, HassEntity, Instance } from "./types";
 
@@ -32,6 +32,7 @@ export class LeasingKmCard extends LitElement {
   @state() private _instance?: Instance;
 
   private _hass?: Hass;
+  private _catalog?: string;
 
   static getConfigElement(): HTMLElement {
     return document.createElement("leasing-km-card-editor");
@@ -46,9 +47,17 @@ export class LeasingKmCard extends LitElement {
     const previous = this._hass;
     this._hass = hass;
     this._instance = resolve(hass, this._config ?? {});
+    this._loadCatalog(language(hass));
     if (!previous || this._watchedChanged(previous, hass)) {
       this.requestUpdate();
     }
+  }
+
+  /** Fetch the catalog for the UI language and repaint once it is there. */
+  private _loadCatalog(lang: string): void {
+    if (lang === this._catalog) return;
+    this._catalog = lang;
+    void ensureCatalog(lang).then((loaded) => loaded && this.requestUpdate());
   }
 
   get hass(): Hass | undefined {

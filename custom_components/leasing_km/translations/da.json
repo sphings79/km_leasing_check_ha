@@ -1,0 +1,160 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Leasingkontrakt",
+        "data": {
+          "name": "Navn",
+          "start_date": "Kontraktstart",
+          "months": "Løbetid i måneder",
+          "total_km": "Samlet kilometergrænse",
+          "start_km": "Kilometerstand ved kontraktstart",
+          "odometer_entity": "Kilometerstand-entitet",
+          "forecast_basis": "Grundlag for prognosen"
+        },
+        "data_description": {
+          "name": "Bruges som enhedsnavn, for eksempel bilens navn.",
+          "start_date": "Første dag i leasingkontrakten.",
+          "months": "For eksempel 24, 36 eller 48.",
+          "total_km": "Kilometer inkluderet i kontrakten, i enheden fra din kilometerstand-entitet.",
+          "start_km": "Lad stå på 0 ved en ny bil. Ved en brugt bil eller en overtaget kontrakt angives standen på kontraktens første dag.",
+          "odometer_entity": "En sensor, number eller input_number med den aktuelle kilometerstand.",
+          "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten."
+        },
+        "description": "Indtast oplysningerne om din leasingkontrakt. Kilometerstand-entiteten skal allerede findes i Home Assistant."
+      },
+      "reconfigure": {
+        "title": "Leasingkontrakt",
+        "data": {
+          "name": "Navn",
+          "start_date": "Kontraktstart",
+          "months": "Løbetid i måneder",
+          "total_km": "Samlet kilometergrænse",
+          "start_km": "Kilometerstand ved kontraktstart",
+          "odometer_entity": "Kilometerstand-entitet",
+          "forecast_basis": "Grundlag for prognosen"
+        },
+        "data_description": {
+          "name": "Bruges som enhedsnavn, for eksempel bilens navn.",
+          "start_date": "Første dag i leasingkontrakten.",
+          "months": "For eksempel 24, 36 eller 48.",
+          "total_km": "Kilometer inkluderet i kontrakten, i enheden fra din kilometerstand-entitet.",
+          "start_km": "Lad stå på 0 ved en ny bil. Ved en brugt bil eller en overtaget kontrakt angives standen på kontraktens første dag.",
+          "odometer_entity": "En sensor, number eller input_number med den aktuelle kilometerstand.",
+          "forecast_basis": "Hvilket gennemsnit prognoser og advarsler bygger på. Tidsvinduerne kræver recorder-historik og falder ellers tilbage til gennemsnittet for hele kontrakten."
+        },
+        "description": "Ret kontraktoplysningerne. Den hidtidige historik bevares."
+      }
+    },
+    "abort": {
+      "already_configured": "Denne kontrakt er allerede oprettet.",
+      "reconfigure_successful": "Kontrakten er opdateret."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Gennemsnit for hele kontrakten",
+        "d30": "Seneste 30 dage",
+        "d90": "Seneste 90 dage"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Kørte kilometer"
+      },
+      "daily_actual": {
+        "name": "Faktisk pr. dag"
+      },
+      "daily_target": {
+        "name": "Mål pr. dag"
+      },
+      "daily_actual_30d": {
+        "name": "Faktisk pr. dag (30 dage)"
+      },
+      "daily_actual_90d": {
+        "name": "Faktisk pr. dag (90 dage)"
+      },
+      "target_today": {
+        "name": "Målkilometer i dag"
+      },
+      "deviation_today": {
+        "name": "Afvigelse i dag"
+      },
+      "target_month_end": {
+        "name": "Målkilometer ved månedsskift"
+      },
+      "deviation_month_end": {
+        "name": "Afvigelse ved månedsskift"
+      },
+      "contract_year_driven": {
+        "name": "Kørt i kontraktåret"
+      },
+      "contract_year_deviation": {
+        "name": "Afvigelse i kontraktåret"
+      },
+      "contract_year_allowance": {
+        "name": "Grænse i kontraktåret"
+      },
+      "annual_allowance": {
+        "name": "Årlig kilometergrænse"
+      },
+      "remaining_contract_year": {
+        "name": "Resterende i kontraktåret"
+      },
+      "remaining_calendar_year": {
+        "name": "Resterende til årets udgang"
+      },
+      "remaining_contract_end": {
+        "name": "Resterende til kontraktens udløb"
+      },
+      "remaining_total": {
+        "name": "Kilometer tilbage"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prognose kontraktårets slutning"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Prognose årets udgang"
+      },
+      "forecast_contract_end": {
+        "name": "Prognose kontraktudløb"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Forventet afvigelse ved kontraktudløb"
+      },
+      "mileage_used": {
+        "name": "Kilometer brugt"
+      },
+      "contract_elapsed": {
+        "name": "Løbetid forløbet"
+      },
+      "contract_end_date": {
+        "name": "Kontraktudløb"
+      },
+      "days_remaining": {
+        "name": "Resterende dage"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Over mål"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Årlig prognose overskredet"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Kontraktprognose overskredet"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Entitets-id'er for Leasing KM er ændret",
+      "description": "Version 2 bruger sproguafhængige entitets-id'er. Opdater dine dashboards, automatiseringer og scripts:\n\n{renames}"
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Contrato de leasing",
+        "data": {
+          "name": "Nome",
+          "start_date": "Início do contrato",
+          "months": "Duração em meses",
+          "total_km": "Quilometragem total",
+          "start_km": "Quilometragem no início do contrato",
+          "odometer_entity": "Entidade do conta-quilómetros",
+          "forecast_basis": "Base da previsão"
+        },
+        "data_description": {
+          "name": "Usado como nome do dispositivo, por exemplo o nome do carro.",
+          "start_date": "Primeiro dia do contrato de leasing.",
+          "months": "Por exemplo 24, 36 ou 48.",
+          "total_km": "Quilometragem incluída no contrato, na unidade da tua entidade do conta-quilómetros.",
+          "start_km": "Deixa 0 num carro novo. Num carro usado ou num contrato assumido, indica a leitura do dia em que o contrato começou.",
+          "odometer_entity": "Um sensor, number ou input_number com a leitura atual do conta-quilómetros.",
+          "forecast_basis": "Em que média assentam as previsões e os avisos. As janelas precisam do histórico do recorder e, sem ele, voltam à média de todo o contrato."
+        },
+        "description": "Introduz os dados do teu contrato de leasing. A entidade do conta-quilómetros já tem de existir no Home Assistant."
+      },
+      "reconfigure": {
+        "title": "Contrato de leasing",
+        "data": {
+          "name": "Nome",
+          "start_date": "Início do contrato",
+          "months": "Duração em meses",
+          "total_km": "Quilometragem total",
+          "start_km": "Quilometragem no início do contrato",
+          "odometer_entity": "Entidade do conta-quilómetros",
+          "forecast_basis": "Base da previsão"
+        },
+        "data_description": {
+          "name": "Usado como nome do dispositivo, por exemplo o nome do carro.",
+          "start_date": "Primeiro dia do contrato de leasing.",
+          "months": "Por exemplo 24, 36 ou 48.",
+          "total_km": "Quilometragem incluída no contrato, na unidade da tua entidade do conta-quilómetros.",
+          "start_km": "Deixa 0 num carro novo. Num carro usado ou num contrato assumido, indica a leitura do dia em que o contrato começou.",
+          "odometer_entity": "Um sensor, number ou input_number com a leitura atual do conta-quilómetros.",
+          "forecast_basis": "Em que média assentam as previsões e os avisos. As janelas precisam do histórico do recorder e, sem ele, voltam à média de todo o contrato."
+        },
+        "description": "Alterar os dados do contrato. O histórico existente é mantido."
+      }
+    },
+    "abort": {
+      "already_configured": "Este contrato já está configurado.",
+      "reconfigure_successful": "Contrato atualizado."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Média de todo o contrato",
+        "d30": "Últimos 30 dias",
+        "d90": "Últimos 90 dias"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Quilometragem percorrida"
+      },
+      "daily_actual": {
+        "name": "Real por dia"
+      },
+      "daily_target": {
+        "name": "Objetivo por dia"
+      },
+      "daily_actual_30d": {
+        "name": "Real por dia (30 dias)"
+      },
+      "daily_actual_90d": {
+        "name": "Real por dia (90 dias)"
+      },
+      "target_today": {
+        "name": "Quilometragem objetivo hoje"
+      },
+      "deviation_today": {
+        "name": "Desvio hoje"
+      },
+      "target_month_end": {
+        "name": "Quilometragem objetivo no fim do mês"
+      },
+      "deviation_month_end": {
+        "name": "Desvio no fim do mês"
+      },
+      "contract_year_driven": {
+        "name": "Percorrido no ano de contrato"
+      },
+      "contract_year_deviation": {
+        "name": "Desvio no ano de contrato"
+      },
+      "contract_year_allowance": {
+        "name": "Limite do ano de contrato"
+      },
+      "annual_allowance": {
+        "name": "Limite anual de quilometragem"
+      },
+      "remaining_contract_year": {
+        "name": "Restante no ano de contrato"
+      },
+      "remaining_calendar_year": {
+        "name": "Restante até ao fim do ano"
+      },
+      "remaining_contract_end": {
+        "name": "Restante até ao fim do contrato"
+      },
+      "remaining_total": {
+        "name": "Quilómetros restantes"
+      },
+      "forecast_contract_year_end": {
+        "name": "Previsão fim do ano de contrato"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Previsão fim do ano"
+      },
+      "forecast_contract_end": {
+        "name": "Previsão fim do contrato"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Desvio previsto no fim do contrato"
+      },
+      "mileage_used": {
+        "name": "Quilometragem usada"
+      },
+      "contract_elapsed": {
+        "name": "Contrato decorrido"
+      },
+      "contract_end_date": {
+        "name": "Fim do contrato"
+      },
+      "days_remaining": {
+        "name": "Dias restantes"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Acima do objetivo"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Previsão anual excedida"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Previsão do contrato excedida"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Os IDs de entidade do Leasing KM mudaram",
+      "description": "A versão 2 usa IDs de entidade independentes do idioma. Atualiza os teus painéis, automações e scripts:\n\n{renames}"
+    }
+  }
+}
