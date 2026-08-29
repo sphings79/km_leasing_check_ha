@@ -1,5 +1,6 @@
 """Tests for the version 1 to version 2 migration."""
 
+from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er, issue_registry as ir
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -89,3 +90,22 @@ async def test_migration_renames_entities_and_reports_it(hass: HomeAssistant):
     assert issue is not None
     assert "sensor.altvertrag_mileage_used" in issue.translation_placeholders["renames"]
     assert renamed_by_user.entity_id not in issue.translation_placeholders["renames"]
+
+
+async def test_two_identical_version_1_contracts_do_not_collide(hass: HomeAssistant):
+    """Version 1 allowed the same contract twice, and that must keep working."""
+    hass.states.async_set("sensor.odometer", "12000", {"unit_of_measurement": "km"})
+    first, second = _legacy_entry(), _legacy_entry()
+    for entry in (first, second):
+        entry.add_to_hass(hass)
+        if entry.state is not ConfigEntryState.LOADED:
+            assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    assert first.version == second.version == 2
+    # The first one gets the computed id, the second one none at all, so Home
+    # Assistant does not report a duplicate unique id.
+    assert first.unique_id == "sensor.odometer_2024-01-15"
+    assert second.unique_id is None
+    assert first.state is ConfigEntryState.LOADED
+    assert second.state is ConfigEntryState.LOADED

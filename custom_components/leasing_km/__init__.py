@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME
@@ -20,6 +21,7 @@ from .const import (
     CONF_START_KM,
     CONF_TOTAL_KM,
     DEFAULT_START_KM,
+    DOMAIN,
     LEGACY_CONF_MONTHS,
     LEGACY_CONF_ODOMETER_ENTITY,
     LEGACY_CONF_TOTAL_KM,
@@ -101,9 +103,38 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         data=data,
         options={},
         version=2,
-        unique_id=f"{data[CONF_ODOMETER_ENTITY]}_{data[CONF_START_DATE]}",
+        unique_id=_unique_id(hass, entry, data),
     )
     _LOGGER.info(
         "Migrated %s to version 2, renamed %s entities", entry.title, len(renames)
     )
     return True
+
+
+def _unique_id(
+    hass: HomeAssistant, entry: ConfigEntry, data: dict[str, Any]
+) -> str | None:
+    """Return the unique id for a migrated entry, or None if it would collide.
+
+    Version 1 assigned no unique id at all, so the same contract could be set
+    up twice without Home Assistant minding. Handing both entries the same
+    computed id during the migration would turn that into a duplicate warning,
+    so the second one stays without an id: it keeps working, and the user can
+    decide which of the two to remove.
+    """
+    candidate = f"{data[CONF_ODOMETER_ENTITY]}_{data[CONF_START_DATE]}"
+    taken = {
+        other.unique_id
+        for other in hass.config_entries.async_entries(DOMAIN)
+        if other.entry_id != entry.entry_id
+    }
+    if candidate in taken:
+        _LOGGER.warning(
+            "%s duplicates another contract on %s starting %s and keeps no "
+            "unique id. Remove one of the two entries",
+            entry.title,
+            data[CONF_ODOMETER_ENTITY],
+            data[CONF_START_DATE],
+        )
+        return None
+    return candidate

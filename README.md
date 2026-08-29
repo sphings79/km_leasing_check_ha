@@ -252,6 +252,10 @@ version 1 did.
 listing every rename, so you can update dashboards, automations and scripts. Entity ids you had
 renamed yourself are left alone.
 
+**Had the same contract set up twice?** Version 1 allowed that, version 2 keeps both working but
+only gives the first one a unique id, and writes a warning naming both. Remove the one you do not
+use; its entity ids are the ones carrying a `_2` suffix.
+
 If you used the separate `leasing_km_card` repository, remove it from HACS and delete its resource
 entry: the card now comes with the integration.
 

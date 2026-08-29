@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2026-08-29
+
+### Fixed
+
+- **The migration could produce two config entries with the same unique id.** Version 1 assigned
+  none at all, so the same contract could be set up twice without Home Assistant minding. Version 2
+  derives the id from the odometer entity and the contract start date, which made both duplicates
+  end up with the same one and Home Assistant report "multiple config entries with the same unique
+  ID". The second entry now keeps no unique id and a warning names both, so the duplicate can be
+  removed deliberately.
+
 ## [2.1.1] - 2026-08-29
 
 Documentation only. The integration itself is unchanged from 2.1.0.
@@ -106,6 +117,7 @@ part of 2.0.0.
 First release: fourteen sensors and three binary sensors for target versus actual, remaining
 mileage and a forecast to the end of the contract.
 
+[2.1.2]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.1.2
 [2.1.1]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.1.1
 [2.1.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.1.0
 [2.0.0]: https://github.com/sphings79/leasing-km-home-assistant/releases/tag/v2.0.0

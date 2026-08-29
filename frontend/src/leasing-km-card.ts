@@ -8,7 +8,7 @@ import type { CardConfig, Hass, HassEntity, Instance } from "./types";
 
 import "./editor";
 
-const VERSION = "2.1.1";
+const VERSION = "2.1.2";
 
 const ARC_START = 180;
 const ARC_SWEEP = 180;

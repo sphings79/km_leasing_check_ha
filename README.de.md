@@ -255,6 +255,10 @@ so wie Version 1 es tat.
 und legt eine Reparaturmeldung an, die jede Umbenennung auflistet — damit kannst du Dashboards,
 Automatisierungen und Skripte nachziehen. Selbst umbenannte Entitäts-IDs bleiben unangetastet.
 
+**Denselben Vertrag zweimal eingerichtet?** Version 1 ließ das zu. Version 2 lässt beide laufen,
+vergibt die eindeutige ID aber nur an den ersten und schreibt eine Warnung mit beiden Namen ins
+Log. Entferne den, den du nicht nutzt — seine Entitäts-IDs sind die mit dem Suffix `_2`.
+
 Wer bisher das separate Repository `leasing_km_card` genutzt hat, entfernt es aus HACS und löscht
 den zugehörigen Ressourceneintrag: Die Karte kommt jetzt mit der Integration.
 
