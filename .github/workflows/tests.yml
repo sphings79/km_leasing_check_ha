@@ -23,7 +23,7 @@ jobs:
       - uses: astral-sh/ruff-action@v4.1.0
         with:
           args: format --check
-      - run: pip install pytest pytest-homeassistant-custom-component
+      - run: pip install -r requirements-test.txt
       - run: pytest
 
   frontend:

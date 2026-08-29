@@ -14,9 +14,10 @@ from homeassistant.components.input_number import (
     DOMAIN as INPUT_NUMBER_DOMAIN,
     SERVICE_SET_VALUE,
 )
-from homeassistant.components.repairs import RepairsFlow, RepairsFlowResult
+from homeassistant.components.repairs import RepairsFlow
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
+from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import selector
 import voluptuous as vol
 
@@ -34,13 +35,13 @@ class OdometerReminderFlow(RepairsFlow):
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
-    ) -> RepairsFlowResult:
+    ) -> FlowResult:
         """Show the single step of this flow."""
         return await self.async_step_confirm()
 
     async def async_step_confirm(
         self, user_input: dict[str, Any] | None = None
-    ) -> RepairsFlowResult:
+    ) -> FlowResult:
         """Write the reading the user entered into the odometer entity."""
         if user_input is not None:
             await self.hass.services.async_call(
