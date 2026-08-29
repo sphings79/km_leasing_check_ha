@@ -1,113 +1,191 @@
 {
+  "title": "Leasing KM-Rechner",
   "config": {
     "step": {
       "user": {
-        "title": "Leasing KM-Rechner einrichten",
-        "description": "Gib deine Leasingvertragsdaten ein. Die Kilometerstands-Entität muss bereits in Home Assistant vorhanden sein.",
+        "title": "Leasingvertrag",
+        "description": "Gib die Daten deines Leasingvertrags ein. Die Kilometerstands-Entität muss bereits in Home Assistant vorhanden sein.",
         "data": {
+          "name": "Name",
           "start_date": "Vertragsbeginn",
-          "laufzeit_monate": "Laufzeit (Monate)",
-          "km_gesamt": "Gesamtlaufleistung (km)",
-          "km_entity": "Entität für aktuellen Kilometerstand"
+          "months": "Laufzeit in Monaten",
+          "total_km": "Gesamtlaufleistung",
+          "start_km": "Kilometerstand bei Vertragsbeginn",
+          "odometer_entity": "Entität für den Kilometerstand",
+          "forecast_basis": "Prognosebasis",
+          "reminder_days": "Erinnern, wenn der Stand veraltet"
         },
         "data_description": {
+          "name": "Wird als Gerätename verwendet, zum Beispiel der Name des Autos.",
           "start_date": "Erster Tag des Leasingvertrags.",
-          "laufzeit_monate": "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
-          "km_gesamt": "Im Vertrag enthaltene Gesamtkilometer.",
-          "km_entity": "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
+          "months": "Zum Beispiel 24, 36 oder 48.",
+          "total_km": "Im Vertrag enthaltene Laufleistung, in der Einheit deiner Kilometerstands-Entität.",
+          "start_km": "Bei einem Neuwagen mit leerem Tacho 0 lassen. Bei einem Gebrauchtwagen oder einer Vertragsübernahme den Stand am Tag des Vertragsbeginns eintragen.",
+          "odometer_entity": "Ein Sensor, eine number oder ein input_number mit dem aktuellen Kilometerstand.",
+          "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück.",
+          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat."
         }
       },
       "reconfigure": {
-        "title": "Leasing KM-Rechner neu konfigurieren",
+        "title": "Leasingvertrag",
+        "description": "Vertragsdaten ändern. Die bisherige Historie bleibt erhalten.",
         "data": {
+          "name": "Name",
           "start_date": "Vertragsbeginn",
-          "laufzeit_monate": "Laufzeit (Monate)",
-          "km_gesamt": "Gesamtlaufleistung (km)",
-          "km_entity": "Entität für aktuellen Kilometerstand"
+          "months": "Laufzeit in Monaten",
+          "total_km": "Gesamtlaufleistung",
+          "start_km": "Kilometerstand bei Vertragsbeginn",
+          "odometer_entity": "Entität für den Kilometerstand",
+          "forecast_basis": "Prognosebasis",
+          "reminder_days": "Erinnern, wenn der Stand veraltet"
+        },
+        "data_description": {
+          "name": "Wird als Gerätename verwendet, zum Beispiel der Name des Autos.",
+          "start_date": "Erster Tag des Leasingvertrags.",
+          "months": "Zum Beispiel 24, 36 oder 48.",
+          "total_km": "Im Vertrag enthaltene Laufleistung, in der Einheit deiner Kilometerstands-Entität.",
+          "start_km": "Bei einem Neuwagen mit leerem Tacho 0 lassen. Bei einem Gebrauchtwagen oder einer Vertragsübernahme den Stand am Tag des Vertragsbeginns eintragen.",
+          "odometer_entity": "Ein Sensor, eine number oder ein input_number mit dem aktuellen Kilometerstand.",
+          "forecast_basis": "Auf welchem Durchschnitt Prognosen und Warnungen beruhen. Die Zeitfenster brauchen Recorder-Historie und fallen ohne sie auf den Gesamtdurchschnitt zurück.",
+          "reminder_days": "Nur für einen selbst gepflegten input_number: Home Assistant fragt nach einem neuen Stand, sobald sich der Wert so lange nicht geändert hat."
         }
       }
     },
-    "error": {
-      "entity_unavailable": "Die gewählte Kilometerstands-Entität ist aktuell nicht verfügbar.",
-      "invalid_value": "Die Entität liefert keinen gültigen numerischen Wert."
-    },
     "abort": {
-      "already_configured": "Dieser Leasingvertrag ist bereits konfiguriert."
+      "already_configured": "Dieser Vertrag ist bereits eingerichtet.",
+      "reconfigure_successful": "Vertrag aktualisiert."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "Eine Erinnerung funktioniert nur mit einem selbst gepflegten input_number. Ein Fahrzeugsensor schweigt, solange das Auto steht."
     }
   },
-  "options": {
-    "step": {
-      "init": {
-        "title": "Leasing KM-Rechner konfigurieren",
-        "data": {
-          "start_date": "Vertragsbeginn",
-          "laufzeit_monate": "Laufzeit (Monate)",
-          "km_gesamt": "Gesamtlaufleistung (km)",
-          "km_entity": "Entität für aktuellen Kilometerstand"
-        },
-        "data_description": {
-          "start_date": "Erster Tag des Leasingvertrags.",
-          "laufzeit_monate": "Laufzeit in Monaten, z. B. 24, 36 oder 48.",
-          "km_gesamt": "Im Vertrag enthaltene Gesamtkilometer.",
-          "km_entity": "Ein Sensor oder input_number, der den aktuellen Tachostand in km liefert."
-        }
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Durchschnitt der gesamten Laufzeit",
+        "d30": "Letzte 30 Tage",
+        "d90": "Letzte 90 Tage"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Aus",
+        "7": "Nach 7 Tagen",
+        "14": "Nach 14 Tagen",
+        "30": "Nach 30 Tagen"
       }
     }
   },
   "entity": {
     "sensor": {
-      "tagesleistung_ist": {
+      "km_driven": {
+        "name": "Gefahrene Kilometer"
+      },
+      "daily_actual": {
         "name": "Tagesleistung Ist"
       },
-      "tagesleistung_soll": {
+      "daily_target": {
         "name": "Tagesleistung Soll"
       },
-      "soll_km_heute": {
-        "name": "Soll-KM heute"
+      "daily_actual_30d": {
+        "name": "Tagesleistung Ist (30 Tage)"
       },
-      "differenz_heute": {
+      "daily_actual_90d": {
+        "name": "Tagesleistung Ist (90 Tage)"
+      },
+      "target_today": {
+        "name": "Soll-Kilometer heute"
+      },
+      "deviation_today": {
         "name": "Differenz heute"
       },
-      "soll_km_monatsende": {
-        "name": "Soll-KM Monatsende"
+      "target_month_end": {
+        "name": "Soll-Kilometer Monatsende"
       },
-      "differenz_monatsende": {
+      "deviation_month_end": {
         "name": "Differenz Monatsende"
       },
-      "verbleibend_jahresende": {
-        "name": "Verbleibend bis Jahresende"
+      "contract_year_driven": {
+        "name": "Gefahren im Vertragsjahr"
       },
-      "verbleibend_laufzeitende": {
-        "name": "Verbleibend bis Laufzeitende"
+      "contract_year_deviation": {
+        "name": "Differenz im Vertragsjahr"
       },
-      "noch_erlaubt": {
-        "name": "Noch erlaubt gesamt"
+      "contract_year_allowance": {
+        "name": "Budget im Vertragsjahr"
       },
-      "jahres_soll": {
+      "annual_allowance": {
         "name": "KM-Limit pro Jahr"
       },
-      "prognose_jahresende": {
+      "remaining_contract_year": {
+        "name": "Verbleibend im Vertragsjahr"
+      },
+      "remaining_calendar_year": {
+        "name": "Verbleibend bis Jahresende"
+      },
+      "remaining_contract_end": {
+        "name": "Verbleibend bis Laufzeitende"
+      },
+      "remaining_total": {
+        "name": "Noch erlaubt gesamt"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prognose Vertragsjahresende"
+      },
+      "forecast_calendar_year_end": {
         "name": "Prognose Jahresende"
       },
-      "prognose_laufzeitende": {
+      "forecast_contract_end": {
         "name": "Prognose Laufzeitende"
       },
-      "km_absolviert": {
+      "forecast_deviation_contract_end": {
+        "name": "Prognose Abweichung Laufzeitende"
+      },
+      "mileage_used": {
         "name": "KM absolviert"
       },
-      "laufzeit_absolviert": {
+      "contract_elapsed": {
         "name": "Laufzeit absolviert"
+      },
+      "contract_end_date": {
+        "name": "Vertragsende"
+      },
+      "days_remaining": {
+        "name": "Verbleibende Tage"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Tage seit der letzten Aktualisierung"
       }
     },
     "binary_sensor": {
-      "ueber_soll": {
+      "above_target": {
         "name": "Über Soll"
       },
-      "jahres_km_ueberschritten": {
+      "annual_forecast_exceeded": {
         "name": "Jahres-KM Prognose überschritten"
       },
-      "laufzeit_km_ueberschritten": {
+      "contract_forecast_exceeded": {
         "name": "Laufzeit-KM Prognose überschritten"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Entitäts-IDs von Leasing KM haben sich geändert",
+      "description": "Version 2 verwendet sprachunabhängige Entitäts-IDs. Bitte passe deine Dashboards, Automatisierungen und Skripte an:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: Der Kilometerstand ist {days} Tage alt",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Kilometerstand aktualisieren",
+            "description": "Trag den aktuellen Stand ein. Er wird direkt in {entity_id} geschrieben.",
+            "data": {
+              "odometer": "Kilometerstand"
+            }
+          }
+        }
       }
     }
   }

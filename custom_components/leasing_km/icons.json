@@ -1,0 +1,107 @@
+{
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "default": "mdi:road-variant"
+      },
+      "daily_actual": {
+        "default": "mdi:speedometer"
+      },
+      "daily_target": {
+        "default": "mdi:speedometer-slow"
+      },
+      "daily_actual_30d": {
+        "default": "mdi:speedometer-medium"
+      },
+      "daily_actual_90d": {
+        "default": "mdi:speedometer-medium"
+      },
+      "target_today": {
+        "default": "mdi:map-marker-check"
+      },
+      "deviation_today": {
+        "default": "mdi:delta"
+      },
+      "target_month_end": {
+        "default": "mdi:calendar-end"
+      },
+      "deviation_month_end": {
+        "default": "mdi:delta"
+      },
+      "contract_year_driven": {
+        "default": "mdi:calendar-clock"
+      },
+      "contract_year_deviation": {
+        "default": "mdi:delta"
+      },
+      "contract_year_allowance": {
+        "default": "mdi:calendar-range"
+      },
+      "annual_allowance": {
+        "default": "mdi:car-speed-limiter"
+      },
+      "remaining_contract_year": {
+        "default": "mdi:calendar-arrow-right"
+      },
+      "remaining_calendar_year": {
+        "default": "mdi:calendar-today"
+      },
+      "remaining_contract_end": {
+        "default": "mdi:calendar-check"
+      },
+      "remaining_total": {
+        "default": "mdi:map-marker-distance"
+      },
+      "forecast_contract_year_end": {
+        "default": "mdi:chart-timeline-variant"
+      },
+      "forecast_calendar_year_end": {
+        "default": "mdi:chart-timeline-variant"
+      },
+      "forecast_contract_end": {
+        "default": "mdi:chart-bell-curve-cumulative"
+      },
+      "forecast_deviation_contract_end": {
+        "default": "mdi:scale-balance"
+      },
+      "mileage_used": {
+        "default": "mdi:percent"
+      },
+      "contract_elapsed": {
+        "default": "mdi:percent-circle"
+      },
+      "contract_end_date": {
+        "default": "mdi:calendar-check-outline"
+      },
+      "days_remaining": {
+        "default": "mdi:calendar-clock-outline"
+      },
+      "odometer_updated_days_ago": {
+        "default": "mdi:calendar-refresh"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "default": "mdi:car-arrow-left",
+        "state": {
+          "on": "mdi:car-arrow-right",
+          "off": "mdi:car-arrow-left"
+        }
+      },
+      "annual_forecast_exceeded": {
+        "default": "mdi:car-cruise-control",
+        "state": {
+          "on": "mdi:car-speed-limiter",
+          "off": "mdi:car-cruise-control"
+        }
+      },
+      "contract_forecast_exceeded": {
+        "default": "mdi:shield-check",
+        "state": {
+          "on": "mdi:shield-car",
+          "off": "mdi:shield-check"
+        }
+      }
+    }
+  }
+}

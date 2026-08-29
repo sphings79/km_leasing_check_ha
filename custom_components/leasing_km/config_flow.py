@@ -1,157 +1,160 @@
-"""Config flow for Leasing KM-Rechner."""
+"""Config flow for the Leasing KM integration."""
+
 from __future__ import annotations
 
-import voluptuous as vol
-from homeassistant import config_entries
-from homeassistant.helpers import selector
+from typing import Any
 
+from homeassistant import config_entries
+from homeassistant.const import CONF_NAME
+from homeassistant.helpers import selector
+import voluptuous as vol
+
+from .calc import ForecastBasis
 from .const import (
-    CONF_KM_ENTITY,
-    CONF_KM_GESAMT,
-    CONF_LAUFZEIT,
+    CONF_FORECAST_BASIS,
+    CONF_MONTHS,
+    CONF_ODOMETER_ENTITY,
+    CONF_REMINDER_DAYS,
     CONF_START_DATE,
+    CONF_START_KM,
+    CONF_TOTAL_KM,
+    DEFAULT_MONTHS,
+    DEFAULT_REMINDER_DAYS,
+    DEFAULT_START_KM,
+    DEFAULT_TOTAL_KM,
     DOMAIN,
+    MANUAL_DOMAIN,
+    REMINDER_CHOICES,
+    REMINDER_OFF,
 )
 
-# ---------------------------------------------------------------------------
-# Shared schema factory
-# ---------------------------------------------------------------------------
+ODOMETER_DOMAINS = ["sensor", "input_number", "number"]
 
-def _build_schema(defaults: dict) -> vol.Schema:
+
+def _schema(defaults: dict[str, Any]) -> vol.Schema:
+    """Build the contract form, pre-filled with `defaults`."""
     return vol.Schema(
         {
             vol.Required(
-                CONF_START_DATE,
-                default=defaults.get(CONF_START_DATE, ""),
-            ): selector.selector({"date": {}}),
-
+                CONF_NAME, default=defaults.get(CONF_NAME, "")
+            ): selector.TextSelector(),
             vol.Required(
-                CONF_LAUFZEIT,
-                default=defaults.get(CONF_LAUFZEIT, 48),
-            ): selector.selector(
-                {
-                    "number": {
-                        "min": 1,
-                        "max": 120,
-                        "step": 1,
-                        "mode": "box",
-                        "unit_of_measurement": "Monate",
-                    }
-                }
+                CONF_START_DATE, default=defaults.get(CONF_START_DATE, "")
+            ): selector.DateSelector(),
+            vol.Required(
+                CONF_MONTHS, default=defaults.get(CONF_MONTHS, DEFAULT_MONTHS)
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=1, max=120, step=1, mode=selector.NumberSelectorMode.BOX
+                )
             ),
-
             vol.Required(
-                CONF_KM_GESAMT,
-                default=defaults.get(CONF_KM_GESAMT, 80000),
-            ): selector.selector(
-                {
-                    "number": {
-                        "min": 1,
-                        "max": 500000,
-                        "step": 1,
-                        "mode": "box",
-                        "unit_of_measurement": "km",
-                    }
-                }
+                CONF_TOTAL_KM, default=defaults.get(CONF_TOTAL_KM, DEFAULT_TOTAL_KM)
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=1, max=1_000_000, step=1, mode=selector.NumberSelectorMode.BOX
+                )
             ),
-
             vol.Required(
-                CONF_KM_ENTITY,
-                default=defaults.get(CONF_KM_ENTITY, ""),
-            ): selector.selector(
-                {
-                    "entity": {
-                        "domain": ["sensor", "input_number"],
-                    }
-                }
+                CONF_START_KM, default=defaults.get(CONF_START_KM, DEFAULT_START_KM)
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=0, max=2_000_000, step=1, mode=selector.NumberSelectorMode.BOX
+                )
+            ),
+            vol.Required(
+                CONF_ODOMETER_ENTITY, default=defaults.get(CONF_ODOMETER_ENTITY, "")
+            ): selector.EntitySelector(
+                selector.EntitySelectorConfig(domain=ODOMETER_DOMAINS)
+            ),
+            vol.Required(
+                CONF_FORECAST_BASIS,
+                default=defaults.get(CONF_FORECAST_BASIS, ForecastBasis.TOTAL.value),
+            ): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=[basis.value for basis in ForecastBasis],
+                    translation_key="forecast_basis",
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )
+            ),
+            vol.Required(
+                CONF_REMINDER_DAYS,
+                default=defaults.get(CONF_REMINDER_DAYS, DEFAULT_REMINDER_DAYS),
+            ): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=list(REMINDER_CHOICES),
+                    translation_key="reminder_days",
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )
             ),
         }
     )
 
 
-# ---------------------------------------------------------------------------
-# Config flow (initial setup)
-# ---------------------------------------------------------------------------
+def _validate(user_input: dict[str, Any]) -> dict[str, str]:
+    """Return the field errors for a submitted form."""
+    reminder = user_input.get(CONF_REMINDER_DAYS, REMINDER_OFF)
+    entity_id = user_input[CONF_ODOMETER_ENTITY]
+    if reminder != REMINDER_OFF and not entity_id.startswith(f"{MANUAL_DOMAIN}."):
+        # A vehicle sensor is quiet whenever the car is parked, so a reminder
+        # would only ever produce false alarms.
+        return {CONF_REMINDER_DAYS: "reminder_needs_manual_entity"}
+    return {}
+
 
 class LeasingKmConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle the initial configuration dialog."""
+    """Handle setting up and reconfiguring a leasing contract."""
 
-    VERSION = 1
+    VERSION = 2
 
     async def async_step_user(
-        self, user_input: dict | None = None
+        self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
+        """Ask for the contract details."""
         errors: dict[str, str] = {}
-
         if user_input is not None:
-            # Build a human-readable title
-            km = int(user_input[CONF_KM_GESAMT])
-            lz = int(user_input[CONF_LAUFZEIT])
-            title = f"Leasing · {km:,} km / {lz} Monate".replace(",", ".")
-
-            return self.async_create_entry(title=title, data=user_input)
+            errors = _validate(user_input)
+            if not errors:
+                await self.async_set_unique_id(
+                    f"{user_input[CONF_ODOMETER_ENTITY]}_{user_input[CONF_START_DATE]}"
+                )
+                self._abort_if_unique_id_configured()
+                return self.async_create_entry(
+                    title=user_input[CONF_NAME], data=_normalise(user_input)
+                )
 
         return self.async_show_form(
             step_id="user",
-            data_schema=_build_schema({}),
+            data_schema=_schema(user_input or {}),
             errors=errors,
         )
 
-    # ------------------------------------------------------------------
-    # Reconfigure (HA 2024.6+) – lets the user edit all fields in place
-    # ------------------------------------------------------------------
-
     async def async_step_reconfigure(
-        self, user_input: dict | None = None
+        self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
+        """Let the user edit every contract detail in place."""
         entry = self._get_reconfigure_entry()
         errors: dict[str, str] = {}
-
         if user_input is not None:
-            return self.async_update_reload_and_abort(
-                entry,
-                data=user_input,
-            )
+            errors = _validate(user_input)
+            if not errors:
+                return self.async_update_reload_and_abort(
+                    entry,
+                    title=user_input[CONF_NAME],
+                    data=_normalise(user_input),
+                )
 
         return self.async_show_form(
             step_id="reconfigure",
-            data_schema=_build_schema({**entry.data, **entry.options}),
+            data_schema=_schema(user_input or dict(entry.data)),
             errors=errors,
         )
 
-    # ------------------------------------------------------------------
-    # Options flow (gear icon in integrations list)
-    # ------------------------------------------------------------------
 
-    @staticmethod
-    def async_get_options_flow(
-        config_entry: config_entries.ConfigEntry,
-    ) -> LeasingKmOptionsFlow:
-        return LeasingKmOptionsFlow(config_entry)
-
-
-# ---------------------------------------------------------------------------
-# Options flow
-# ---------------------------------------------------------------------------
-
-class LeasingKmOptionsFlow(config_entries.OptionsFlow):
-    """Allow the user to reconfigure all settings after initial setup."""
-
-    def __init__(self, entry: config_entries.ConfigEntry) -> None:
-        self._entry = entry
-
-    async def async_step_init(
-        self, user_input: dict | None = None
-    ) -> config_entries.ConfigFlowResult:
-        errors: dict[str, str] = {}
-
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        current = {**self._entry.data, **self._entry.options}
-
-        return self.async_show_form(
-            step_id="init",
-            data_schema=_build_schema(current),
-            errors=errors,
-        )
+def _normalise(user_input: dict[str, Any]) -> dict[str, Any]:
+    """Store the numeric fields with the types the calculation expects."""
+    data = dict(user_input)
+    data[CONF_MONTHS] = int(data[CONF_MONTHS])
+    data[CONF_TOTAL_KM] = float(data[CONF_TOTAL_KM])
+    data[CONF_START_KM] = float(data[CONF_START_KM])
+    return data

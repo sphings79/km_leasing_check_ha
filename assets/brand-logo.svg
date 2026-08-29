@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 486 160" width="486" height="160"
+     role="img" aria-label="Leasing KM logo: a speedometer dial next to the wordmark Leasing KM">
+  <defs>
+    <linearGradient id="arc" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#4ade80"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#41BDF5"/>
+      <stop offset="1" stop-color="#7C7CF5"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="80" cy="80" r="64" fill="#1b2136"/>
+  <path d="M 36 98 A 48 48 0 1 1 124 98" fill="none" stroke="url(#arc)"
+        stroke-width="13" stroke-linecap="round"/>
+  <line x1="80" y1="86" x2="54" y2="52" stroke="#ffffff" stroke-width="6"
+        stroke-linecap="round"/>
+  <circle cx="80" cy="86" r="9" fill="#6366f1"/>
+  <circle cx="80" cy="86" r="3.5" fill="#ffffff"/>
+  <text x="80" y="124" fill="#e6edf3" font-size="19" font-weight="700"
+        text-anchor="middle"
+        font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">km</text>
+
+  <text x="170" y="97" fill="url(#word)" font-size="50" font-weight="700"
+        font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Leasing KM</text>
+</svg>

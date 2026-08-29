@@ -1,29 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="640" height="512" role="img" aria-label="Set up Leasing KM Calculator">
-  <rect width="640" height="512" rx="16" fill="#111111"/>
-  <text x="30" y="34" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#6E6E6E">Illustration · Home Assistant config flow</text>
-  <rect x="30" y="52" width="580" height="428" rx="12" fill="#1C1C1C" stroke="#2E2E2E" stroke-width="1"/>
-  <text x="58" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="19" font-weight="600" fill="#E1E1E1">Set up Leasing KM Calculator</text>
-  <text x="58" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" font-weight="400" fill="#9B9B9B">Enter your leasing contract details. The odometer entity</text>
-  <text x="58" y="146" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" font-weight="400" fill="#9B9B9B">must already exist in Home Assistant.</text>
-  <rect x="58" y="158" width="524" height="58" rx="6" fill="#252525" stroke="#3A3A3A" stroke-width="1"/>
-  <text x="74" y="180" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#03A9F4">Contract start date</text>
-  <text x="74" y="202" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#E1E1E1">01.11.2023</text>
-  <rect x="58" y="228" width="254.0" height="58" rx="6" fill="#252525" stroke="#3A3A3A" stroke-width="1"/>
-  <text x="74" y="250" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#03A9F4">Contract duration</text>
-  <text x="74" y="272" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#E1E1E1">48</text>
-  <text x="296.0" y="272" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#7A7A7A" text-anchor="end">months</text>
-  <rect x="328.0" y="228" width="254.0" height="58" rx="6" fill="#252525" stroke="#3A3A3A" stroke-width="1"/>
-  <text x="344.0" y="250" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#03A9F4">Total allowed kilometres</text>
-  <text x="344.0" y="272" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#E1E1E1">80000</text>
-  <text x="566.0" y="272" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#7A7A7A" text-anchor="end">km</text>
-  <rect x="58" y="298" width="524" height="58" rx="6" fill="#252525" stroke="#3A3A3A" stroke-width="1"/>
-  <text x="74" y="320" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#03A9F4">Current odometer entity</text>
-  <text x="74" y="342" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#E1E1E1">sensor.car_odometer</text>
-  <path d="M552 324.0l8 9 8-9" stroke="#9B9B9B" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <rect x="58" y="374" width="524" height="34" rx="6" fill="#03A9F4" fill-opacity="0.1"/>
-  <circle cx="78" cy="391.0" r="7" fill="none" stroke="#03A9F4" stroke-width="1.6"/>
-  <path d="M78 387.0v5M78 394.0h.01" stroke="#03A9F4" stroke-width="1.6" stroke-linecap="round"/>
-  <text x="96" y="395.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="400" fill="#03A9F4">One device with 14 sensors and 3 binary sensors is created on submit.</text>
-  <rect x="466" y="426" width="116" height="40" rx="20.0" fill="#03A9F4"/>
-  <text x="524.0" y="451.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#0B1B2B" text-anchor="middle">Submit</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 992" width="900"
+     height="992" role="img" aria-label="The Home Assistant setup dialog of the Leasing KM Calculator with fields for name, contract start, duration, total mileage, odometer reading at contract start, odometer entity and forecast basis">
+  <rect width="900" height="992" rx="18" fill="#0f1720"/>
+  <text x="40" y="46" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#9fb0c0">Illustration · Home Assistant config flow</text>
+  <rect x="40" y="70" width="820" height="882" rx="14" fill="#16202b" stroke="#28394a"/>
+  <text x="80" y="126" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#e6edf3">Leasing contract</text>
+  <text x="80" y="162" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#9fb0c0">Enter the details of your leasing contract. The odometer entity</text>
+  <text x="80" y="186" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#9fb0c0">has to exist in Home Assistant already.</text>
+  <rect x="80" y="216" width="740" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="100" y="244" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Name</text>
+  <text x="100" y="274" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">Golf</text>
+  <rect x="80" y="312" width="360" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="100" y="340" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Contract start date</text>
+  <text x="100" y="370" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">01.11.2023</text>
+  <rect x="460" y="312" width="360" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="480" y="340" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Contract duration in months</text>
+  <text x="480" y="370" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">48</text>
+  <rect x="80" y="408" width="360" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="100" y="436" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Total mileage allowance</text>
+  <text x="100" y="466" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">80000</text>
+  <text x="420" y="466" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#9fb0c0" text-anchor="end">km</text>
+  <rect x="460" y="408" width="360" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="480" y="436" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Odometer reading at contract start</text>
+  <text x="480" y="466" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">12500</text>
+  <text x="800" y="466" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#9fb0c0" text-anchor="end">km</text>
+  <rect x="80" y="504" width="740" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="100" y="532" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Odometer entity</text>
+  <text x="100" y="562" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">sensor.car_odometer</text>
+  <path d="M786 540 l10 12 l10 -12" stroke="#9fb0c0" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="80" y="600" width="740" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="100" y="628" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Forecast basis</text>
+  <text x="100" y="658" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">Whole contract average</text>
+  <path d="M786 636 l10 12 l10 -12" stroke="#9fb0c0" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="80" y="696" width="740" height="78" rx="10" fill="#16202b" stroke="#28394a"/>
+  <text x="100" y="724" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#41BDF5">Remind me if the reading gets stale</text>
+  <text x="100" y="754" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#e6edf3">After 14 days</text>
+  <path d="M786 732 l10 12 l10 -12" stroke="#9fb0c0" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="80" y="792" width="740" height="52" rx="10" fill="#12304a" stroke="#2a5a7a"/>
+  <circle cx="108" cy="818" r="10" fill="none" stroke="#41BDF5" stroke-width="2"/>
+  <text x="108" y="823" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#41BDF5" text-anchor="middle">i</text>
+  <text x="132" y="824" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#41BDF5">One device with 19 sensors and 3 binary sensors is created on submit.</text>
+  <rect x="686" y="868" width="134" height="52" rx="26" fill="#41BDF5"/>
+  <text x="753.0" y="900" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#0b1a24" text-anchor="middle">Submit</text>
 </svg>

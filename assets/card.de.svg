@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 874" width="500"
+     height="874" role="img" aria-label="Die Leasing-KM-Karte auf einem Dashboard: eine Anzeige mit absolvierten Kilometern gegen die abgelaufene Laufzeit, Kacheln für Differenz, Prognose und Restkilometer sowie drei Statusmelder">
+  <rect width="500" height="874" rx="12" fill="#1c1c1c"/>
+  <text x="56" y="30" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#e1e1e1">Golf</text>
+  <text x="56" y="48" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Vertragsende 01.11.2027</text>
+  <circle cx="32" cy="34" r="14" fill="none" stroke="#03a9f4" stroke-width="1.6"/>
+  <path d="M32 27 V34 L37 37" stroke="#03a9f4" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <rect x="399" y="22" width="85" height="24" rx="12" fill="none" stroke="#4caf50"/>
+  <text x="441.5" y="38" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#4caf50" text-anchor="middle">im Plan</text>
+  <line x1="0" y1="64" x2="500" y2="64" stroke="#3a3a3a"/>
+  <path d="M 176.0 190.0 A 74 74 0 0 1 324.0 190.0" fill="none" stroke="#3a3a3a" stroke-width="14" stroke-linecap="round"/>
+  <path d="M 176.0 190.0 A 74 74 0 0 1 284.0 124.3" fill="none" stroke="#4caf50" stroke-width="14" stroke-linecap="round"/>
+  <line x1="288.3" y1="138.7" x2="300.2" y2="122.7" stroke="#e1e1e1" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+  <text x="250" y="182" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#e1e1e1" text-anchor="middle">65,2 %</text>
+  <text x="250" y="204" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b" text-anchor="middle">Soll 70,4 %</text>
+  <text x="164" y="212" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b" text-anchor="middle">0 %</text>
+  <text x="336" y="212" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b" text-anchor="middle">100 %</text>
+  <rect x="16" y="228" width="468" height="8" rx="4" fill="#3a3a3a"/>
+  <rect x="16" y="228" width="329" height="8" rx="4" fill="#9b9b9b" opacity="0.45"/>
+  <rect x="16" y="228" width="305" height="8" rx="4" fill="#4caf50"/>
+  <text x="16" y="252" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">KM absolviert</text>
+  <text x="484" y="252" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b" text-anchor="end">1.028 / 1.461 Tage</text>
+  <text x="16" y="284" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="1.1" fill="#9b9b9b">SOLL UND IST</text>
+  <rect x="16" y="294" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="30" y="314" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Differenz heute</text>
+  <text x="30" y="335" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#4caf50">−4.110 km</text>
+  <text x="30" y="349" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">Soll 56.290 km</text>
+  <rect x="258" y="294" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="272" y="314" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Differenz Monatsende</text>
+  <text x="272" y="335" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#4caf50">−4.439 km</text>
+  <text x="272" y="349" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">Soll 56.619 km</text>
+  <rect x="16" y="364" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="30" y="384" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Tagesleistung Ist</text>
+  <text x="30" y="405" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#e1e1e1">50,8 km/d</text>
+  <text x="30" y="419" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">Soll 54,8 km/d</text>
+  <rect x="258" y="364" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="272" y="384" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Noch erlaubt</text>
+  <text x="272" y="405" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#e1e1e1">27.820 km</text>
+  <text x="272" y="419" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">bis Laufzeitende</text>
+  <text x="16" y="458" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="1.1" fill="#9b9b9b">VERTRAGSJAHR 3</text>
+  <rect x="16" y="468" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="30" y="488" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Gefahren</text>
+  <text x="30" y="509" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#e1e1e1">12.840 km</text>
+  <rect x="258" y="468" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="272" y="488" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Differenz</text>
+  <text x="272" y="509" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#4caf50">−1.360 km</text>
+  <text x="16" y="562" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="1.1" fill="#9b9b9b">PROGNOSE</text>
+  <rect x="16" y="572" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="30" y="592" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Vertragsjahresende</text>
+  <text x="30" y="613" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#4caf50">18.640 km</text>
+  <text x="30" y="627" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">im Limit</text>
+  <rect x="258" y="572" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="272" y="592" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Laufzeitende</text>
+  <text x="272" y="613" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#4caf50">74.159 km</text>
+  <text x="272" y="627" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">im Limit</text>
+  <rect x="16" y="642" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="30" y="662" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Erwartete Abweichung</text>
+  <text x="30" y="683" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#4caf50">−5.841 km</text>
+  <text x="16" y="736" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="1.1" fill="#9b9b9b">VERBLEIBEND AUF SOLLBASIS</text>
+  <rect x="16" y="746" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="30" y="766" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Bis Vertragsjahresende</text>
+  <text x="30" y="787" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#e1e1e1">6.240 km</text>
+  <rect x="258" y="746" width="226" height="62" rx="12" fill="#282828"/>
+  <text x="272" y="766" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#9b9b9b">Bis Laufzeitende</text>
+  <text x="272" y="787" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#e1e1e1">23.710 km</text>
+  <rect x="16" y="834" width="127" height="24" rx="12" fill="#282828"/>
+  <circle cx="31" cy="846" r="3.5" fill="#4caf50"/>
+  <text x="41" y="850" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">unter Tagessoll</text>
+  <rect x="149" y="834" width="133" height="24" rx="12" fill="#282828"/>
+  <circle cx="164" cy="846" r="3.5" fill="#4caf50"/>
+  <text x="174" y="850" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">Jahres-KM sicher</text>
+  <rect x="288" y="834" width="151" height="24" rx="12" fill="#282828"/>
+  <circle cx="303" cy="846" r="3.5" fill="#4caf50"/>
+  <text x="313" y="850" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#9b9b9b">Limit wird gehalten</text>
+</svg>

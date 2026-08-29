@@ -1,0 +1,192 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Contratto di leasing",
+        "data": {
+          "name": "Nome",
+          "start_date": "Inizio del contratto",
+          "months": "Durata in mesi",
+          "total_km": "Chilometraggio totale",
+          "start_km": "Chilometraggio all'inizio del contratto",
+          "odometer_entity": "Entità del contachilometri",
+          "forecast_basis": "Base della previsione",
+          "reminder_days": "Avvisami se la lettura invecchia"
+        },
+        "data_description": {
+          "name": "Usato come nome del dispositivo, ad esempio il nome dell'auto.",
+          "start_date": "Primo giorno del contratto di leasing.",
+          "months": "Ad esempio 24, 36 o 48.",
+          "total_km": "Chilometraggio incluso nel contratto, nell'unità della tua entità contachilometri.",
+          "start_km": "Lascia 0 per un'auto nuova. Per un'auto usata o un contratto subentrato, indica la lettura del giorno di inizio.",
+          "odometer_entity": "Un sensor, number o input_number con la lettura attuale del contachilometri.",
+          "forecast_basis": "Su quale media si basano previsioni e avvisi. Le finestre richiedono lo storico del recorder e altrimenti tornano alla media dell'intero contratto.",
+          "reminder_days": "Solo per un input_number che aggiorni tu: Home Assistant chiede una nuova lettura quando il valore non cambia da questo periodo."
+        },
+        "description": "Inserisci i dati del tuo contratto di leasing. L'entità del contachilometri deve già esistere in Home Assistant."
+      },
+      "reconfigure": {
+        "title": "Contratto di leasing",
+        "data": {
+          "name": "Nome",
+          "start_date": "Inizio del contratto",
+          "months": "Durata in mesi",
+          "total_km": "Chilometraggio totale",
+          "start_km": "Chilometraggio all'inizio del contratto",
+          "odometer_entity": "Entità del contachilometri",
+          "forecast_basis": "Base della previsione",
+          "reminder_days": "Avvisami se la lettura invecchia"
+        },
+        "data_description": {
+          "name": "Usato come nome del dispositivo, ad esempio il nome dell'auto.",
+          "start_date": "Primo giorno del contratto di leasing.",
+          "months": "Ad esempio 24, 36 o 48.",
+          "total_km": "Chilometraggio incluso nel contratto, nell'unità della tua entità contachilometri.",
+          "start_km": "Lascia 0 per un'auto nuova. Per un'auto usata o un contratto subentrato, indica la lettura del giorno di inizio.",
+          "odometer_entity": "Un sensor, number o input_number con la lettura attuale del contachilometri.",
+          "forecast_basis": "Su quale media si basano previsioni e avvisi. Le finestre richiedono lo storico del recorder e altrimenti tornano alla media dell'intero contratto.",
+          "reminder_days": "Solo per un input_number che aggiorni tu: Home Assistant chiede una nuova lettura quando il valore non cambia da questo periodo."
+        },
+        "description": "Modifica i dati del contratto. Lo storico esistente viene mantenuto."
+      }
+    },
+    "abort": {
+      "already_configured": "Questo contratto è già configurato.",
+      "reconfigure_successful": "Contratto aggiornato."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "Il promemoria funziona solo con un input_number che aggiorni tu. Un sensore del veicolo tace finché l'auto è ferma."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Media dell'intero contratto",
+        "d30": "Ultimi 30 giorni",
+        "d90": "Ultimi 90 giorni"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Disattivato",
+        "7": "Dopo 7 giorni",
+        "14": "Dopo 14 giorni",
+        "30": "Dopo 30 giorni"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Chilometraggio percorso"
+      },
+      "daily_actual": {
+        "name": "Reale al giorno"
+      },
+      "daily_target": {
+        "name": "Obiettivo al giorno"
+      },
+      "daily_actual_30d": {
+        "name": "Reale al giorno (30 giorni)"
+      },
+      "daily_actual_90d": {
+        "name": "Reale al giorno (90 giorni)"
+      },
+      "target_today": {
+        "name": "Chilometraggio obiettivo oggi"
+      },
+      "deviation_today": {
+        "name": "Scostamento oggi"
+      },
+      "target_month_end": {
+        "name": "Chilometraggio obiettivo a fine mese"
+      },
+      "deviation_month_end": {
+        "name": "Scostamento a fine mese"
+      },
+      "contract_year_driven": {
+        "name": "Percorso nell'anno contrattuale"
+      },
+      "contract_year_deviation": {
+        "name": "Scostamento nell'anno contrattuale"
+      },
+      "contract_year_allowance": {
+        "name": "Limite dell'anno contrattuale"
+      },
+      "annual_allowance": {
+        "name": "Limite annuo di chilometraggio"
+      },
+      "remaining_contract_year": {
+        "name": "Residuo nell'anno contrattuale"
+      },
+      "remaining_calendar_year": {
+        "name": "Residuo fino a fine anno"
+      },
+      "remaining_contract_end": {
+        "name": "Residuo fino alla fine del contratto"
+      },
+      "remaining_total": {
+        "name": "Chilometri residui"
+      },
+      "forecast_contract_year_end": {
+        "name": "Previsione fine anno contrattuale"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Previsione fine anno"
+      },
+      "forecast_contract_end": {
+        "name": "Previsione fine contratto"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Scostamento previsto a fine contratto"
+      },
+      "mileage_used": {
+        "name": "Chilometraggio utilizzato"
+      },
+      "contract_elapsed": {
+        "name": "Contratto trascorso"
+      },
+      "contract_end_date": {
+        "name": "Fine del contratto"
+      },
+      "days_remaining": {
+        "name": "Giorni rimanenti"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Giorni dall'ultimo aggiornamento"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Sopra l'obiettivo"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Previsione annua superata"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Previsione del contratto superata"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Gli ID entità di Leasing KM sono cambiati",
+      "description": "La versione 2 usa ID entità indipendenti dalla lingua. Aggiorna dashboard, automazioni e script:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: la lettura del contachilometri ha {days} giorni",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Aggiorna il contachilometri",
+            "description": "Inserisci la lettura attuale. Viene scritta direttamente in {entity_id}.",
+            "data": {
+              "odometer": "Lettura del contachilometri"
+            }
+          }
+        }
+      }
+    }
+  }
+}

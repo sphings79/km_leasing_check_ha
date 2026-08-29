@@ -1,0 +1,192 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Leasingavtal",
+        "data": {
+          "name": "Namn",
+          "start_date": "Avtalets start",
+          "months": "Löptid i månader",
+          "total_km": "Total körsträcka",
+          "start_km": "Mätarställning vid avtalets start",
+          "odometer_entity": "Entitet för mätarställning",
+          "forecast_basis": "Grund för prognosen",
+          "reminder_days": "Påminn mig om avläsningen blir gammal"
+        },
+        "data_description": {
+          "name": "Används som enhetsnamn, till exempel bilens namn.",
+          "start_date": "Första dagen i leasingavtalet.",
+          "months": "Till exempel 24, 36 eller 48.",
+          "total_km": "Körsträcka som ingår i avtalet, i enheten från din mätarställningsentitet.",
+          "start_km": "Lämna 0 för en ny bil. För en begagnad bil eller ett övertaget avtal, ange ställningen den dag avtalet började.",
+          "odometer_entity": "En sensor, number eller input_number med aktuell mätarställning.",
+          "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet.",
+          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge."
+        },
+        "description": "Ange uppgifterna för ditt leasingavtal. Entiteten för mätarställningen måste redan finnas i Home Assistant."
+      },
+      "reconfigure": {
+        "title": "Leasingavtal",
+        "data": {
+          "name": "Namn",
+          "start_date": "Avtalets start",
+          "months": "Löptid i månader",
+          "total_km": "Total körsträcka",
+          "start_km": "Mätarställning vid avtalets start",
+          "odometer_entity": "Entitet för mätarställning",
+          "forecast_basis": "Grund för prognosen",
+          "reminder_days": "Påminn mig om avläsningen blir gammal"
+        },
+        "data_description": {
+          "name": "Används som enhetsnamn, till exempel bilens namn.",
+          "start_date": "Första dagen i leasingavtalet.",
+          "months": "Till exempel 24, 36 eller 48.",
+          "total_km": "Körsträcka som ingår i avtalet, i enheten från din mätarställningsentitet.",
+          "start_km": "Lämna 0 för en ny bil. För en begagnad bil eller ett övertaget avtal, ange ställningen den dag avtalet började.",
+          "odometer_entity": "En sensor, number eller input_number med aktuell mätarställning.",
+          "forecast_basis": "Vilket genomsnitt prognoser och varningar bygger på. Tidsfönstren kräver historik från recorder och faller annars tillbaka på genomsnittet för hela avtalet.",
+          "reminder_days": "Bara för en input_number som du sköter själv: Home Assistant ber om en ny avläsning när värdet inte har ändrats på så länge."
+        },
+        "description": "Ändra avtalsuppgifterna. Befintlig historik behålls."
+      }
+    },
+    "abort": {
+      "already_configured": "Det här avtalet är redan konfigurerat.",
+      "reconfigure_successful": "Avtalet uppdaterat."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "En påminnelse fungerar bara med en input_number som du sköter själv. En sensor i bilen är tyst så länge bilen står stilla."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Genomsnitt för hela avtalet",
+        "d30": "Senaste 30 dagarna",
+        "d90": "Senaste 90 dagarna"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Av",
+        "7": "Efter 7 dagar",
+        "14": "Efter 14 dagar",
+        "30": "Efter 30 dagar"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Körd sträcka"
+      },
+      "daily_actual": {
+        "name": "Faktiskt per dag"
+      },
+      "daily_target": {
+        "name": "Mål per dag"
+      },
+      "daily_actual_30d": {
+        "name": "Faktiskt per dag (30 dagar)"
+      },
+      "daily_actual_90d": {
+        "name": "Faktiskt per dag (90 dagar)"
+      },
+      "target_today": {
+        "name": "Målsträcka i dag"
+      },
+      "deviation_today": {
+        "name": "Avvikelse i dag"
+      },
+      "target_month_end": {
+        "name": "Målsträcka vid månadsskiftet"
+      },
+      "deviation_month_end": {
+        "name": "Avvikelse vid månadsskiftet"
+      },
+      "contract_year_driven": {
+        "name": "Kört under avtalsåret"
+      },
+      "contract_year_deviation": {
+        "name": "Avvikelse under avtalsåret"
+      },
+      "contract_year_allowance": {
+        "name": "Gräns för avtalsåret"
+      },
+      "annual_allowance": {
+        "name": "Årlig körsträcka"
+      },
+      "remaining_contract_year": {
+        "name": "Återstår under avtalsåret"
+      },
+      "remaining_calendar_year": {
+        "name": "Återstår till årsskiftet"
+      },
+      "remaining_contract_end": {
+        "name": "Återstår till avtalets slut"
+      },
+      "remaining_total": {
+        "name": "Kilometer kvar"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prognos avtalsårets slut"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Prognos årets slut"
+      },
+      "forecast_contract_end": {
+        "name": "Prognos avtalets slut"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Förväntad avvikelse vid avtalets slut"
+      },
+      "mileage_used": {
+        "name": "Körsträcka använd"
+      },
+      "contract_elapsed": {
+        "name": "Avtalstid förfluten"
+      },
+      "contract_end_date": {
+        "name": "Avtalets slut"
+      },
+      "days_remaining": {
+        "name": "Återstående dagar"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Dagar sedan senaste uppdateringen"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Över mål"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Årlig prognos överskriden"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Avtalsprognos överskriden"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Entitets-id:n för Leasing KM har ändrats",
+      "description": "Version 2 använder språkoberoende entitets-id:n. Uppdatera dina instrumentpaneler, automationer och skript:\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name}: mätarställningen är {days} dagar gammal",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Uppdatera mätarställningen",
+            "description": "Ange den aktuella ställningen. Den skrivs direkt till {entity_id}.",
+            "data": {
+              "odometer": "Mätarställning"
+            }
+          }
+        }
+      }
+    }
+  }
+}

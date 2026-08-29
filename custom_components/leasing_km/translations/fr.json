@@ -1,0 +1,192 @@
+{
+  "title": "Leasing KM Calculator",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Contrat de leasing",
+        "data": {
+          "name": "Nom",
+          "start_date": "Début du contrat",
+          "months": "Durée en mois",
+          "total_km": "Kilométrage total",
+          "start_km": "Kilométrage au début du contrat",
+          "odometer_entity": "Entité du compteur kilométrique",
+          "forecast_basis": "Base de la prévision",
+          "reminder_days": "Me rappeler si le relevé vieillit"
+        },
+        "data_description": {
+          "name": "Utilisé comme nom d'appareil, par exemple le nom de la voiture.",
+          "start_date": "Premier jour du contrat de leasing.",
+          "months": "Par exemple 24, 36 ou 48.",
+          "total_km": "Kilométrage inclus dans le contrat, dans l'unité de ton entité de compteur.",
+          "start_km": "Laisser 0 pour une voiture neuve. Pour une voiture d'occasion ou un contrat repris, indiquer le relevé au jour du début du contrat.",
+          "odometer_entity": "Un sensor, number ou input_number contenant le relevé actuel du compteur.",
+          "forecast_basis": "Sur quelle moyenne reposent les prévisions et les alertes. Les fenêtres glissantes ont besoin de l'historique du recorder et reviennent sinon à la moyenne sur tout le contrat.",
+          "reminder_days": "Uniquement pour un input_number que tu tiens à jour toi-même : Home Assistant réclame un nouveau relevé dès que la valeur n'a pas changé pendant cette durée."
+        },
+        "description": "Saisis les données de ton contrat de leasing. L'entité du compteur kilométrique doit déjà exister dans Home Assistant."
+      },
+      "reconfigure": {
+        "title": "Contrat de leasing",
+        "data": {
+          "name": "Nom",
+          "start_date": "Début du contrat",
+          "months": "Durée en mois",
+          "total_km": "Kilométrage total",
+          "start_km": "Kilométrage au début du contrat",
+          "odometer_entity": "Entité du compteur kilométrique",
+          "forecast_basis": "Base de la prévision",
+          "reminder_days": "Me rappeler si le relevé vieillit"
+        },
+        "data_description": {
+          "name": "Utilisé comme nom d'appareil, par exemple le nom de la voiture.",
+          "start_date": "Premier jour du contrat de leasing.",
+          "months": "Par exemple 24, 36 ou 48.",
+          "total_km": "Kilométrage inclus dans le contrat, dans l'unité de ton entité de compteur.",
+          "start_km": "Laisser 0 pour une voiture neuve. Pour une voiture d'occasion ou un contrat repris, indiquer le relevé au jour du début du contrat.",
+          "odometer_entity": "Un sensor, number ou input_number contenant le relevé actuel du compteur.",
+          "forecast_basis": "Sur quelle moyenne reposent les prévisions et les alertes. Les fenêtres glissantes ont besoin de l'historique du recorder et reviennent sinon à la moyenne sur tout le contrat.",
+          "reminder_days": "Uniquement pour un input_number que tu tiens à jour toi-même : Home Assistant réclame un nouveau relevé dès que la valeur n'a pas changé pendant cette durée."
+        },
+        "description": "Modifier les données du contrat. L'historique existant est conservé."
+      }
+    },
+    "abort": {
+      "already_configured": "Ce contrat est déjà configuré.",
+      "reconfigure_successful": "Contrat mis à jour."
+    },
+    "error": {
+      "reminder_needs_manual_entity": "Un rappel ne fonctionne qu'avec un input_number que tu tiens à jour toi-même. Un capteur de véhicule reste muet tant que la voiture est garée."
+    }
+  },
+  "selector": {
+    "forecast_basis": {
+      "options": {
+        "total": "Moyenne sur tout le contrat",
+        "d30": "30 derniers jours",
+        "d90": "90 derniers jours"
+      }
+    },
+    "reminder_days": {
+      "options": {
+        "off": "Désactivé",
+        "7": "Après 7 jours",
+        "14": "Après 14 jours",
+        "30": "Après 30 jours"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "km_driven": {
+        "name": "Kilométrage parcouru"
+      },
+      "daily_actual": {
+        "name": "Réel par jour"
+      },
+      "daily_target": {
+        "name": "Objectif par jour"
+      },
+      "daily_actual_30d": {
+        "name": "Réel par jour (30 jours)"
+      },
+      "daily_actual_90d": {
+        "name": "Réel par jour (90 jours)"
+      },
+      "target_today": {
+        "name": "Kilométrage objectif aujourd'hui"
+      },
+      "deviation_today": {
+        "name": "Écart aujourd'hui"
+      },
+      "target_month_end": {
+        "name": "Kilométrage objectif fin de mois"
+      },
+      "deviation_month_end": {
+        "name": "Écart fin de mois"
+      },
+      "contract_year_driven": {
+        "name": "Parcouru dans l'année de contrat"
+      },
+      "contract_year_deviation": {
+        "name": "Écart dans l'année de contrat"
+      },
+      "contract_year_allowance": {
+        "name": "Forfait de l'année de contrat"
+      },
+      "annual_allowance": {
+        "name": "Forfait kilométrique annuel"
+      },
+      "remaining_contract_year": {
+        "name": "Restant dans l'année de contrat"
+      },
+      "remaining_calendar_year": {
+        "name": "Restant jusqu'à la fin de l'année"
+      },
+      "remaining_contract_end": {
+        "name": "Restant jusqu'à la fin du contrat"
+      },
+      "remaining_total": {
+        "name": "Kilomètres restants"
+      },
+      "forecast_contract_year_end": {
+        "name": "Prévision fin de l'année de contrat"
+      },
+      "forecast_calendar_year_end": {
+        "name": "Prévision fin d'année"
+      },
+      "forecast_contract_end": {
+        "name": "Prévision fin du contrat"
+      },
+      "forecast_deviation_contract_end": {
+        "name": "Écart prévu à la fin du contrat"
+      },
+      "mileage_used": {
+        "name": "Kilométrage utilisé"
+      },
+      "contract_elapsed": {
+        "name": "Contrat écoulé"
+      },
+      "contract_end_date": {
+        "name": "Fin du contrat"
+      },
+      "days_remaining": {
+        "name": "Jours restants"
+      },
+      "odometer_updated_days_ago": {
+        "name": "Jours depuis la dernière mise à jour"
+      }
+    },
+    "binary_sensor": {
+      "above_target": {
+        "name": "Au-dessus de l'objectif"
+      },
+      "annual_forecast_exceeded": {
+        "name": "Prévision annuelle dépassée"
+      },
+      "contract_forecast_exceeded": {
+        "name": "Prévision du contrat dépassée"
+      }
+    }
+  },
+  "issues": {
+    "entity_ids_renamed": {
+      "title": "Les identifiants d'entités de Leasing KM ont changé",
+      "description": "La version 2 utilise des identifiants indépendants de la langue. Mets à jour tes tableaux de bord, automatisations et scripts :\n\n{renames}"
+    },
+    "odometer_stale": {
+      "title": "{name} : le relevé du compteur date de {days} jours",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Mettre à jour le compteur",
+            "description": "Saisis le relevé actuel. Il est écrit directement dans {entity_id}.",
+            "data": {
+              "odometer": "Relevé du compteur"
+            }
+          }
+        }
+      }
+    }
+  }
+}

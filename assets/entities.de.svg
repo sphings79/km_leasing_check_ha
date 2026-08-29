@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 902" width="1240"
+     height="902" role="img" aria-label="Die Entitäten, die der Leasing KM-Rechner für einen Vertrag anlegt: gefahrene Kilometer, Tagesleistungen, Differenzen, Vertragsjahreswerte, Prognosen und drei Statusmelder">
+  <rect width="1240" height="902" rx="18" fill="#0f1720"/>
+  <text x="30" y="46" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="21" font-weight="700" fill="#e6edf3">Entitäten eines Leasingvertrags</text>
+  <text x="30" y="72" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#9fb0c0">Gerät &#8220;Golf&#8221; &#183; 18 Sensoren und 3 binäre Sensoren sind ab Werk aktiv</text>
+  <line x1="30" y1="92" x2="1210" y2="92" stroke="#28394a"/>
+  <g transform="translate(30,112)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Gefahrene Kilometer</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_km_driven</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">52.180 km</text>
+  </g>
+  <g transform="translate(30,174)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Tagesleistung Ist</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_daily_actual</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">50,8 km/d</text>
+  </g>
+  <g transform="translate(30,236)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Tagesleistung Soll</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_daily_target</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#9fb0c0" text-anchor="end">54,8 km/d</text>
+  </g>
+  <g transform="translate(30,298)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Soll-Kilometer heute</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_target_today</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#9fb0c0" text-anchor="end">56.290 km</text>
+  </g>
+  <g transform="translate(30,360)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Differenz heute</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_deviation_today</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">−4.110 km</text>
+  </g>
+  <g transform="translate(30,422)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Soll-Kilometer Monatsende</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_target_month_end</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#9fb0c0" text-anchor="end">56.619 km</text>
+  </g>
+  <g transform="translate(30,484)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Differenz Monatsende</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_deviation_month_end</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">−4.439 km</text>
+  </g>
+  <g transform="translate(30,546)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Gefahren im Vertragsjahr</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_contract_year_driven</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">12.840 km</text>
+  </g>
+  <g transform="translate(30,608)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Differenz im Vertragsjahr</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_contract_year_deviation</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">−1.360 km</text>
+  </g>
+  <g transform="translate(30,670)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">KM-Limit pro Jahr</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_annual_allowance</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#9fb0c0" text-anchor="end">20.000 km</text>
+  </g>
+  <g transform="translate(30,732)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Verbleibend im Vertragsjahr</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_remaining_contract_year</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#9fb0c0" text-anchor="end">6.240 km</text>
+  </g>
+  <g transform="translate(650,112)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Verbleibend bis Laufzeitende</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_remaining_contract_end</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#9fb0c0" text-anchor="end">23.710 km</text>
+  </g>
+  <g transform="translate(650,174)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Noch erlaubt gesamt</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_remaining_total</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">27.820 km</text>
+  </g>
+  <g transform="translate(650,236)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Prognose Vertragsjahresende</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_forecast_contract_year_end</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">18.640 km</text>
+  </g>
+  <g transform="translate(650,298)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Prognose Laufzeitende</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_forecast_contract_end</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">74.159 km</text>
+  </g>
+  <g transform="translate(650,360)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Prognose Abweichung Laufzeitende</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_forecast_deviation_contract_end</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">−5.841 km</text>
+  </g>
+  <g transform="translate(650,422)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">KM absolviert</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_mileage_used</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">65,2 %</text>
+  </g>
+  <g transform="translate(650,484)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Laufzeit absolviert</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">sensor.golf_contract_elapsed</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#e6edf3" text-anchor="end">70,4 %</text>
+  </g>
+  <g transform="translate(650,546)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Über Soll</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">binary_sensor.golf_above_target</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">Aus</text>
+  </g>
+  <g transform="translate(650,608)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Jahres-KM Prognose überschritten</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">binary_sensor.golf_annual_forecast_exceeded</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">Aus</text>
+  </g>
+  <g transform="translate(650,670)">
+    <rect width="590" height="54" rx="10" fill="#16202b" stroke="#28394a"/>
+    <text x="18" y="24" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e6edf3">Laufzeit-KM Prognose überschritten</text>
+    <text x="18" y="43" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#9fb0c0">binary_sensor.golf_contract_forecast_exceeded</text>
+    <text x="572" y="33" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3ddc97" text-anchor="end">Aus</text>
+  </g>
+  <text x="30" y="872" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#9fb0c0">Acht weitere Sensoren sind ab Werk deaktiviert: die 30- und 90-Tage-Durchschnitte, die Kalenderjahreswerte, das Budget des Vertragsjahres, das Vertragsende, die verbleibenden Tage und die Tage seit der letzten Aktualisierung.</text>
+</svg>
